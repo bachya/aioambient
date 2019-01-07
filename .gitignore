@@ -1,0 +1,6 @@
+.coverage
+.mypy_cache
+.tox/
+Pipfile.lock
+coverage.xml
+pyopenuv.egg-info

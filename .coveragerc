@@ -1,0 +1,6 @@
+[run]
+source = aioambient
+
+omit =
+    aioambient/__version__.py
+
