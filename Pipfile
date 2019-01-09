@@ -15,5 +15,7 @@ tox = "*"
 twine = "*"
 
 [packages]
+"python-socketio[asyncio_client]" = "*"
 aiodns = "*"
 aiohttp = "*"
+websockets = "*"
