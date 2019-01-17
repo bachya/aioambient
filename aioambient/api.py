@@ -1,4 +1,5 @@
 """Define an object to handle /devices endpoints."""
+import asyncio
 from datetime import datetime
 
 from aiohttp import ClientSession
@@ -25,6 +26,12 @@ class API:
     async def _request(
             self, method: str, endpoint: str, *, params: dict = None) -> list:
         """Make a request against air-matters.com."""
+        # In order to deal with Ambient's fairly aggressive rate limiting, we
+        # pause for a second before continuing in case any requests came before
+        # this.
+        # https://ambientweather.docs.apiary.io/#introduction/rate-limiting
+        await asyncio.sleep(1)
+
         url = "{0}/v{1}/{2}".format(API_BASE, self._api_version, endpoint)
 
         if not params:

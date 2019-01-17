@@ -11,7 +11,7 @@ from aioambient.errors import AmbientError
 _LOGGER = logging.getLogger()
 
 API_KEY = '<YOUR API KEY>'
-APP_KEY = '<YOUR API KEY>'
+APP_KEY = '<YOUR APPLICATION KEY>'
 
 
 async def main() -> None:
@@ -26,27 +26,15 @@ async def main() -> None:
             devices = await client.api.get_devices()
             _LOGGER.info('Devices: %s', devices)
 
-            # Wait 1 second to avoid rate limiting between calls:
-            # https://ambientweather.docs.apiary.io/#introduction/rate-limiting
-            await asyncio.sleep(1)
+            for device in devices:
+                # Get info on a specific device (by MAC address):
+                details = await client.api.get_device_details(
+                    device['macAddress'])
+                _LOGGER.info(
+                    'Device Details (%s): %s', device['macAddress'], details)
 
-            # Get info on a specific device (by MAC address):
-            details = await client.api.get_device_details('84:F3:EB:21:90:C4')
-            _LOGGER.info('Devices: %s', details)
         except AmbientError as err:
             _LOGGER.error('There was an error: %s', err)
-    # sio = socketio.AsyncClient()
-
-    # @sio.on('connect')
-    # async def on_connect():
-    #     _LOGGER.info('Websocket connected')
-
-    # await sio.connect(
-    #     'https://dash2.ambientweather.net?api=1&applicationKey={0}'.format(
-    #         APP_KEY),
-    #     transports=['websocket'])
-    # await sio.emit('subscribe', {'apiKeys': [API_KEY]})
-    # await sio.wait()
 
 
 asyncio.get_event_loop().run_until_complete(main())
