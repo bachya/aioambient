@@ -6,11 +6,11 @@ from typing import Dict, List, Union  # noqa
 from aiohttp import ClientSession
 
 from .api import API
-from .const import API_VERSION
+from .websocket import Websocket
 
 _LOGGER = logging.getLogger(__name__)
 
-WEBSOCKET_ENDPOINT = '{0}/?api={1}&applicationKey={2}'
+DEFAULT_API_VERSION = 1
 
 
 class Client:  # pylint: disable=too-few-public-methods
@@ -20,9 +20,9 @@ class Client:  # pylint: disable=too-few-public-methods
             self,
             api_key: str,
             application_key: str,
-            websession: ClientSession,
+            session: ClientSession,
             *,
-            api_version: int = API_VERSION) -> None:
+            api_version: int = DEFAULT_API_VERSION) -> None:
         """Initialize."""
-        self.api = API(
-            application_key, api_key, api_version, websession)
+        self.api = API(application_key, api_key, api_version, session)
+        self.websocket = Websocket(application_key, api_key, api_version)
