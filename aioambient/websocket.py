@@ -17,11 +17,6 @@ class Websocket:
         self._application_key = application_key
         self._sio = AsyncClient()
 
-    async def _start_loop(self) -> None:
-        """Start a background loop to receive data from the socket."""
-        while True:
-            await self._sio.sleep(1)
-
     def on_connect(self, target: Union[Awaitable, Callable]) -> None:
         """Define a method/coroutine to be called when connecting."""
         self._sio.on('connect', target)
@@ -42,7 +37,6 @@ class Websocket:
                 WEBSOCKET_API_BASE, self._api_version, self._application_key),
             transports=['websocket'])
         await self._sio.emit('subscribe', {'apiKeys': [self._api_key]})
-        self._sio.start_background_task(self._start_loop)
 
     async def disconnect(self) -> None:
         """Disconnect from the socket."""

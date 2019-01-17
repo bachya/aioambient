@@ -8,8 +8,8 @@ from aioambient import Client
 
 _LOGGER = logging.getLogger()
 
-API_KEY = '<YOUR API KEY>'
-APP_KEY = '<YOUR APPLICATION KEY>'
+API_KEY = '486b9ac473f34e6ba73af698a0e01f262c42ac73a1e343e990147dad7d6c7e5f'
+APP_KEY = '32f561c4cb3a400d9c71ae0e96495466beaea220e315403c955b8f2bb12ac9a1'
 
 
 def print_data(data):
