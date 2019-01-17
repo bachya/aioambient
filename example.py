@@ -10,39 +10,31 @@ from aioambient.errors import AmbientError
 
 _LOGGER = logging.getLogger()
 
-API_KEY = '12345'
-APP_KEY = '12345'
+API_KEY = '<YOUR API KEY>'
+APP_KEY = '<YOUR APPLICATION KEY>'
 
 
 async def main() -> None:
     """Create the aiohttp session and run the example."""
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     async with ClientSession() as websession:
         try:
             # Create a client:
             client = Client(API_KEY, APP_KEY, websession)
 
             # Get all devices:
-            devices = await client.devices.all()
+            devices = await client.api.get_devices()
             _LOGGER.info('Devices: %s', devices)
 
-            # Wait 1 second to avoid rate limiting between calls:
-            # https://ambientweather.docs.apiary.io/#introduction/rate-limiting
-            await asyncio.sleep(1)
-
-            # Get info on a specific device (by MAC address):
-            details = await client.devices.details('84:F3:EB:21:90:C4')
-            _LOGGER.info('Devices: %s', details)
-
-            # sio = socketio.AsyncClient()
-            # await sio.connect(
-            #     'https://dash2.ambientweather.net?api=1&applicationKey={0}'.
-            #     format(APP_KEY))
-            # await sio.emit('subscribe', {'apiKeys': [API_KEY]})
-            # await sio.wait()
+            for device in devices:
+                # Get info on a specific device (by MAC address):
+                details = await client.api.get_device_details(
+                    device['macAddress'])
+                _LOGGER.info(
+                    'Device Details (%s): %s', device['macAddress'], details)
 
         except AmbientError as err:
-            print(err)
+            _LOGGER.error('There was an error: %s', err)
 
 
 asyncio.get_event_loop().run_until_complete(main())
