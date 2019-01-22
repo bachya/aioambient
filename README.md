@@ -134,18 +134,43 @@ async def main() -> None:
         '<YOUR APPLICATION KEY>',
         websession)
 
-      # Get all devices in an account:
-      await client.api.get_devices()
+      # Define a method (sync or async) that should be run when the websocket
+      # client connects:
+      def connect_method():
+          """Print a simple "hello" message."""
+          print('Client has connected to the websocket')
+      client.websocket.on_connect(connect_method)
 
-      # Get all stored readings from a device:
-      await client.api.get_device_details('<DEVICE MAC ADDRESS>')
+      # Define a method (sync or async) that should be run upon subscribing to
+      # the Ambient Weather cloud:
+      def subscribed_method(data):
+          """Print the data received upon subscribing."""
+          print('Subscription data received: {0}'.format(data))
+      client.websocket.on_subscribed(subscribed_method)
 
-      # Get all stored readings from a device (starting at a datetime):
-      await client.api.get_device_details(
-        '<DEVICE MAC ADDRESS>', end_date="2019-01-16")
+      # Define a method (sync or async) that should be run upon receiving data:
+      def data_method(data):
+          """Print the data received."""
+          print('Data received: {0}'.format(data))
+      client.websocket.on_data(data_method)
+
+      # Define a method (sync or async) that should be run when the websocket
+      # client disconnects:
+      def disconnect_method(data):
+          """Print a simple "goodbye" message."""
+          print('Client has disconnected from the websocket')
+      client.websocket.on_disconnect(disconnect_method)
+
+      # Connect to the websocket:
+      await client.websocket.connect()
+
+      # At any point, disconnect from the websocket:
+      await client.websocket.disconnect()
 
 
-asyncio.get_event_loop().run_until_complete(main())
+loop = asyncio.get_event_loop()
+loop.create_task(main())
+loop.run_forever()
 ```
 
 # Contributing
