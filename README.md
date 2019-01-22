@@ -4,7 +4,7 @@
 [![PyPi](https://img.shields.io/pypi/v/aioambient.svg)](https://pypi.python.org/pypi/aioambient)
 [![Version](https://img.shields.io/pypi/pyversions/aioambient.svg)](https://pypi.python.org/pypi/aioambient)
 [![License](https://img.shields.io/pypi/l/aioambient.svg)](https://github.com/bachya/aioambient/blob/master/LICENSE)
-[![Code Coverage](https://codecov.io/gh/bachya/aioambient/branch/master/graph/badge.svg)](https://codecov.io/gh/bachya/aioambient)
+[![Code Coverage](https://codecov.io/gh/bachya/aioambient/branch/dev/graph/badge.svg)](https://codecov.io/gh/bachya/aioambient)
 [![Maintainability](https://api.codeclimate.com/v1/badges/81a9f8274abf325b2fa4/maintainability)](https://codeclimate.com/github/bachya/aioambient/maintainability)
 [![Say Thanks](https://img.shields.io/badge/SayThanks-!-1EAEDB.svg)](https://saythanks.io/to/bachya)
 
@@ -37,9 +37,9 @@ Ambient Weather. You can generate both from the Profile page in your
 
 # Usage
 
-## REST API
+## Creating a Client
 
-The REST API of `aioambient` starts within an
+An `aioambient` client starts with an
 [aiohttp](https://aiohttp.readthedocs.io/en/stable/) `ClientSession`:
 
 ```python
@@ -77,6 +77,28 @@ async def main() -> None:
         '<YOUR APPLICATION KEY>',
         websession)
 
+
+asyncio.get_event_loop().run_until_complete(main())
+```
+
+## REST API
+
+```python
+import asyncio
+
+from aiohttp import ClientSession
+
+from aioambient import Client
+
+
+async def main() -> None:
+    """Create the aiohttp session and run the example."""
+    async with ClientSession() as websession:
+      client = Client(
+        '<YOUR API KEY>',
+        '<YOUR APPLICATION KEY>',
+        websession)
+
       # Get all devices in an account:
       await client.api.get_devices()
 
@@ -96,7 +118,60 @@ Please be aware of Ambient Weather's
 
 ## Websocket API
 
-Forthcoming!
+```python
+import asyncio
+
+from aiohttp import ClientSession
+
+from aioambient import Client
+
+
+async def main() -> None:
+    """Create the aiohttp session and run the example."""
+    async with ClientSession() as websession:
+      client = Client(
+        '<YOUR API KEY>',
+        '<YOUR APPLICATION KEY>',
+        websession)
+
+      # Define a method (sync or async) that should be run when the websocket
+      # client connects:
+      def connect_method():
+          """Print a simple "hello" message."""
+          print('Client has connected to the websocket')
+      client.websocket.on_connect(connect_method)
+
+      # Define a method (sync or async) that should be run upon subscribing to
+      # the Ambient Weather cloud:
+      def subscribed_method(data):
+          """Print the data received upon subscribing."""
+          print('Subscription data received: {0}'.format(data))
+      client.websocket.on_subscribed(subscribed_method)
+
+      # Define a method (sync or async) that should be run upon receiving data:
+      def data_method(data):
+          """Print the data received."""
+          print('Data received: {0}'.format(data))
+      client.websocket.on_data(data_method)
+
+      # Define a method (sync or async) that should be run when the websocket
+      # client disconnects:
+      def disconnect_method(data):
+          """Print a simple "goodbye" message."""
+          print('Client has disconnected from the websocket')
+      client.websocket.on_disconnect(disconnect_method)
+
+      # Connect to the websocket:
+      await client.websocket.connect()
+
+      # At any point, disconnect from the websocket:
+      await client.websocket.disconnect()
+
+
+loop = asyncio.get_event_loop()
+loop.create_task(main())
+loop.run_forever()
+```
 
 # Contributing
 

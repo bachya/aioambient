@@ -2,7 +2,6 @@
 import asyncio
 import logging
 
-import socketio
 from aiohttp import ClientSession
 
 from aioambient import Client
@@ -17,10 +16,10 @@ APP_KEY = '<YOUR APPLICATION KEY>'
 async def main() -> None:
     """Create the aiohttp session and run the example."""
     logging.basicConfig(level=logging.INFO)
-    async with ClientSession() as websession:
+    async with ClientSession() as session:
         try:
             # Create a client:
-            client = Client(API_KEY, APP_KEY, websession)
+            client = Client(API_KEY, APP_KEY, session)
 
             # Get all devices:
             devices = await client.api.get_devices()

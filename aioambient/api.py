@@ -1,13 +1,13 @@
-"""Define an object to handle /devices endpoints."""
+"""Define an object to interact with the REST API."""
 import asyncio
 from datetime import datetime
 
 from aiohttp import ClientSession
 from aiohttp.client_exceptions import ClientError
 
-from .const import API_BASE
 from .errors import RequestError
 
+REST_API_BASE = 'https://api.ambientweather.net'
 DEFAULT_LIMIT = 288
 
 
@@ -15,13 +15,13 @@ class API:
     """Define to handler."""
 
     def __init__(
-            self, application_key: str, api_key: str, api_version,
-            websession: ClientSession) -> None:
+            self, application_key: str, api_key: str, api_version: int,
+            session: ClientSession) -> None:
         """Initialize."""
         self._api_key = api_key
         self._api_version = api_version
         self._application_key = application_key
-        self._session = websession
+        self._session = session
 
     async def _request(
             self, method: str, endpoint: str, *, params: dict = None) -> list:
@@ -32,7 +32,7 @@ class API:
         # https://ambientweather.docs.apiary.io/#introduction/rate-limiting
         await asyncio.sleep(1)
 
-        url = "{0}/v{1}/{2}".format(API_BASE, self._api_version, endpoint)
+        url = '{0}/v{1}/{2}'.format(REST_API_BASE, self._api_version, endpoint)
 
         if not params:
             params = {}

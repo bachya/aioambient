@@ -1,4 +1,4 @@
-"""Define fixtures for the API object."""
+"""Define fixtures for testing the REST API."""
 import pytest
 
 
