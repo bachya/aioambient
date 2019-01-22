@@ -3,7 +3,10 @@ import aiohttp
 import pytest
 from unittest.mock import patch, MagicMock
 
+from socketio.exceptions import SocketIOError
+
 from aioambient import Client
+from aioambient.errors import WebsocketConnectionError, WebsocketError
 
 from tests.const import TEST_API_KEY, TEST_APP_KEY
 
@@ -20,7 +23,7 @@ def async_mock(*args, **kwargs):
 
 
 @pytest.mark.asyncio
-async def test_connect(event_loop):
+async def test_connect_success(event_loop):
     """Test connecting to the socket."""
     async with aiohttp.ClientSession(loop=event_loop) as session:
         client = Client(TEST_API_KEY, TEST_APP_KEY, session)
@@ -36,8 +39,34 @@ async def test_connect(event_loop):
 
 
 @pytest.mark.asyncio
-async def test_handlers(event_loop):
-    """Test all handlers."""
+async def test_connect_failure(event_loop):
+    """Test connecting to the socket and an exception occurring."""
+    async with aiohttp.ClientSession(loop=event_loop) as session:
+        client = Client(TEST_API_KEY, TEST_APP_KEY, session)
+        client.websocket._sio.eio.connect = async_mock(
+            side_effect=SocketIOError())
+
+        with pytest.raises(WebsocketConnectionError):
+            await client.websocket.connect()
+
+
+@pytest.mark.asyncio
+async def test_general_failure(event_loop):
+    """Test a generic exception occurring."""
+    async with aiohttp.ClientSession(loop=event_loop) as session:
+        client = Client(TEST_API_KEY, TEST_APP_KEY, session)
+        client.websocket._sio._send_packet = async_mock(
+            side_effect=SocketIOError())
+        client.websocket._sio.eio.connect = async_mock()
+
+        with pytest.raises(WebsocketError):
+            await client.websocket.connect()
+            await client.websocket._sio.emit('test')
+
+
+@pytest.mark.asyncio
+async def test_events(event_loop):
+    """Test all events and handlers."""
     async with aiohttp.ClientSession(loop=event_loop) as session:
         client = Client(TEST_API_KEY, TEST_APP_KEY, session)
         client.websocket._sio.eio._trigger_event = async_mock()
@@ -46,7 +75,6 @@ async def test_handlers(event_loop):
 
         on_connect = MagicMock()
         on_data = MagicMock()
-        on_disconnect = MagicMock()
         on_subscribed = MagicMock()
 
         client.websocket.on_connect(on_connect)
@@ -72,7 +100,7 @@ async def test_handlers(event_loop):
         on_subscribed.assert_called_once_with('my_arg')
 
         await client.websocket.disconnect()
-        await client.websocket._sio._trigger_event('discoonecft', '/')
+        await client.websocket._sio._trigger_event('disconnect', '/')
         on_subscribed.assert_called_once()
         client.websocket._sio.eio.disconnect.mock.assert_called_once_with(
             abort=True)

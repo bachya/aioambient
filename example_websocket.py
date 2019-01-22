@@ -5,11 +5,12 @@ import logging
 from aiohttp import ClientSession
 
 from aioambient import Client
+from aioambient.errors import WebsocketConnectionError, WebsocketError
 
 _LOGGER = logging.getLogger()
 
-API_KEY = '486b9ac473f34e6ba73af698a0e01f262c42ac73a1e343e990147dad7d6c7e5f'
-APP_KEY = '32f561c4cb3a400d9c71ae0e96495466beaea220e315403c955b8f2bb12ac9a1'
+API_KEY = '<YOUR API KEY>'
+APP_KEY = '<YOUR APPLICATION KEY>'
 
 
 def print_data(data):
@@ -39,7 +40,15 @@ async def main() -> None:
         client.websocket.on_data(print_data)
         client.websocket.on_disconnect(print_goodbye)
         client.websocket.on_subscribed(print_data)
-        await client.websocket.connect()
+
+        try:
+            await client.websocket.connect()
+        except WebsocketConnectionError as err:
+            print('There was a websocket connection error: {0}'.format(err))
+            return
+        except WebsocketError as err:
+            print('There was a generic websocket error: {0}'.format(err))
+            return
 
         for _ in range(30):
             print('Simulating some other task occurring...')

@@ -37,9 +37,9 @@ Ambient Weather. You can generate both from the Profile page in your
 
 # Usage
 
-## REST API
+## Creating a Client
 
-The REST API of `aioambient` starts within an
+An `aioambient` client starts with an
 [aiohttp](https://aiohttp.readthedocs.io/en/stable/) `ClientSession`:
 
 ```python
@@ -77,6 +77,28 @@ async def main() -> None:
         '<YOUR APPLICATION KEY>',
         websession)
 
+
+asyncio.get_event_loop().run_until_complete(main())
+```
+
+## REST API
+
+```python
+import asyncio
+
+from aiohttp import ClientSession
+
+from aioambient import Client
+
+
+async def main() -> None:
+    """Create the aiohttp session and run the example."""
+    async with ClientSession() as websession:
+      client = Client(
+        '<YOUR API KEY>',
+        '<YOUR APPLICATION KEY>',
+        websession)
+
       # Get all devices in an account:
       await client.api.get_devices()
 
@@ -96,7 +118,35 @@ Please be aware of Ambient Weather's
 
 ## Websocket API
 
-Forthcoming!
+```python
+import asyncio
+
+from aiohttp import ClientSession
+
+from aioambient import Client
+
+
+async def main() -> None:
+    """Create the aiohttp session and run the example."""
+    async with ClientSession() as websession:
+      client = Client(
+        '<YOUR API KEY>',
+        '<YOUR APPLICATION KEY>',
+        websession)
+
+      # Get all devices in an account:
+      await client.api.get_devices()
+
+      # Get all stored readings from a device:
+      await client.api.get_device_details('<DEVICE MAC ADDRESS>')
+
+      # Get all stored readings from a device (starting at a datetime):
+      await client.api.get_device_details(
+        '<DEVICE MAC ADDRESS>', end_date="2019-01-16")
+
+
+asyncio.get_event_loop().run_until_complete(main())
+```
 
 # Contributing
 
