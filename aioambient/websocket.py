@@ -1,4 +1,5 @@
 """Define an object to interact with the Websocket API."""
+# pylint: disable=redefined-builtin
 from typing import Awaitable, Callable, Union
 
 from socketio import AsyncClient
