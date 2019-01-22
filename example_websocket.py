@@ -38,6 +38,7 @@ async def main() -> None:
         client.websocket.on_connect(print_hello)
         client.websocket.on_data(print_data)
         client.websocket.on_disconnect(print_goodbye)
+        client.websocket.on_subscribed(print_data)
         await client.websocket.connect()
 
         for _ in range(30):

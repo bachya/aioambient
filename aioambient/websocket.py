@@ -24,11 +24,14 @@ class Websocket:
     def on_data(self, target: Union[Awaitable, Callable]) -> None:
         """Define a method/coroutine to be called when data is received."""
         self._sio.on('data', target)
-        self._sio.on('subscribed', target)
 
     def on_disconnect(self, target: Union[Awaitable, Callable]) -> None:
         """Define a method/coroutine to be called when disconnecting."""
         self._sio.on('disconnect', target)
+
+    def on_subscribed(self, target: Union[Awaitable, Callable]) -> None:
+        """Define a method/coroutine to be called when subscribed."""
+        self._sio.on('subscribed', target)
 
     async def connect(self) -> None:
         """Connect to the socket."""
