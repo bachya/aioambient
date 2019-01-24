@@ -21,7 +21,7 @@ class API:
         self._api_key = api_key
         self._api_version = api_version
         self._application_key = application_key
-        self._session = session
+        self._session = session or ClientSession()
 
     async def _request(
             self, method: str, endpoint: str, *, params: dict = None) -> list:

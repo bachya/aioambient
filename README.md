@@ -39,27 +39,21 @@ Ambient Weather. You can generate both from the Profile page in your
 
 ## Creating a Client
 
-An `aioambient` client starts with an
-[aiohttp](https://aiohttp.readthedocs.io/en/stable/) `ClientSession`:
-
 ```python
 import asyncio
-
-from aiohttp import ClientSession
 
 from aioambient import Client
 
 
 async def main() -> None:
-    """Create the aiohttp session and run the example."""
-    async with ClientSession() as websession:
-      # YOUR CODE HERE
+  """Rock and roll."""
+      client = Client('<YOUR API KEY>', '<YOUR APPLICATION KEY>')
 
 
 asyncio.get_event_loop().run_until_complete(main())
 ```
 
-Create a client, initialize it, then get to it:
+If you have an existing `aiohttp.ClientSession`, you can use it:
 
 ```python
 import asyncio
@@ -70,12 +64,9 @@ from aioambient import Client
 
 
 async def main() -> None:
-    """Create the aiohttp session and run the example."""
+  """Rock and roll."""
     async with ClientSession() as websession:
-      client = Client(
-        '<YOUR API KEY>',
-        '<YOUR APPLICATION KEY>',
-        websession)
+      client = Client('<YOUR API KEY>', '<YOUR APPLICATION KEY>', websession)
 
 
 asyncio.get_event_loop().run_until_complete(main())
@@ -86,28 +77,22 @@ asyncio.get_event_loop().run_until_complete(main())
 ```python
 import asyncio
 
-from aiohttp import ClientSession
-
 from aioambient import Client
 
 
 async def main() -> None:
-    """Create the aiohttp session and run the example."""
-    async with ClientSession() as websession:
-      client = Client(
-        '<YOUR API KEY>',
-        '<YOUR APPLICATION KEY>',
-        websession)
+  """Rock and roll."""
+    client = Client('<YOUR API KEY>', '<YOUR APPLICATION KEY>')
 
-      # Get all devices in an account:
-      await client.api.get_devices()
+    # Get all devices in an account:
+    await client.api.get_devices()
 
-      # Get all stored readings from a device:
-      await client.api.get_device_details('<DEVICE MAC ADDRESS>')
+    # Get all stored readings from a device:
+    await client.api.get_device_details('<DEVICE MAC ADDRESS>')
 
-      # Get all stored readings from a device (starting at a datetime):
-      await client.api.get_device_details(
-        '<DEVICE MAC ADDRESS>', end_date="2019-01-16")
+    # Get all stored readings from a device (starting at a datetime):
+    await client.api.get_device_details(
+      '<DEVICE MAC ADDRESS>', end_date="2019-01-16")
 
 
 asyncio.get_event_loop().run_until_complete(main())
@@ -121,51 +106,45 @@ Please be aware of Ambient Weather's
 ```python
 import asyncio
 
-from aiohttp import ClientSession
-
 from aioambient import Client
 
 
 async def main() -> None:
-    """Create the aiohttp session and run the example."""
-    async with ClientSession() as websession:
-      client = Client(
-        '<YOUR API KEY>',
-        '<YOUR APPLICATION KEY>',
-        websession)
+    """Rock and roll."""
+    client = Client( '<YOUR API KEY>', '<YOUR APPLICATION KEY>')
 
-      # Define a method (sync or async) that should be run when the websocket
-      # client connects:
-      def connect_method():
-          """Print a simple "hello" message."""
-          print('Client has connected to the websocket')
-      client.websocket.on_connect(connect_method)
+    # Define a method (sync or async) that should be run when the websocket
+    # client connects:
+    def connect_method():
+        """Print a simple "hello" message."""
+        print('Client has connected to the websocket')
+    client.websocket.on_connect(connect_method)
 
-      # Define a method (sync or async) that should be run upon subscribing to
-      # the Ambient Weather cloud:
-      def subscribed_method(data):
-          """Print the data received upon subscribing."""
-          print('Subscription data received: {0}'.format(data))
-      client.websocket.on_subscribed(subscribed_method)
+    # Define a method (sync or async) that should be run upon subscribing to
+    # the Ambient Weather cloud:
+    def subscribed_method(data):
+        """Print the data received upon subscribing."""
+        print('Subscription data received: {0}'.format(data))
+    client.websocket.on_subscribed(subscribed_method)
 
-      # Define a method (sync or async) that should be run upon receiving data:
-      def data_method(data):
-          """Print the data received."""
-          print('Data received: {0}'.format(data))
-      client.websocket.on_data(data_method)
+    # Define a method (sync or async) that should be run upon receiving data:
+    def data_method(data):
+        """Print the data received."""
+        print('Data received: {0}'.format(data))
+    client.websocket.on_data(data_method)
 
-      # Define a method (sync or async) that should be run when the websocket
-      # client disconnects:
-      def disconnect_method(data):
-          """Print a simple "goodbye" message."""
-          print('Client has disconnected from the websocket')
-      client.websocket.on_disconnect(disconnect_method)
+    # Define a method (sync or async) that should be run when the websocket
+    # client disconnects:
+    def disconnect_method(data):
+        """Print a simple "goodbye" message."""
+        print('Client has disconnected from the websocket')
+    client.websocket.on_disconnect(disconnect_method)
 
-      # Connect to the websocket:
-      await client.websocket.connect()
+    # Connect to the websocket:
+    await client.websocket.connect()
 
-      # At any point, disconnect from the websocket:
-      await client.websocket.disconnect()
+    # At any point, disconnect from the websocket:
+    await client.websocket.disconnect()
 
 
 loop = asyncio.get_event_loop()

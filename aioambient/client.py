@@ -20,8 +20,8 @@ class Client:  # pylint: disable=too-few-public-methods
             self,
             api_key: str,
             application_key: str,
-            session: ClientSession,
             *,
+            session: ClientSession = None,
             api_version: int = DEFAULT_API_VERSION) -> None:
         """Initialize."""
         self.api = API(application_key, api_key, api_version, session)
