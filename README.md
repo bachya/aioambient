@@ -65,8 +65,8 @@ from aioambient import Client
 
 async def main() -> None:
   """Rock and roll."""
-    async with ClientSession() as websession:
-      client = Client('<YOUR API KEY>', '<YOUR APPLICATION KEY>', websession)
+    async with ClientSession() as session:
+      client = Client('<YOUR API KEY>', '<YOUR APPLICATION KEY>', session)
 
 
 asyncio.get_event_loop().run_until_complete(main())
