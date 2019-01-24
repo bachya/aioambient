@@ -16,7 +16,7 @@ class API:
 
     def __init__(
             self, application_key: str, api_key: str, api_version: int,
-            session: ClientSession) -> None:
+            session: ClientSession = None) -> None:
         """Initialize."""
         self._api_key = api_key
         self._api_version = api_version
