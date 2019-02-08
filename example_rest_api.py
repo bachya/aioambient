@@ -18,15 +18,12 @@ async def main() -> None:
     logging.basicConfig(level=logging.INFO)
     async with ClientSession() as session:
         try:
-            # Create a client:
             client = Client(API_KEY, APP_KEY, session)
 
-            # Get all devices:
             devices = await client.api.get_devices()
             _LOGGER.info('Devices: %s', devices)
 
             for device in devices:
-                # Get info on a specific device (by MAC address):
                 details = await client.api.get_device_details(
                     device['macAddress'])
                 _LOGGER.info(
