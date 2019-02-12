@@ -26,8 +26,9 @@ VERSION = None
 REQUIRED = [  # type: ignore
     'aiodns',
     'aiohttp',
-    'python-socketio[asyncio_client]',
-    'websockets',
+    'python-engineio==3.2.2',
+    'python-socketio[asyncio_client]==3.1.2',
+    'websockets'
 ]
 
 # The rest you shouldn't have to touch too much :)
