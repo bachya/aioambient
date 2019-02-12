@@ -6,7 +6,7 @@ from unittest.mock import patch, MagicMock
 from socketio.exceptions import SocketIOError
 
 from aioambient import Client
-from aioambient.errors import WebsocketConnectionError, WebsocketError
+from aioambient.errors import WebsocketError
 
 from tests.const import TEST_API_KEY, TEST_APP_KEY
 
@@ -46,22 +46,8 @@ async def test_connect_failure(event_loop):
         client.websocket._sio.eio.connect = async_mock(
             side_effect=SocketIOError())
 
-        with pytest.raises(WebsocketConnectionError):
-            await client.websocket.connect()
-
-
-@pytest.mark.asyncio
-async def test_general_failure(event_loop):
-    """Test a generic exception occurring."""
-    async with aiohttp.ClientSession(loop=event_loop) as session:
-        client = Client(TEST_API_KEY, TEST_APP_KEY, session)
-        client.websocket._sio._send_packet = async_mock(
-            side_effect=SocketIOError())
-        client.websocket._sio.eio.connect = async_mock()
-
         with pytest.raises(WebsocketError):
             await client.websocket.connect()
-            await client.websocket._sio.emit('test')
 
 
 @pytest.mark.asyncio
@@ -90,17 +76,17 @@ async def test_events(event_loop):
             headers={},
             transports=['websocket'])
 
-        await client.websocket._sio._trigger_event('connect', '/', 'my_arg')
-        on_connect.assert_called_once_with('my_arg')
+        await client.websocket._sio._trigger_event('connect', namespace='/')
+        on_connect.assert_called_once()
 
-        await client.websocket._sio._trigger_event('data', '/', 'my_arg')
-        on_data.assert_called_once_with('my_arg')
+        await client.websocket._sio._trigger_event('data', namespace='/')
+        on_data.assert_called_once()
 
-        await client.websocket._sio._trigger_event('subscribed', '/', 'my_arg')
-        on_subscribed.assert_called_once_with('my_arg')
+        await client.websocket._sio._trigger_event('subscribed', namespace='/')
+        on_subscribed.assert_called()
 
         await client.websocket.disconnect()
-        await client.websocket._sio._trigger_event('disconnect', '/')
+        await client.websocket._sio._trigger_event('disconnect', namespace='/')
         on_subscribed.assert_called_once()
         client.websocket._sio.eio.disconnect.mock.assert_called_once_with(
             abort=True)
