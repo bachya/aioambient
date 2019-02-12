@@ -1,11 +1,11 @@
 """Define an object to interact with the Websocket API."""
-# pylint: disable=redefined-builtin
+# pylint: disable=redefined-builtin,unused-argument
 from typing import Awaitable, Callable, Union
 
 from socketio import AsyncClient
 from socketio.exceptions import ConnectionError, SocketIOError
 
-from .errors import WebsocketConnectionError, WebsocketError
+from .errors import WebsocketError
 
 WEBSOCKET_API_BASE = 'https://dash2.ambientweather.net'
 
@@ -25,10 +25,7 @@ class Websocket:
 
     async def _init_connection(self) -> None:
         """Perform automatic initialization upon connecting."""
-        try:
-            await self._sio.emit('subscribe', {'apiKeys': [self._api_key]})
-        except (ConnectionError, SocketIOError) as err:
-            raise WebsocketError(err) from None
+        await self._sio.emit('subscribe', {'apiKeys': [self._api_key]})
 
         if self._user_connect_handler:
             self._user_connect_handler()
@@ -51,16 +48,15 @@ class Websocket:
 
     async def connect(self) -> None:
         """Connect to the socket."""
-        self._sio.on('connect', self._init_connection)
-
         try:
+            self._sio.on('connect', self._init_connection)
             await self._sio.connect(
                 '{0}/?api={1}&applicationKey={2}'.format(
                     WEBSOCKET_API_BASE, self._api_version,
                     self._application_key),
                 transports=['websocket'])
         except (ConnectionError, SocketIOError) as err:
-            raise WebsocketConnectionError(err) from None
+            raise WebsocketError(err) from None
 
     async def disconnect(self) -> None:
         """Disconnect from the socket."""

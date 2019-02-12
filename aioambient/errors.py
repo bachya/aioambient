@@ -13,12 +13,6 @@ class RequestError(AmbientError):
     pass
 
 
-class WebsocketConnectionError(AmbientError):
-    """Define an error related to websocket connection errors."""
-
-    pass
-
-
 class WebsocketError(AmbientError):
     """Define an error related to generic websocket errors."""
 
