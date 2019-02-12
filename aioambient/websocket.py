@@ -24,7 +24,7 @@ class Websocket:
         self._user_connect_handler = None
 
     async def _init_connection(self) -> None:
-        """Perform non-user initialization upon connect."""
+        """Perform automatic initialization upon connecting."""
         try:
             await self._sio.emit('subscribe', {'apiKeys': [self._api_key]})
         except (ConnectionError, SocketIOError) as err:
