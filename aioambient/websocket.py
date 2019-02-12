@@ -21,10 +21,21 @@ class Websocket:
         self._api_version = api_version
         self._application_key = application_key
         self._sio = AsyncClient()
+        self._user_connect_handler = None
+        
+    def _init_connection(self) -> None:
+        """Perform non-user initialization upon connect."""
+        try:
+            await self._sio.emit('subscribe', {'apiKeys': [self._api_key]})
+        except (ConnectionError, SocketIOError) as err:
+            raise WebsocketError(err) from None
+            
+        if self._user_connect_handler:
+            self._user_connect_handler()
 
     def on_connect(self, target: Union[Awaitable, Callable]) -> None:
         """Define a method/coroutine to be called when connecting."""
-        self._sio.on('connect', target)
+        self._user_connect_handler = target
 
     def on_data(self, target: Union[Awaitable, Callable]) -> None:
         """Define a method/coroutine to be called when data is received."""
@@ -40,6 +51,8 @@ class Websocket:
 
     async def connect(self) -> None:
         """Connect to the socket."""
+        self._sio.on('connect', self._init_connection)
+        
         try:
             await self._sio.connect(
                 '{0}/?api={1}&applicationKey={2}'.format(
@@ -48,11 +61,6 @@ class Websocket:
                 transports=['websocket'])
         except (ConnectionError, SocketIOError) as err:
             raise WebsocketConnectionError(err) from None
-
-        try:
-            await self._sio.emit('subscribe', {'apiKeys': [self._api_key]})
-        except (ConnectionError, SocketIOError) as err:
-            raise WebsocketError(err) from None
 
     async def disconnect(self) -> None:
         """Disconnect from the socket."""
