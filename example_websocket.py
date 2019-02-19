@@ -5,7 +5,7 @@ import logging
 from aiohttp import ClientSession
 
 from aioambient import Client
-from aioambient.errors import WebsocketConnectionError, WebsocketError
+from aioambient.errors import WebsocketError
 
 _LOGGER = logging.getLogger()
 
@@ -42,11 +42,8 @@ async def main() -> None:
 
         try:
             await client.websocket.connect()
-        except WebsocketConnectionError as err:
-            _LOGGER.error('There was a websocket connection error: %s', err)
-            return
         except WebsocketError as err:
-            _LOGGER.error('There was a generic websocket error: %s', err)
+            _LOGGER.error('There was a websocket error: %s', err)
             return
 
         for _ in range(30):
