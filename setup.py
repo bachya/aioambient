@@ -24,7 +24,6 @@ VERSION = None
 
 # What packages are required for this module to be executed?
 REQUIRED = [  # type: ignore
-    'aiodns',
     'aiohttp',
     'python-engineio==3.3.2',
     'python-socketio[asyncio_client]==3.1.2',
