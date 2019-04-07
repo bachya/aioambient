@@ -13,8 +13,6 @@ from shutil import rmtree
 
 from setuptools import find_packages, setup, Command
 
-from aioambient.const import __version__
-
 # Package meta-data.
 NAME = 'aioambient'
 DESCRIPTION = 'A clean, async-friendly library for the Ambient Weather API'
@@ -44,6 +42,15 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 # Note: this will only work if 'README.md' is present in your MANIFEST.in file!
 with io.open(os.path.join(HERE, 'README.md'), encoding='utf-8') as f:
     LONG_DESC = '\n' + f.read()
+
+# Load the package's __version__.py module as a dictionary.
+ABOUT = {}  # type: ignore
+if not VERSION:
+    with open(os.path.join(HERE, NAME, 'const.py')) as f:
+        exec(f.read(), ABOUT)  # pylint: disable=exec-used
+else:
+    ABOUT['__version__'] = VERSION
+
 
 
 class UploadCommand(Command):
@@ -81,7 +88,7 @@ class UploadCommand(Command):
         os.system('twine upload dist/*')
 
         self.status('Pushing git tags…')
-        os.system('git tag v{0}'.format(__version__))
+        os.system('git tag v{0}'.format(ABOUT['__version__']))
         os.system('git push --tags')
 
         sys.exit()
@@ -90,7 +97,7 @@ class UploadCommand(Command):
 # Where the magic happens:
 setup(
     name=NAME,
-    version=__version__,
+    version=ABOUT['__version__'],
     description=DESCRIPTION,
     long_description=LONG_DESC,
     long_description_content_type='text/markdown',
