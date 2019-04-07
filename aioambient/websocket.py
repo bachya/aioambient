@@ -36,9 +36,11 @@ class Websocket:
     def async_on_connect(self, target: Awaitable) -> None:
         """Define a coroutine to be called when connecting."""
         self._async_user_connect_handler = target  # type: ignore
+        self._user_connect_handler = None
 
     def on_connect(self, target: Union[Awaitable, Callable]) -> None:
         """Define a method to be called when connecting."""
+        self._async_user_connect_handler = None
         self._user_connect_handler = target  # type: ignore
 
     def async_on_data(self, target: Awaitable) -> None:
