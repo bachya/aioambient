@@ -2,5 +2,5 @@
 source = aioambient
 
 omit =
-    aioambient/__version__.py
+    aioambient/const.py
 
