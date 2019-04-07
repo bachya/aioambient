@@ -20,6 +20,7 @@ class Websocket:
         self._api_key = api_key
         self._api_version = api_version
         self._application_key = application_key
+        self._async_user_connect_handler = None
         self._sio = AsyncClient()
         self._user_connect_handler = None
 
@@ -27,23 +28,41 @@ class Websocket:
         """Perform automatic initialization upon connecting."""
         await self._sio.emit('subscribe', {'apiKeys': [self._api_key]})
 
-        if self._user_connect_handler:
+        if self._async_user_connect_handler:
+            await self._async_user_connect_handler()
+        elif self._user_connect_handler:
             self._user_connect_handler()
 
+    def async_on_connect(self, target: Awaitable) -> None:
+        """Define a coroutine to be called when connecting."""
+        self._async_user_connect_handler = target  # type: ignore
+
     def on_connect(self, target: Union[Awaitable, Callable]) -> None:
-        """Define a method/coroutine to be called when connecting."""
+        """Define a method to be called when connecting."""
         self._user_connect_handler = target  # type: ignore
 
+    def async_on_data(self, target: Awaitable) -> None:
+        """Define a coroutine to be called when data is received."""
+        self.on_data(target)
+
     def on_data(self, target: Union[Awaitable, Callable]) -> None:
-        """Define a method/coroutine to be called when data is received."""
+        """Define a method to be called when data is received."""
         self._sio.on('data', target)
 
+    def async_on_disconnect(self, target: Awaitable) -> None:
+        """Define a coroutine to be called when disconnecting."""
+        self.on_disconnect(target)
+
     def on_disconnect(self, target: Union[Awaitable, Callable]) -> None:
-        """Define a method/coroutine to be called when disconnecting."""
+        """Define a method to be called when disconnecting."""
         self._sio.on('disconnect', target)
 
+    def async_on_subscribed(self, target: Awaitable) -> None:
+        """Define a coroutine to be called when subscribed."""
+        self.on_subscribed(target)
+
     def on_subscribed(self, target: Union[Awaitable, Callable]) -> None:
-        """Define a method/coroutine to be called when subscribed."""
+        """Define a method to be called when subscribed."""
         self._sio.on('subscribed', target)
 
     async def connect(self) -> None:
