@@ -12,7 +12,7 @@ DEFAULT_LIMIT = 288
 
 
 class API:
-    """Define to handler."""
+    """Define the API object."""
 
     def __init__(
             self, application_key: str, api_key: str, api_version: int,
@@ -25,7 +25,7 @@ class API:
 
     async def _request(
             self, method: str, endpoint: str, *, params: dict = None) -> list:
-        """Make a request against air-matters.com."""
+        """Make a request against the API."""
         # In order to deal with Ambient's fairly aggressive rate limiting, we
         # pause for a second before continuing in case any requests came before
         # this.
