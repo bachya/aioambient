@@ -71,10 +71,7 @@ def devices_json():
                 "humidityin": 30,
                 "date": "2019-01-07T19:34:00.000Z",
             },
-            "info": {
-                "name": "Home",
-                "location": "Home"
-            },
+            "info": {"name": "Home", "location": "Home"},
         },
         {
             "macAddress": "84:F3:EB:21:90:C4",
@@ -86,9 +83,6 @@ def devices_json():
                 "humidityin": 30,
                 "date": "2019-01-06T19:34:00.000Z",
             },
-            "info": {
-                "name": "Home",
-                "location": "Home"
-            },
+            "info": {"name": "Home", "location": "Home"},
         },
     ]
