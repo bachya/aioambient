@@ -34,13 +34,15 @@ async def test_connect_async_success(event_loop):
 
         await client.websocket.connect()
         client.websocket._sio.eio.connect.mock.assert_called_once_with(
-            'https://dash2.ambientweather.net/?api=1&applicationKey={0}'.
-            format(TEST_APP_KEY),
-            engineio_path='socket.io',
+            "https://dash2.ambientweather.net/?api=1&applicationKey={0}".format(
+                TEST_APP_KEY
+            ),
+            engineio_path="socket.io",
             headers={},
-            transports=['websocket'])
+            transports=["websocket"],
+        )
 
-        await client.websocket._sio._trigger_event('connect', namespace='/')
+        await client.websocket._sio._trigger_event("connect", namespace="/")
         on_connect.mock.assert_called_once()
 
 
@@ -56,13 +58,15 @@ async def test_connect_sync_success(event_loop):
 
         await client.websocket.connect()
         client.websocket._sio.eio.connect.mock.assert_called_once_with(
-            'https://dash2.ambientweather.net/?api=1&applicationKey={0}'.
-            format(TEST_APP_KEY),
-            engineio_path='socket.io',
+            "https://dash2.ambientweather.net/?api=1&applicationKey={0}".format(
+                TEST_APP_KEY
+            ),
+            engineio_path="socket.io",
             headers={},
-            transports=['websocket'])
+            transports=["websocket"],
+        )
 
-        await client.websocket._sio._trigger_event('connect', namespace='/')
+        await client.websocket._sio._trigger_event("connect", namespace="/")
         on_connect.assert_called_once()
 
 
@@ -70,8 +74,7 @@ async def test_connect_failure(event_loop):
     """Test connecting to the socket and an exception occurring."""
     async with aiohttp.ClientSession(loop=event_loop) as session:
         client = Client(TEST_API_KEY, TEST_APP_KEY, session)
-        client.websocket._sio.eio.connect = async_mock(
-            side_effect=SocketIOError())
+        client.websocket._sio.eio.connect = async_mock(side_effect=SocketIOError())
 
         with pytest.raises(WebsocketError):
             await client.websocket.connect()
@@ -96,26 +99,27 @@ async def async_test_events(event_loop):
 
         await client.websocket.connect()
         client.websocket._sio.eio.connect.mock.assert_called_once_with(
-            'https://dash2.ambientweather.net/?api=1&applicationKey={0}'.
-            format(TEST_APP_KEY),
-            engineio_path='socket.io',
+            "https://dash2.ambientweather.net/?api=1&applicationKey={0}".format(
+                TEST_APP_KEY
+            ),
+            engineio_path="socket.io",
             headers={},
-            transports=['websocket'])
+            transports=["websocket"],
+        )
 
-        await client.websocket._sio._trigger_event('connect', namespace='/')
+        await client.websocket._sio._trigger_event("connect", namespace="/")
         on_connect.assert_called_once()
 
-        await client.websocket._sio._trigger_event('data', namespace='/')
+        await client.websocket._sio._trigger_event("data", namespace="/")
         on_data.assert_called_once()
 
-        await client.websocket._sio._trigger_event('subscribed', namespace='/')
+        await client.websocket._sio._trigger_event("subscribed", namespace="/")
         on_subscribed.assert_called()
 
         await client.websocket.disconnect()
-        await client.websocket._sio._trigger_event('disconnect', namespace='/')
+        await client.websocket._sio._trigger_event("disconnect", namespace="/")
         on_subscribed.assert_called_once()
-        client.websocket._sio.eio.disconnect.mock.assert_called_once_with(
-            abort=True)
+        client.websocket._sio.eio.disconnect.mock.assert_called_once_with(abort=True)
 
 
 async def test_events(event_loop):
@@ -137,23 +141,24 @@ async def test_events(event_loop):
 
         await client.websocket.connect()
         client.websocket._sio.eio.connect.mock.assert_called_once_with(
-            'https://dash2.ambientweather.net/?api=1&applicationKey={0}'.
-            format(TEST_APP_KEY),
-            engineio_path='socket.io',
+            "https://dash2.ambientweather.net/?api=1&applicationKey={0}".format(
+                TEST_APP_KEY
+            ),
+            engineio_path="socket.io",
             headers={},
-            transports=['websocket'])
+            transports=["websocket"],
+        )
 
-        await client.websocket._sio._trigger_event('connect', namespace='/')
+        await client.websocket._sio._trigger_event("connect", namespace="/")
         on_connect.mock.assert_called_once()
 
-        await client.websocket._sio._trigger_event('data', namespace='/')
+        await client.websocket._sio._trigger_event("data", namespace="/")
         on_data.mock.assert_called_once()
 
-        await client.websocket._sio._trigger_event('subscribed', namespace='/')
+        await client.websocket._sio._trigger_event("subscribed", namespace="/")
         on_subscribed.mock.assert_called()
 
         await client.websocket.disconnect()
-        await client.websocket._sio._trigger_event('disconnect', namespace='/')
+        await client.websocket._sio._trigger_event("disconnect", namespace="/")
         on_subscribed.mock.assert_called_once()
-        client.websocket._sio.eio.disconnect.mock.assert_called_once_with(
-            abort=True)
+        client.websocket._sio.eio.disconnect.mock.assert_called_once_with(abort=True)

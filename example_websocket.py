@@ -9,23 +9,23 @@ from aioambient.errors import WebsocketError
 
 _LOGGER = logging.getLogger()
 
-API_KEY = '<YOUR API KEY>'
-APP_KEY = '<YOUR APPLICATION KEY>'
+API_KEY = "<YOUR API KEY>"
+APP_KEY = "<YOUR APPLICATION KEY>"
 
 
 def print_data(data):
     """Print data as it is received."""
-    _LOGGER.info('Data received: %s', data)
+    _LOGGER.info("Data received: %s", data)
 
 
 def print_goodbye():
     """Print a simple "goodbye" message."""
-    _LOGGER.info('Client has disconnected from the websocket')
+    _LOGGER.info("Client has disconnected from the websocket")
 
 
 def print_hello():
     """Print a simple "hello" message."""
-    _LOGGER.info('Client has connected to the websocket')
+    _LOGGER.info("Client has connected to the websocket")
 
 
 async def main() -> None:
@@ -43,11 +43,11 @@ async def main() -> None:
         try:
             await client.websocket.connect()
         except WebsocketError as err:
-            _LOGGER.error('There was a websocket error: %s', err)
+            _LOGGER.error("There was a websocket error: %s", err)
             return
 
         for _ in range(30):
-            _LOGGER.info('Simulating some other task occurring...')
+            _LOGGER.info("Simulating some other task occurring...")
             await asyncio.sleep(5)
 
         await client.websocket.disconnect()
