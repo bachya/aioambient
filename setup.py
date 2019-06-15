@@ -25,8 +25,8 @@ VERSION = None
 # What packages are required for this module to be executed?
 REQUIRED = [  # type: ignore
     'aiohttp',
-    'python-engineio>=3.5.1',
-    'python-socketio[asyncio_client]>=3.1.2',
+    'python-engineio>=3.8.1',
+    'python-socketio[asyncio_client]>=4.1.0',
     'websockets'
 ]
 
