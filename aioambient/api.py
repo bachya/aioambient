@@ -1,14 +1,15 @@
 """Define an object to interact with the REST API."""
 import asyncio
 from datetime import datetime
+from typing import Any, Dict
 
 from aiohttp import ClientSession
 from aiohttp.client_exceptions import ClientError
 
 from .errors import RequestError
 
-REST_API_BASE = "https://api.ambientweather.net"
-DEFAULT_LIMIT = 288
+REST_API_BASE: str = "https://api.ambientweather.net"
+DEFAULT_LIMIT: int = 288
 
 
 class API:
@@ -22,10 +23,10 @@ class API:
         session: ClientSession,
     ) -> None:
         """Initialize."""
-        self._api_key = api_key
-        self._api_version = api_version
-        self._application_key = application_key
-        self._session = session
+        self._api_key: str = api_key
+        self._api_version: int = api_version
+        self._application_key: str = application_key
+        self._session: ClientSession = session
 
     async def _request(
         self, method: str, endpoint: str, *, params: dict = None
@@ -37,7 +38,7 @@ class API:
         # https://ambientweather.docs.apiary.io/#introduction/rate-limiting
         await asyncio.sleep(1)
 
-        url = f"{REST_API_BASE}/v{self._api_version}/{endpoint}"
+        url: str = f"{REST_API_BASE}/v{self._api_version}/{endpoint}"
 
         if not params:
             params = {}
@@ -60,8 +61,8 @@ class API:
         self, mac_address: str, *, end_date: datetime = None, limit: int = DEFAULT_LIMIT
     ) -> list:
         """Get details of a device by MAC address."""
-        params = {"limit": limit}
+        params: Dict[str, Any] = {"limit": limit}
         if end_date:
-            params["endDate"] = end_date.isoformat()  # type: ignore
+            params["endDate"] = end_date.isoformat()
 
         return await self._request("get", f"devices/{mac_address}", params=params)
