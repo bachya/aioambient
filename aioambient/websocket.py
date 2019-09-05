@@ -1,13 +1,15 @@
 """Define an object to interact with the Websocket API."""
-# pylint: disable=redefined-builtin,unused-argument
-from typing import Awaitable, Callable, Union
+from typing import Awaitable, Callable, Optional, Union
 
 from socketio import AsyncClient
-from socketio.exceptions import ConnectionError, SocketIOError
+from socketio.exceptions import (  # pylint: disable=redefined-builtin
+    ConnectionError,
+    SocketIOError,
+)
 
 from .errors import WebsocketError
 
-WEBSOCKET_API_BASE = "https://dash2.ambientweather.net"
+WEBSOCKET_API_BASE: str = "https://dash2.ambientweather.net"
 
 
 class Websocket:
@@ -15,31 +17,31 @@ class Websocket:
 
     def __init__(self, application_key: str, api_key: str, api_version: int) -> None:
         """Initialize."""
-        self._api_key = api_key
-        self._api_version = api_version
-        self._app_key = application_key
-        self._async_user_connect_handler = None
-        self._sio = AsyncClient()
-        self._user_connect_handler = None
+        self._api_key: str = api_key
+        self._api_version: int = api_version
+        self._app_key: str = application_key
+        self._async_user_connect_handler: Optional[Awaitable] = None
+        self._sio: AsyncClient = AsyncClient()
+        self._user_connect_handler: Optional[Callable] = None
 
     async def _init_connection(self) -> None:
         """Perform automatic initialization upon connecting."""
         await self._sio.emit("subscribe", {"apiKeys": [self._api_key]})
 
         if self._async_user_connect_handler:
-            await self._async_user_connect_handler()
+            await self._async_user_connect_handler()  # type: ignore
         elif self._user_connect_handler:
             self._user_connect_handler()
 
     def async_on_connect(self, target: Awaitable) -> None:
         """Define a coroutine to be called when connecting."""
-        self._async_user_connect_handler = target  # type: ignore
+        self._async_user_connect_handler = target
         self._user_connect_handler = None
 
-    def on_connect(self, target: Union[Awaitable, Callable]) -> None:
+    def on_connect(self, target: Callable) -> None:
         """Define a method to be called when connecting."""
         self._async_user_connect_handler = None
-        self._user_connect_handler = target  # type: ignore
+        self._user_connect_handler = target
 
     def async_on_data(self, target: Awaitable) -> None:
         """Define a coroutine to be called when data is received."""
