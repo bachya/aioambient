@@ -17,7 +17,7 @@ class Websocket:
         """Initialize."""
         self._api_key = api_key
         self._api_version = api_version
-        self._application_key = application_key
+        self._app_key = application_key
         self._async_user_connect_handler = None
         self._sio = AsyncClient()
         self._user_connect_handler = None
@@ -70,9 +70,7 @@ class Websocket:
         try:
             self._sio.on("connect", self._init_connection)
             await self._sio.connect(
-                "{0}/?api={1}&applicationKey={2}".format(
-                    WEBSOCKET_API_BASE, self._api_version, self._application_key
-                ),
+                f"{WEBSOCKET_API_BASE}/?api={self._api_version}&applicationKey={self._app_key}",
                 transports=["websocket"],
             )
         except (ConnectionError, SocketIOError) as err:

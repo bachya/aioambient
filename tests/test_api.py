@@ -32,7 +32,7 @@ async def test_api_error(aresponses, event_loop, devices_json):
 async def test_get_device_details(aresponses, event_loop, device_details_json):
     aresponses.add(
         "api.ambientweather.net",
-        "/v1/devices/{0}".format(TEST_MAC),
+        f"/v1/devices/{TEST_MAC}",
         "get",
         aresponses.Response(text=json.dumps(device_details_json), status=200),
     )

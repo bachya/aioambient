@@ -37,7 +37,7 @@ class API:
         # https://ambientweather.docs.apiary.io/#introduction/rate-limiting
         await asyncio.sleep(1)
 
-        url = "{0}/v{1}/{2}".format(REST_API_BASE, self._api_version, endpoint)
+        url = f"{REST_API_BASE}/v{self._api_version}/{endpoint}"
 
         if not params:
             params = {}
@@ -50,9 +50,7 @@ class API:
                 resp.raise_for_status()
                 return await resp.json(content_type=None)
             except ClientError as err:
-                raise RequestError(
-                    "Error requesting data from {0}: {1}".format(url, err)
-                )
+                raise RequestError(f"Error requesting data from {url}: {err}")
 
     async def get_devices(self) -> list:
         """Get all devices associated with an API key."""
@@ -66,6 +64,4 @@ class API:
         if end_date:
             params["endDate"] = end_date.isoformat()  # type: ignore
 
-        return await self._request(
-            "get", "devices/{0}".format(mac_address), params=params
-        )
+        return await self._request("get", f"devices/{mac_address}", params=params)
