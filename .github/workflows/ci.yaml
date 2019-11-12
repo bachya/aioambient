@@ -20,11 +20,24 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           architecture: x64
-      - uses: abatilo/actions-poetry@v1.0.0
-        with:
-          args: install
-
       - name: pytest
-        uses: abatilo/actions-poetry@v1.0.0
-        with:
-          args: run python -m pytest
+        run: |
+          poetry install
+          poetry run py.test
+
+  # lint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - uses: actions/setup-python@v1
+  #       with:
+  #         python-version: 3.6
+  #         architecture: x64
+  #     - uses: abatilo/actions-poetry@v1.0.0
+  #       with:
+  #         args: install
+
+  #     - name: pytest
+  #       uses: abatilo/actions-poetry@v1.0.0
+  #       with:
+  #         args: run python -m pytest
