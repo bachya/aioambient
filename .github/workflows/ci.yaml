@@ -40,10 +40,11 @@ jobs:
           architecture: x64
       - name: setup
         run: |
-          pip install poetry
+          pip install black poetry
           poetry install
       - name: lint
         run: |
+          poetry run black --check --fast aioambient
           poetry run flake8 aioambient
           poetry run pydocstyle aioambient
           poetry run pylint aioambient
