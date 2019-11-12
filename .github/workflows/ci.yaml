@@ -57,12 +57,10 @@ jobs:
         with:
           python-version: "3.x"
           architecture: x64
-      - name: setup
-        run: |
+      - run: |
           pip install poetry
           poetry install
-      - name: coverage
-        run: |
+      - run: |
           poetry run py.test -s --verbose --cov-report term-missing --cov-report xml --cov=aioambient tests
       - uses: codecov/codecov-action@v1.0.3
         with:
