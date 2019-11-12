@@ -1,6 +1,6 @@
 # 🌤  aioambient: An async library for Ambient Weather Personal Weather Stations
 
-![CI](https://github.com/bachya/aioambient/workflows/CI/badge.svg)
+[![CI](https://github.com/bachya/aioambient/workflows/CI/badge.svg?branch=master)](https://github.com/bachya/aioambient/actions)
 [![PyPi](https://img.shields.io/pypi/v/aioambient.svg)](https://pypi.python.org/pypi/aioambient)
 [![Version](https://img.shields.io/pypi/pyversions/aioambient.svg)](https://pypi.python.org/pypi/aioambient)
 [![License](https://img.shields.io/pypi/l/aioambient.svg)](https://github.com/bachya/aioambient/blob/master/LICENSE)
