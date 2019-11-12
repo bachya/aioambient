@@ -40,26 +40,29 @@ legacy_tox_ini = """
 envlist = py36, py37, py38, cov, lint, typing
 skip_missing_interpreters = True
 skipsdist=True
-whitelist_externals=
-    flake8
-    make
-    mypy
-    poetry
-    py.test
-    pydocstyle
-    pylint
 
 [testenv]
+whitelist_externals=
+    poetry
+    py.test
 commands=
     poetry install
     py.test
 
 [testenv:cov]
+whitelist_externals=
+    poetry
+    py.test
 commands=
     poetry install
     py.test -s --verbose --cov-report term-missing --cov-report xml --cov=aioambient tests
 
 [testenv:lint]
+whitelist_externals=
+    flake8
+    poetry
+    pydocstyle
+    pylint
 commands=
     poetry install
     flake8 aioambient
@@ -67,6 +70,9 @@ commands=
     pylint aioambient
 
 [testenv:typing]
+whitelist_externals=
+    mypy
+    poetry
 commands=
     poetry install
     mypy --ignore-missing-imports aioambient
