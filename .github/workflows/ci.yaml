@@ -62,12 +62,8 @@ jobs:
           pip install poetry
           poetry install
       - name: coverage
-        run: >
-          poetry run py.test -s
-          --verbose
-          --cov-report term-missing
-          --cov-report xml
-          --cov=aioambient tests
+        run: |
+          poetry run py.test -s --verbose --cov-report term-missing --cov-report xml --cov=aioambient tests
       - uses: codecov/codecov-action@v1.0.3
         with:
           token: ${{secrets.CODECOV_TOKEN}}
