@@ -1,6 +1,2 @@
 [run]
 source = aioambient
-
-omit =
-    aioambient/const.py
-
