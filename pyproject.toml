@@ -1,0 +1,77 @@
+[tool.poetry]
+name = "aioambient"
+version = "1.0.0"
+description = "A clean, async-friendly library for the Ambient Weather API"
+readme = "README.md"
+authors = ["Aaron Bach <bachya1208@gmail.com>"]
+license = "MIT"
+repository = "aioambient"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+
+[tool.poetry.dependencies]
+aiohttp = "^3.6.2"
+python = "^3.6.1"
+python-engineio = ">= 3.9.3"
+python-socketio = ">=4.3.1"
+websockets = "^8.1"
+
+[tool.poetry.dev-dependencies]
+aresponses = "^1.1.1"
+flake8 = "^3.7.9"
+mypy = "^0.740"
+pre-commit = "^1.20.0"
+pydocstyle = "^4.0.1"
+pylint = "^2.4.3"
+pytest-aiohttp = "^0.3.0"
+pytest-cov = "^2.8.1"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py36, py37, py38, cov, lint, typing
+skip_missing_interpreters = True
+skipsdist=True
+whitelist_externals=
+    flake8
+    make
+    mypy
+    poetry
+    py.test
+    pydocstyle
+    pylint
+
+[testenv]
+commands=
+    poetry install
+    py.test
+
+[testenv:cov]
+commands=
+    poetry install
+    py.test -s --verbose --cov-report term-missing --cov-report xml --cov=aioambient tests
+
+[testenv:lint]
+commands=
+    poetry install
+    flake8 aioambient
+    pydocstyle aioambient
+    pylint aioambient
+
+[testenv:typing]
+commands=
+    poetry install
+    mypy --ignore-missing-imports aioambient
+"""
+
+[build-system]
+requires = ["setuptools >= 35.0.2", "wheel >= 0.29.0", "poetry>=0.12"]
+build-backend = "poetry.masonry.api"
