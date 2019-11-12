@@ -40,7 +40,7 @@ jobs:
           architecture: x64
       - name: setup
         run: |
-          pip install black poetry
+          pip install poetry
           poetry install
       - name: lint
         run: |
