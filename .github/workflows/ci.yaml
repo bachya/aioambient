@@ -1,6 +1,10 @@
 ---
 name: CI
-on: [push, pull_request]
+on:
+  pull_request:
+  push:
+    branches:
+      - master
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -23,4 +27,4 @@ jobs:
         run: |
           pip3 install poetry
           poetry install
-          py.test
+          python3 -m pytest
