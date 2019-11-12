@@ -12,19 +12,20 @@ jobs:
       matrix:
         python-version:
           - "3.6"
-          - "3.7"
-          - "3.8"
+          # - "3.7"
+          # - "3.8"
     steps:
+      - name: Setup
       - uses: actions/checkout@v1
-
-      - name: Setup ${{ matrix.python }}
-        uses: actions/setup-python@v1
+      - uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python-version }}
           architecture: x64
+      - uses: abatilo/actions-poetry@v1.0.0
+        with:
+          args: install
 
-      - name: Test
-        run: |
-          pip3 install poetry
-          poetry install
-          python3 -m pytest
+      - name: pytest
+        uses: abatilo/actions-poetry@v1.0.0
+        with:
+          args: run python -m pytest
