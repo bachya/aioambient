@@ -1,0 +1,25 @@
+---
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - "3.6"
+          - "3.7"
+          - "3.8"
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Setup ${{ matrix.python }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: x64
+
+      - name: Test
+        run: |
+          poetry install
+          py.test
