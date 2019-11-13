@@ -8,7 +8,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/81a9f8274abf325b2fa4/maintainability)](https://codeclimate.com/github/bachya/aioambient/maintainability)
 [![Say Thanks](https://img.shields.io/badge/SayThanks-!-1EAEDB.svg)](https://saythanks.io/to/bachya)
 
-TEST
+TEST HERE
 
 `aioambient` is a Python3, asyncio-driven library that interfaces with both the
 REST and Websocket APIs provided by
