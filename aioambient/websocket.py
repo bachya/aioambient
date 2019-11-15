@@ -13,7 +13,7 @@ WEBSOCKET_API_BASE: str = "https://dash2.ambientweather.net"
 
 
 class Websocket:
-    """Define to handler."""
+    """Define the websocket."""
 
     def __init__(self, application_key: str, api_key: str, api_version: int) -> None:
         """Initialize."""
