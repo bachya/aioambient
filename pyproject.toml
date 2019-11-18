@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aioambient"
-version = "1.0.0"
+version = "1.0.1"
 description = "A clean, async-friendly library for the Ambient Weather API"
 readme = "README.md"
 authors = ["Aaron Bach <bachya1208@gmail.com>"]
