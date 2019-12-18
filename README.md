@@ -50,7 +50,7 @@ from aioambient import Client
 async def main() -> None:
     """Create the aiohttp session and run the example."""
     async with ClientSession() as websession:
-      # YOUR CODE HERE
+        # YOUR CODE HERE
 
 
 asyncio.get_event_loop().run_until_complete(main())
@@ -99,20 +99,18 @@ from aioambient import Client
 async def main() -> None:
     """Create the aiohttp session and run the example."""
     async with ClientSession() as websession:
-      client = Client(
-        '<YOUR API KEY>',
-        '<YOUR APPLICATION KEY>',
-        websession)
+        client = Client("<YOUR API KEY>", "<YOUR APPLICATION KEY>", websession)
 
-      # Get all devices in an account:
-      await client.api.get_devices()
+        # Get all devices in an account:
+        await client.api.get_devices()
 
-      # Get all stored readings from a device:
-      await client.api.get_device_details('<DEVICE MAC ADDRESS>')
+        # Get all stored readings from a device:
+        await client.api.get_device_details("<DEVICE MAC ADDRESS>")
 
-      # Get all stored readings from a device (starting at a datetime):
-      await client.api.get_device_details(
-        '<DEVICE MAC ADDRESS>', end_date="2019-01-16")
+        # Get all stored readings from a device (starting at a datetime):
+        await client.api.get_device_details(
+            "<DEVICE MAC ADDRESS>", end_date="2019-01-16"
+        )
 
 
 asyncio.get_event_loop().run_until_complete(main())
