@@ -2,11 +2,10 @@
 import datetime
 import json
 
-import aiohttp
-import pytest
-
 from aioambient import Client
 from aioambient.errors import RequestError
+import aiohttp
+import pytest
 
 from .const import TEST_API_KEY, TEST_APP_KEY, TEST_MAC
 from .fixtures.api import device_details_json, devices_json
