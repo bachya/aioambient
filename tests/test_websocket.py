@@ -1,11 +1,12 @@
 """Define tests for the Websocket API."""
 from unittest.mock import MagicMock, patch
 
-from aioambient import Client
-from aioambient.errors import WebsocketError
 import aiohttp
 import pytest
 from socketio.exceptions import SocketIOError
+
+from aioambient import Client
+from aioambient.errors import WebsocketError
 
 from tests.const import TEST_API_KEY, TEST_APP_KEY
 
