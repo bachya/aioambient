@@ -15,7 +15,7 @@ from .fixtures.api import device_details_json, devices_json
 @pytest.mark.asyncio
 async def test_api_error(aresponses, event_loop, devices_json):
     aresponses.add(
-        "api.ambientweather.net",
+        "dash2.ambientweather.net",
         "/v1/devices",
         "get",
         aresponses.Response(text="", status=500),
@@ -31,7 +31,7 @@ async def test_api_error(aresponses, event_loop, devices_json):
 @pytest.mark.asyncio
 async def test_get_device_details(aresponses, event_loop, device_details_json):
     aresponses.add(
-        "api.ambientweather.net",
+        "dash2.ambientweather.net",
         f"/v1/devices/{TEST_MAC}",
         "get",
         aresponses.Response(text=json.dumps(device_details_json), status=200),
@@ -49,7 +49,7 @@ async def test_get_device_details(aresponses, event_loop, device_details_json):
 @pytest.mark.asyncio
 async def test_get_devices(aresponses, event_loop, devices_json):
     aresponses.add(
-        "api.ambientweather.net",
+        "dash2.ambientweather.net",
         "/v1/devices",
         "get",
         aresponses.Response(text=json.dumps(devices_json), status=200),
