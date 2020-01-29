@@ -1,6 +1,5 @@
 """Define tests for the REST API."""
 import datetime
-import json
 
 import aiohttp
 import pytest
@@ -8,12 +7,12 @@ import pytest
 from aioambient import Client
 from aioambient.errors import RequestError
 
-from .const import TEST_API_KEY, TEST_APP_KEY, TEST_MAC
-from .fixtures.api import device_details_json, devices_json
+from .common import TEST_API_KEY, TEST_APP_KEY, TEST_MAC, load_fixture
 
 
 @pytest.mark.asyncio
-async def test_api_error(aresponses, event_loop, devices_json):
+async def test_api_error(aresponses):
+    """Test the REST API raising an exception upon HTTP error."""
     aresponses.add(
         "dash2.ambientweather.net",
         "/v1/devices",
@@ -21,7 +20,7 @@ async def test_api_error(aresponses, event_loop, devices_json):
         aresponses.Response(text="", status=500),
     )
 
-    async with aiohttp.ClientSession(loop=event_loop) as websession:
+    async with aiohttp.ClientSession() as websession:
         client = Client(TEST_API_KEY, TEST_APP_KEY, websession)
 
         with pytest.raises(RequestError):
@@ -29,15 +28,18 @@ async def test_api_error(aresponses, event_loop, devices_json):
 
 
 @pytest.mark.asyncio
-async def test_get_device_details(aresponses, event_loop, device_details_json):
+async def test_get_device_details(aresponses):
+    """Test retrieving device details from the REST API."""
     aresponses.add(
         "dash2.ambientweather.net",
         f"/v1/devices/{TEST_MAC}",
         "get",
-        aresponses.Response(text=json.dumps(device_details_json), status=200),
+        aresponses.Response(
+            text=load_fixture("device_details_response.json"), status=200
+        ),
     )
 
-    async with aiohttp.ClientSession(loop=event_loop) as websession:
+    async with aiohttp.ClientSession() as websession:
         client = Client(TEST_API_KEY, TEST_APP_KEY, websession)
 
         device_details = await client.api.get_device_details(
@@ -47,15 +49,16 @@ async def test_get_device_details(aresponses, event_loop, device_details_json):
 
 
 @pytest.mark.asyncio
-async def test_get_devices(aresponses, event_loop, devices_json):
+async def test_get_devices(aresponses):
+    """Test retrieving devices from the REST API."""
     aresponses.add(
         "dash2.ambientweather.net",
         "/v1/devices",
         "get",
-        aresponses.Response(text=json.dumps(devices_json), status=200),
+        aresponses.Response(text=load_fixture("devices_response.json"), status=200),
     )
 
-    async with aiohttp.ClientSession(loop=event_loop) as websession:
+    async with aiohttp.ClientSession() as websession:
         client = Client(TEST_API_KEY, TEST_APP_KEY, websession)
 
         devices = await client.api.get_devices()
