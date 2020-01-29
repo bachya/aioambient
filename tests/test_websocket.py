@@ -1,5 +1,6 @@
 """Define tests for the Websocket API."""
-from unittest.mock import MagicMock, patch
+# pylint: disable=protected-access
+from unittest.mock import MagicMock
 
 import aiohttp
 import pytest
@@ -8,17 +9,17 @@ from socketio.exceptions import SocketIOError
 from aioambient import Client
 from aioambient.errors import WebsocketError
 
-from tests.const import TEST_API_KEY, TEST_APP_KEY
+from .common import TEST_API_KEY, TEST_APP_KEY
 
 
 def async_mock(*args, **kwargs):
     """Return a mock asynchronous function."""
-    m = MagicMock(*args, **kwargs)
+    mock = MagicMock(*args, **kwargs)
 
     async def mock_coro(*args, **kwargs):
-        return m(*args, **kwargs)
+        return mock(*args, **kwargs)
 
-    mock_coro.mock = m
+    mock_coro.mock = mock
     return mock_coro
 
 
