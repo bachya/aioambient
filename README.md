@@ -204,9 +204,7 @@ async def main() -> None:
         await client.websocket.disconnect()
 
 
-loop = asyncio.get_event_loop()
-loop.create_task(main())
-loop.run_forever()
+asyncio.run(main())
 ```
 
 # Contributing
