@@ -36,7 +36,7 @@ jobs:
       - run: |
           python -m venv venv
           venv/bin/pip install -r requirements_test.txt
-          venv/bin/py.test
+          venv/bin/py.test tests/
 
   coverage:
 
