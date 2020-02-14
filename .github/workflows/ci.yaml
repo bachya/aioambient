@@ -63,7 +63,7 @@ jobs:
 
   lint:
 
-    name: Linting
+    name: "Linting & Static Analysis"
 
     runs-on: ubuntu-latest
 
