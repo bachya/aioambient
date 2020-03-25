@@ -46,11 +46,9 @@ async def main() -> None:
             _LOGGER.error("There was a websocket error: %s", err)
             return
 
-        for _ in range(30):
+        while True:
             _LOGGER.info("Simulating some other task occurring...")
             await asyncio.sleep(5)
-
-        await client.websocket.disconnect()
 
 
 loop = asyncio.get_event_loop()
