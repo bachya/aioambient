@@ -16,6 +16,9 @@ if [ -z "$(command -v poetry)" ]; then
     exit 1
 fi
 
+# Temporarily uninstall pre-commit hooks so that we can push to dev and master:
+pre-commit uninstall
+
 case "$1" in
     patch)
         poetry version patch
@@ -32,9 +35,11 @@ case "$1" in
         ;;
 esac
 
-# Get the new version, commit, tag, and push:
+# Update the PyPI package version:
 new_version="$(poetry version | awk -F' ' '{ print $2 }')"
 git add pyproject.toml
+
+# Commit, tag, and push:
 git commit -m "Bump version to $new_version"
 git tag "$new_version"
 git push && git push --tags
@@ -44,3 +49,6 @@ git checkout master
 git merge dev
 git push
 git checkout dev
+
+# Re-initialize pre-commit:
+pre-commit install
