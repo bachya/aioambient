@@ -87,4 +87,4 @@ jobs:
           venv/bin/pre-commit run isort --all-files
           venv/bin/pre-commit run mypy --all-files
           venv/bin/pre-commit run pydocstyle --all-files
-          shellcheck script/*
+          venv/bin/pre-commit run shellcheck --all-files
