@@ -11,6 +11,11 @@ if [ "$(git rev-parse --abbrev-ref HEAD)" != "dev" ]; then
     exit 1
 fi
 
+if [ -z "$(command -v poetry)" ]; then
+    echo "Poetry needs to be installed to run this script: pip3 install poetry"
+    exit 1
+fi
+
 # Temporarily uninstall pre-commit hooks so that we can push to dev and master:
 pre-commit uninstall
 
