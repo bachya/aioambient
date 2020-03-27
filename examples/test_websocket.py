@@ -28,6 +28,11 @@ def print_hello():
     _LOGGER.info("Client has connected to the websocket")
 
 
+def print_subscribed(data):
+    """Print subscription data as it is received."""
+    _LOGGER.info("Client has subscribed: %s", data)
+
+
 async def main() -> None:
     """Run the websocket example."""
     logging.basicConfig(level=logging.INFO)
@@ -38,7 +43,7 @@ async def main() -> None:
         client.websocket.on_connect(print_hello)
         client.websocket.on_data(print_data)
         client.websocket.on_disconnect(print_goodbye)
-        client.websocket.on_subscribed(print_data)
+        client.websocket.on_subscribed(print_subscribed)
 
         try:
             await client.websocket.connect()
