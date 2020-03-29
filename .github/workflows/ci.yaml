@@ -55,11 +55,11 @@ jobs:
       - run: |
           python -m venv venv
           venv/bin/pip install -r requirements_test.txt
-          venv/bin/py.test
-            -s
-            --verbose
-            --cov-report term-missing
-            --cov-report xml
+          venv/bin/py.test \
+            -s \
+            --verbose \
+            --cov-report term-missing \
+            --cov-report xml \
             --cov=aioambient tests
 
       - uses: codecov/codecov-action@v1
