@@ -80,9 +80,7 @@ jobs:
           python-version: "3.x"
           architecture: x64
 
-      - run: echo "::set-env name=PY::$(python -c 'import hashlib, \
-                   sys;print(hashlib.sha256(sys.version.encode()+\
-                   sys.executable.encode()).hexdigest())')"
+      - run: echo "::set-env name=PY::$(python -VV | sha256sum | cut -d' ' -f1)"
 
       - uses: actions/cache@v1
         with:
