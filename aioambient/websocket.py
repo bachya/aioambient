@@ -73,6 +73,7 @@ class Websocket:
     async def _init_connection(self) -> None:
         """Perform automatic initialization upon connecting."""
         await self._sio.emit("subscribe", {"apiKeys": [self._api_key]})
+        await self._watchdog.trigger()
 
         if self._async_user_connect_handler:
             await self._async_user_connect_handler()  # type: ignore
@@ -109,27 +110,13 @@ class Websocket:
 
         self._sio.on("data", _async_on_data)
 
-    def async_on_disconnect(
-        self, target: Callable[..., Awaitable]
-    ) -> None:  # noqa: D202
+    def async_on_disconnect(self, target: Callable[..., Awaitable]) -> None:
         """Define a coroutine to be called when disconnecting."""
+        self._sio.on("disconnect", target)
 
-        async def _async_on_disconnect():
-            """Act on disconnect."""
-            self._watchdog.cancel()
-            await target()
-
-        self._sio.on("disconnect", _async_on_disconnect)
-
-    def on_disconnect(self, target: Callable) -> None:  # noqa: D202
+    def on_disconnect(self, target: Callable) -> None:
         """Define a method to be called when disconnecting."""
-
-        def _async_on_disconnect():
-            """Act on disconnect."""
-            self._watchdog.cancel()
-            target()
-
-        self._sio.on("disconnect", _async_on_disconnect)
+        self._sio.on("disconnect", target)
 
     def async_on_subscribed(
         self, target: Callable[..., Awaitable]
@@ -172,9 +159,10 @@ class Websocket:
     async def disconnect(self) -> None:
         """Disconnect from the socket."""
         await self._sio.disconnect()
+        self._watchdog.cancel()
 
     async def reconnect(self) -> None:
         """Reconnect the websocket connection."""
-        await self._sio.disconnect()
+        await self.disconnect()
         await asyncio.sleep(1)
         await self.connect()
