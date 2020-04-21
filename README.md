@@ -49,7 +49,7 @@ from aioambient import Client
 
 async def main() -> None:
     """Create the aiohttp session and run the example."""
-    async with ClientSession() as websession:
+    async with ClientSession() as session:
         # YOUR CODE HERE
 
 
@@ -68,8 +68,8 @@ from aioambient import Client
 
 async def main() -> None:
     """Create the aiohttp session and run the example."""
-    async with ClientSession() as websession:
-        client = Client("<YOUR API KEY>", "<YOUR APPLICATION KEY>", websession)
+    async with ClientSession() as session:
+        client = Client("<YOUR API KEY>", "<YOUR APPLICATION KEY>", session)
 
         # Get all devices in an account:
         await client.api.get_devices()
@@ -98,8 +98,41 @@ from aioambient import Client
 
 async def main() -> None:
     """Create the aiohttp session and run the example."""
-    async with ClientSession() as websession:
-        client = Client("<YOUR API KEY>", "<YOUR APPLICATION KEY>", websession)
+    client = Client("<YOUR API KEY>", "<YOUR APPLICATION KEY>")
+
+    # Get all devices in an account:
+    await client.api.get_devices()
+
+    # Get all stored readings from a device:
+    await client.api.get_device_details("<DEVICE MAC ADDRESS>")
+
+    # Get all stored readings from a device (starting at a datetime):
+    await client.api.get_device_details(
+        "<DEVICE MAC ADDRESS>", end_date="2019-01-16"
+    )
+
+
+asyncio.run(main())
+```
+
+By default, library creates a new connection to Ambient Weather with each coroutine;
+this means. If you are calling a large number of coroutines (or merely want to squeeze
+out every second of runtime savings possible), an
+[`aiohttp`](https://github.com/aio-libs/aiohttp) `ClientSession` can be used for connection
+pooling:
+
+```python
+import asyncio
+
+from aiohttp import ClientSession
+
+from aioambient import Client
+
+
+async def main() -> None:
+    """Create the aiohttp session and run the example."""
+    async with ClientSession() as session:
+        client = Client("<YOUR API KEY>", "<YOUR APPLICATION KEY>", session=session)
 
         # Get all devices in an account:
         await client.api.get_devices()
@@ -113,7 +146,7 @@ async def main() -> None:
         )
 
 
-asyncio.get_event_loop().run_until_complete(main())
+asyncio.run(main())
 ```
 
 Please be aware of Ambient Weather's
@@ -131,8 +164,8 @@ from aioambient import Client
 
 async def main() -> None:
     """Create the aiohttp session and run the example."""
-    async with ClientSession() as websession:
-        client = Client("<YOUR API KEY>", "<YOUR APPLICATION KEY>", websession)
+    async with ClientSession() as session:
+        client = Client("<YOUR API KEY>", "<YOUR APPLICATION KEY>", session)
 
         # Define a method that should be fired when the websocket client
         # connects:

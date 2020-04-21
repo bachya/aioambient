@@ -20,8 +20,8 @@ async def test_api_error(aresponses):
         aresponses.Response(text="", status=500),
     )
 
-    async with aiohttp.ClientSession() as websession:
-        client = Client(TEST_API_KEY, TEST_APP_KEY, websession)
+    async with aiohttp.ClientSession() as session:
+        client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
 
         with pytest.raises(RequestError):
             await client.api.get_devices()
@@ -39,8 +39,8 @@ async def test_get_device_details(aresponses):
         ),
     )
 
-    async with aiohttp.ClientSession() as websession:
-        client = Client(TEST_API_KEY, TEST_APP_KEY, websession)
+    async with aiohttp.ClientSession() as session:
+        client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
 
         device_details = await client.api.get_device_details(
             TEST_MAC, end_date=datetime.datetime(2019, 1, 6)
@@ -58,8 +58,24 @@ async def test_get_devices(aresponses):
         aresponses.Response(text=load_fixture("devices_response.json"), status=200),
     )
 
-    async with aiohttp.ClientSession() as websession:
-        client = Client(TEST_API_KEY, TEST_APP_KEY, websession)
+    async with aiohttp.ClientSession() as session:
+        client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
 
         devices = await client.api.get_devices()
         assert len(devices) == 2
+
+
+@pytest.mark.asyncio
+async def test_session_from_scratch(aresponses):
+    """Test that an aiohttp ClientSession is created on the fly if needed."""
+    aresponses.add(
+        "dash2.ambientweather.net",
+        "/v1/devices",
+        "get",
+        aresponses.Response(text=load_fixture("devices_response.json"), status=200),
+    )
+
+    client = Client(TEST_API_KEY, TEST_APP_KEY)
+
+    devices = await client.api.get_devices()
+    assert len(devices) == 2

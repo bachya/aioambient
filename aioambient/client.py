@@ -1,5 +1,6 @@
 """Define a client to interact with the Ambient Weather APIs."""
 import logging
+from typing import Optional
 
 from aiohttp import ClientSession
 
@@ -18,9 +19,9 @@ class Client:  # pylint: disable=too-few-public-methods
         self,
         api_key: str,
         application_key: str,
-        session: ClientSession,
         *,
-        api_version: int = DEFAULT_API_VERSION
+        api_version: int = DEFAULT_API_VERSION,
+        session: Optional[ClientSession] = None,
     ) -> None:
         """Initialize."""
         self.api: API = API(application_key, api_key, api_version, session)
