@@ -18,7 +18,7 @@ async def main() -> None:
     logging.basicConfig(level=logging.INFO)
     async with ClientSession() as session:
         try:
-            client = Client(API_KEY, APP_KEY, session)
+            client = Client(API_KEY, APP_KEY, session=session)
 
             devices = await client.api.get_devices()
             _LOGGER.info("Devices: %s", devices)
@@ -31,4 +31,4 @@ async def main() -> None:
             _LOGGER.error("There was an error: %s", err)
 
 
-asyncio.get_event_loop().run_until_complete(main())
+asyncio.run(main())

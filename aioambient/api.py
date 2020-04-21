@@ -1,15 +1,17 @@
 """Define an object to interact with the REST API."""
 import asyncio
 from datetime import datetime
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
-from aiohttp import ClientSession
+from aiohttp import ClientSession, ClientTimeout
 from aiohttp.client_exceptions import ClientError
 
 from .errors import RequestError
 
 REST_API_BASE: str = "https://dash2.ambientweather.net"
+
 DEFAULT_LIMIT: int = 288
+DEFAULT_TIMEOUT: int = 10
 
 
 class API:
@@ -20,7 +22,7 @@ class API:
         application_key: str,
         api_key: str,
         api_version: int,
-        session: ClientSession,
+        session: Optional[ClientSession] = None,
     ) -> None:
         """Initialize."""
         self._api_key: str = api_key
@@ -40,18 +42,27 @@ class API:
 
         url: str = f"{REST_API_BASE}/v{self._api_version}/{endpoint}"
 
-        if not params:
-            params = {}
-        params.update(
+        _params = params or {}
+        _params.update(
             {"apiKey": self._api_key, "applicationKey": self._application_key}
         )
 
-        async with self._session.request(method, url, params=params) as resp:
-            try:
+        use_running_session = self._session and not self._session.closed
+
+        if use_running_session:
+            session = self._session
+        else:
+            session = ClientSession(timeout=ClientTimeout(total=DEFAULT_TIMEOUT))
+
+        try:
+            async with session.request(method, url, params=_params) as resp:
                 resp.raise_for_status()
                 return await resp.json(content_type=None)
-            except ClientError as err:
-                raise RequestError(f"Error requesting data from {url}: {err}")
+        except ClientError as err:
+            raise RequestError(f"Error requesting data from {url}: {err}")
+        finally:
+            if not use_running_session:
+                await session.close()
 
     async def get_devices(self) -> list:
         """Get all devices associated with an API key."""
