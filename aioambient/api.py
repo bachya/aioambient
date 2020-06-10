@@ -30,9 +30,7 @@ class API:
         self._application_key: str = application_key
         self._session: ClientSession = session
 
-    async def _request(
-        self, method: str, endpoint: str, *, params: dict = None
-    ) -> list:
+    async def _request(self, method: str, endpoint: str, **kwargs) -> list:
         """Make a request against the API."""
         # In order to deal with Ambient's fairly aggressive rate limiting, we
         # pause for a second before continuing in case any requests came before
@@ -40,12 +38,11 @@ class API:
         # https://ambientweather.docs.apiary.io/#introduction/rate-limiting
         await asyncio.sleep(1)
 
-        url: str = f"{REST_API_BASE}/v{self._api_version}/{endpoint}"
+        url = f"{REST_API_BASE}/v{self._api_version}/{endpoint}"
 
-        _params = params or {}
-        _params.update(
-            {"apiKey": self._api_key, "applicationKey": self._application_key}
-        )
+        kwargs.setdefault("params", {})
+        kwargs["params"]["apiKey"] = self._api_key
+        kwargs["params"]["applicationKey"] = self._application_key
 
         use_running_session = self._session and not self._session.closed
 
@@ -55,7 +52,7 @@ class API:
             session = ClientSession(timeout=ClientTimeout(total=DEFAULT_TIMEOUT))
 
         try:
-            async with session.request(method, url, params=_params) as resp:
+            async with session.request(method, url, **kwargs) as resp:
                 resp.raise_for_status()
                 return await resp.json(content_type=None)
         except ClientError as err:
