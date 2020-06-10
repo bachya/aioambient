@@ -9,8 +9,8 @@ from aioambient.errors import WebsocketError
 
 _LOGGER = logging.getLogger()
 
-API_KEY = "<YOUR API KEY>"
-APP_KEY = "<YOUR APPLICATION KEY>"
+API_KEY = "8f13cf5a02b1449e9dae95ecdb9e468709e33db62ad340f1a1085bc9055e9b35"
+APP_KEY = "32f561c4cb3a400d9c71ae0e96495466beaea220e315403c955b8f2bb12ac9a1"
 
 
 def print_data(data):
@@ -38,7 +38,7 @@ async def main() -> None:
     logging.basicConfig(level=logging.INFO)
 
     async with ClientSession() as session:
-        client = Client(API_KEY, APP_KEY, session)
+        client = Client(API_KEY, APP_KEY, session=session)
 
         client.websocket.on_connect(print_hello)
         client.websocket.on_data(print_data)
