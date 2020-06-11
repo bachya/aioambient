@@ -9,8 +9,8 @@ from aioambient.errors import WebsocketError
 
 _LOGGER = logging.getLogger()
 
-API_KEY = "8f13cf5a02b1449e9dae95ecdb9e468709e33db62ad340f1a1085bc9055e9b35"
-APP_KEY = "32f561c4cb3a400d9c71ae0e96495466beaea220e315403c955b8f2bb12ac9a1"
+API_KEY = "<YOUR API KEY>"
+APP_KEY = "<YOUR APPLICATION KEY>"
 
 
 def print_data(data):
