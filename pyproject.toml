@@ -39,7 +39,7 @@ classifiers = [
 [tool.poetry.dependencies]
 aiohttp = "^3.6.2"
 python = "^3.6.1"
-python-engineio = "=3.13.0"
+python-engineio = "=3.13.1"
 python-socketio = "=4.6.0"
 websockets = "^8.1"
 
