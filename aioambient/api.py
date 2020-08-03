@@ -8,7 +8,7 @@ from aiohttp.client_exceptions import ClientError
 
 from .errors import RequestError
 
-REST_API_BASE: str = "https://dash2.ambientweather.net"
+REST_API_BASE: str = "https://api.ambientweather.net"
 
 DEFAULT_LIMIT: int = 288
 DEFAULT_TIMEOUT: int = 10

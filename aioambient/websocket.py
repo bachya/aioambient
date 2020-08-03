@@ -16,7 +16,7 @@ _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_WATCHDOG_TIMEOUT = 900
 
-WEBSOCKET_API_BASE: str = "https://dash2.ambientweather.net"
+WEBSOCKET_API_BASE: str = "https://api.ambientweather.net"
 
 
 class WebsocketWatchdog:

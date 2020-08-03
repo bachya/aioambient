@@ -24,7 +24,7 @@ async def test_connect_async_success(event_loop):
 
         await client.websocket.connect()
         client.websocket._sio.eio.connect.assert_called_once_with(
-            f"https://dash2.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
+            f"https://api.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
             engineio_path="socket.io",
             headers={},
             transports=["websocket"],
@@ -46,7 +46,7 @@ async def test_connect_sync_success(event_loop):
 
         await client.websocket.connect()
         client.websocket._sio.eio.connect.assert_called_once_with(
-            f"https://dash2.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
+            f"https://api.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
             engineio_path="socket.io",
             headers={},
             transports=["websocket"],
@@ -86,7 +86,7 @@ async def test_data_async(event_loop):
 
         await client.websocket.connect()
         client.websocket._sio.eio.connect.assert_called_once_with(
-            f"https://dash2.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
+            f"https://api.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
             engineio_path="socket.io",
             headers={},
             transports=["websocket"],
@@ -127,7 +127,7 @@ async def test_data_sync(event_loop):
 
         await client.websocket.connect()
         client.websocket._sio.eio.connect.assert_called_once_with(
-            f"https://dash2.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
+            f"https://api.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
             engineio_path="socket.io",
             headers={},
             transports=["websocket"],
