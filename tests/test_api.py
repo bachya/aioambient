@@ -14,7 +14,7 @@ from .common import TEST_API_KEY, TEST_APP_KEY, TEST_MAC, load_fixture
 async def test_api_error(aresponses):
     """Test the REST API raising an exception upon HTTP error."""
     aresponses.add(
-        "dash2.ambientweather.net",
+        "api.ambientweather.net",
         "/v1/devices",
         "get",
         aresponses.Response(text="", status=500),
@@ -31,7 +31,7 @@ async def test_api_error(aresponses):
 async def test_get_device_details(aresponses):
     """Test retrieving device details from the REST API."""
     aresponses.add(
-        "dash2.ambientweather.net",
+        "api.ambientweather.net",
         f"/v1/devices/{TEST_MAC}",
         "get",
         aresponses.Response(
@@ -52,7 +52,7 @@ async def test_get_device_details(aresponses):
 async def test_get_devices(aresponses):
     """Test retrieving devices from the REST API."""
     aresponses.add(
-        "dash2.ambientweather.net",
+        "api.ambientweather.net",
         "/v1/devices",
         "get",
         aresponses.Response(text=load_fixture("devices_response.json"), status=200),
@@ -69,7 +69,7 @@ async def test_get_devices(aresponses):
 async def test_session_from_scratch(aresponses):
     """Test that an aiohttp ClientSession is created on the fly if needed."""
     aresponses.add(
-        "dash2.ambientweather.net",
+        "api.ambientweather.net",
         "/v1/devices",
         "get",
         aresponses.Response(text=load_fixture("devices_response.json"), status=200),
