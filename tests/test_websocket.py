@@ -1,7 +1,6 @@
 """Define tests for the Websocket API."""
 # pylint: disable=protected-access
 import aiohttp
-from asynctest import CoroutineMock, MagicMock
 import pytest
 from socketio.exceptions import SocketIOError
 
@@ -9,17 +8,18 @@ from aioambient import Client
 from aioambient.errors import WebsocketError
 from aioambient.websocket import WebsocketWatchdog
 
-from .common import TEST_API_KEY, TEST_APP_KEY
+from tests.async_mock import AsyncMock, MagicMock
+from tests.common import TEST_API_KEY, TEST_APP_KEY
 
 
 async def test_connect_async_success(event_loop):
     """Test connecting to the socket with an async handler."""
     async with aiohttp.ClientSession(loop=event_loop) as session:
         client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
-        client.websocket._sio.eio._trigger_event = CoroutineMock()
-        client.websocket._sio.eio.connect = CoroutineMock()
+        client.websocket._sio.eio._trigger_event = AsyncMock()
+        client.websocket._sio.eio.connect = AsyncMock()
 
-        async_on_connect = CoroutineMock()
+        async_on_connect = AsyncMock()
         client.websocket.async_on_connect(async_on_connect)
 
         await client.websocket.connect()
@@ -38,10 +38,10 @@ async def test_connect_sync_success(event_loop):
     """Test connecting to the socket with a sync handler."""
     async with aiohttp.ClientSession(loop=event_loop) as session:
         client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
-        client.websocket._sio.eio._trigger_event = CoroutineMock()
-        client.websocket._sio.eio.connect = CoroutineMock()
+        client.websocket._sio.eio._trigger_event = AsyncMock()
+        client.websocket._sio.eio.connect = AsyncMock()
 
-        async_on_connect = CoroutineMock()
+        async_on_connect = AsyncMock()
         client.websocket.async_on_connect(async_on_connect)
 
         await client.websocket.connect()
@@ -60,7 +60,7 @@ async def test_connect_failure(event_loop):
     """Test connecting to the socket and an exception occurring."""
     async with aiohttp.ClientSession(loop=event_loop) as session:
         client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
-        client.websocket._sio.eio.connect = CoroutineMock(side_effect=SocketIOError())
+        client.websocket._sio.eio.connect = AsyncMock(side_effect=SocketIOError())
 
         with pytest.raises(WebsocketError):
             await client.websocket.connect()
@@ -70,14 +70,14 @@ async def test_data_async(event_loop):
     """Test data and subscription with async handlers."""
     async with aiohttp.ClientSession(loop=event_loop) as session:
         client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
-        client.websocket._sio.eio._trigger_event = CoroutineMock()
-        client.websocket._sio.eio.connect = CoroutineMock()
-        client.websocket._sio.eio.disconnect = CoroutineMock()
+        client.websocket._sio.eio._trigger_event = AsyncMock()
+        client.websocket._sio.eio.connect = AsyncMock()
+        client.websocket._sio.eio.disconnect = AsyncMock()
 
-        async_on_connect = CoroutineMock()
-        async_on_data = CoroutineMock()
-        async_on_disconnect = CoroutineMock()
-        async_on_subscribed = CoroutineMock()
+        async_on_connect = AsyncMock()
+        async_on_data = AsyncMock()
+        async_on_disconnect = AsyncMock()
+        async_on_subscribed = AsyncMock()
 
         client.websocket.async_on_connect(async_on_connect)
         client.websocket.async_on_data(async_on_data)
@@ -111,9 +111,9 @@ async def test_data_sync(event_loop):
     """Test data and subscription with sync handlers."""
     async with aiohttp.ClientSession(loop=event_loop) as session:
         client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
-        client.websocket._sio.eio._trigger_event = CoroutineMock()
-        client.websocket._sio.eio.connect = CoroutineMock()
-        client.websocket._sio.eio.disconnect = CoroutineMock()
+        client.websocket._sio.eio._trigger_event = AsyncMock()
+        client.websocket._sio.eio.connect = AsyncMock()
+        client.websocket._sio.eio.disconnect = AsyncMock()
 
         on_connect = MagicMock()
         on_data = MagicMock()
@@ -152,11 +152,11 @@ async def test_reconnect(event_loop):
     """Test that reconnecting to the websocket does the right thing."""
     async with aiohttp.ClientSession(loop=event_loop) as session:
         client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
-        client.websocket._sio.eio._trigger_event = CoroutineMock()
-        client.websocket._sio.eio.connect = CoroutineMock()
+        client.websocket._sio.eio._trigger_event = AsyncMock()
+        client.websocket._sio.eio.connect = AsyncMock()
 
-        async_on_connect = CoroutineMock()
-        async_on_disconnect = CoroutineMock()
+        async_on_connect = AsyncMock()
+        async_on_disconnect = AsyncMock()
 
         client.websocket.async_on_connect(async_on_connect)
         client.websocket.async_on_disconnect(async_on_disconnect)
@@ -171,7 +171,7 @@ async def test_reconnect(event_loop):
 @pytest.mark.asyncio
 async def test_watchdog_firing():
     """Test that the watchdog expiring fires the provided coroutine."""
-    mock_coro = CoroutineMock()
+    mock_coro = AsyncMock()
     mock_coro.__name__ = "mock_coro"
 
     watchdog = WebsocketWatchdog(mock_coro)
