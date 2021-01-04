@@ -60,6 +60,7 @@ Create a client, initialize it, then get to it:
 
 ```python
 import asyncio
+from datetime import date
 
 from aiohttp import ClientSession
 
@@ -77,9 +78,9 @@ async def main() -> None:
         # Get all stored readings from a device:
         await client.api.get_device_details("<DEVICE MAC ADDRESS>")
 
-        # Get all stored readings from a device (starting at a datetime):
+        # Get all stored readings from a device (starting at a date):
         await client.api.get_device_details(
-            "<DEVICE MAC ADDRESS>", end_date="2019-01-16"
+            "<DEVICE MAC ADDRESS>", end_date=date(2019, 1, 16)
         )
 
 
@@ -90,6 +91,7 @@ asyncio.get_event_loop().run_until_complete(main())
 
 ```python
 import asyncio
+from datetime import date
 
 from aiohttp import ClientSession
 
@@ -108,7 +110,7 @@ async def main() -> None:
 
     # Get all stored readings from a device (starting at a datetime):
     await client.api.get_device_details(
-        "<DEVICE MAC ADDRESS>", end_date="2019-01-16"
+        "<DEVICE MAC ADDRESS>", end_date=date(2019, 1, 16)
     )
 
 
@@ -123,6 +125,7 @@ pooling:
 
 ```python
 import asyncio
+from datetime import date
 
 from aiohttp import ClientSession
 
@@ -142,7 +145,7 @@ async def main() -> None:
 
         # Get all stored readings from a device (starting at a datetime):
         await client.api.get_device_details(
-            "<DEVICE MAC ADDRESS>", end_date="2019-01-16"
+            "<DEVICE MAC ADDRESS>", end_date=date(2019, 1, 16)
         )
 
 
