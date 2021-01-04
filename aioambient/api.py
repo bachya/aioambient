@@ -1,6 +1,6 @@
 """Define an object to interact with the REST API."""
 import asyncio
-from datetime import datetime
+from datetime import date
 from typing import Any, Dict, Optional
 
 from aiohttp import ClientSession, ClientTimeout
@@ -66,7 +66,11 @@ class API:
         return await self._request("get", "devices")
 
     async def get_device_details(
-        self, mac_address: str, *, end_date: datetime = None, limit: int = DEFAULT_LIMIT
+        self,
+        mac_address: str,
+        *,
+        end_date: Optional[date] = None,
+        limit: int = DEFAULT_LIMIT,
     ) -> list:
         """Get details of a device by MAC address."""
         params: Dict[str, Any] = {"limit": limit}
