@@ -43,7 +43,7 @@ async def test_get_device_details(aresponses):
         client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
 
         device_details = await client.api.get_device_details(
-            TEST_MAC, end_date=datetime.datetime(2019, 1, 6)
+            TEST_MAC, end_date=datetime.date(2019, 1, 6)
         )
         assert len(device_details) == 2
 

@@ -18,6 +18,7 @@ async def test_connect_async_success(event_loop):
         client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
         client.websocket._sio.eio._trigger_event = AsyncMock()
         client.websocket._sio.eio.connect = AsyncMock()
+        client.websocket._sio.namespaces = {"/": 1}
 
         async_on_connect = AsyncMock()
         client.websocket.async_on_connect(async_on_connect)
@@ -40,6 +41,7 @@ async def test_connect_sync_success(event_loop):
         client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
         client.websocket._sio.eio._trigger_event = AsyncMock()
         client.websocket._sio.eio.connect = AsyncMock()
+        client.websocket._sio.namespaces = {"/": 1}
 
         async_on_connect = AsyncMock()
         client.websocket.async_on_connect(async_on_connect)
@@ -73,6 +75,7 @@ async def test_data_async(event_loop):
         client.websocket._sio.eio._trigger_event = AsyncMock()
         client.websocket._sio.eio.connect = AsyncMock()
         client.websocket._sio.eio.disconnect = AsyncMock()
+        client.websocket._sio.namespaces = {"/": 1}
 
         async_on_connect = AsyncMock()
         async_on_data = AsyncMock()
@@ -114,6 +117,7 @@ async def test_data_sync(event_loop):
         client.websocket._sio.eio._trigger_event = AsyncMock()
         client.websocket._sio.eio.connect = AsyncMock()
         client.websocket._sio.eio.disconnect = AsyncMock()
+        client.websocket._sio.namespaces = {"/": 1}
 
         on_connect = MagicMock()
         on_data = MagicMock()
@@ -154,6 +158,7 @@ async def test_reconnect(event_loop):
         client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
         client.websocket._sio.eio._trigger_event = AsyncMock()
         client.websocket._sio.eio.connect = AsyncMock()
+        client.websocket._sio.namespaces = {"/": 1}
 
         async_on_connect = AsyncMock()
         async_on_disconnect = AsyncMock()
