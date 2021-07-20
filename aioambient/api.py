@@ -1,7 +1,7 @@
 """Define an object to interact with the REST API."""
 import asyncio
 from datetime import date
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from aiohttp import ClientSession, ClientTimeout
 from aiohttp.client_exceptions import ClientError
@@ -28,9 +28,11 @@ class API:
         self._api_key: str = api_key
         self._api_version: int = api_version
         self._application_key: str = application_key
-        self._session: ClientSession = session
+        self._session: Optional[ClientSession] = session
 
-    async def _request(self, method: str, endpoint: str, **kwargs) -> list:
+    async def _request(
+        self, method: str, endpoint: str, **kwargs: Dict[str, Any]
+    ) -> List[Dict[str, Any]]:
         """Make a request against the API."""
         # In order to deal with Ambient's fairly aggressive rate limiting, we
         # pause for a second before continuing in case any requests came before
@@ -51,17 +53,23 @@ class API:
         else:
             session = ClientSession(timeout=ClientTimeout(total=DEFAULT_TIMEOUT))
 
+        assert session
+
+        data: List[Dict[str, Any]] = []
+
         try:
             async with session.request(method, url, **kwargs) as resp:
                 resp.raise_for_status()
-                return await resp.json(content_type=None)
+                data = await resp.json()
         except ClientError as err:
-            raise RequestError(f"Error requesting data from {url}: {err}")
+            raise RequestError(f"Error requesting data from {url}: {err}") from err
         finally:
             if not use_running_session:
                 await session.close()
 
-    async def get_devices(self) -> list:
+        return data
+
+    async def get_devices(self) -> List[Dict[str, Any]]:
         """Get all devices associated with an API key."""
         return await self._request("get", "devices")
 

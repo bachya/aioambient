@@ -24,5 +24,5 @@ class Client:  # pylint: disable=too-few-public-methods
         session: Optional[ClientSession] = None,
     ) -> None:
         """Initialize."""
-        self.api: API = API(application_key, api_key, api_version, session)
-        self.websocket: Websocket = Websocket(application_key, api_key, api_version)
+        self.api = API(application_key, api_key, api_version, session)
+        self.websocket = Websocket(application_key, api_key, api_version)

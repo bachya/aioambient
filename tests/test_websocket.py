@@ -16,18 +16,16 @@ async def test_connect_async_success(event_loop):
     """Test connecting to the socket with an async handler."""
     async with aiohttp.ClientSession(loop=event_loop) as session:
         client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
+        client.websocket._sio.connect = AsyncMock()
         client.websocket._sio.eio._trigger_event = AsyncMock()
-        client.websocket._sio.eio.connect = AsyncMock()
         client.websocket._sio.namespaces = {"/": 1}
 
         async_on_connect = AsyncMock()
         client.websocket.async_on_connect(async_on_connect)
 
         await client.websocket.connect()
-        client.websocket._sio.eio.connect.assert_called_once_with(
+        client.websocket._sio.connect.assert_called_once_with(
             f"https://api.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
-            engineio_path="socket.io",
-            headers={},
             transports=["websocket"],
         )
 
@@ -39,18 +37,16 @@ async def test_connect_sync_success(event_loop):
     """Test connecting to the socket with a sync handler."""
     async with aiohttp.ClientSession(loop=event_loop) as session:
         client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
+        client.websocket._sio.connect = AsyncMock()
         client.websocket._sio.eio._trigger_event = AsyncMock()
-        client.websocket._sio.eio.connect = AsyncMock()
         client.websocket._sio.namespaces = {"/": 1}
 
         async_on_connect = AsyncMock()
         client.websocket.async_on_connect(async_on_connect)
 
         await client.websocket.connect()
-        client.websocket._sio.eio.connect.assert_called_once_with(
+        client.websocket._sio.connect.assert_called_once_with(
             f"https://api.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
-            engineio_path="socket.io",
-            headers={},
             transports=["websocket"],
         )
 
@@ -62,7 +58,7 @@ async def test_connect_failure(event_loop):
     """Test connecting to the socket and an exception occurring."""
     async with aiohttp.ClientSession(loop=event_loop) as session:
         client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
-        client.websocket._sio.eio.connect = AsyncMock(side_effect=SocketIOError())
+        client.websocket._sio.connect = AsyncMock(side_effect=SocketIOError())
 
         with pytest.raises(WebsocketError):
             await client.websocket.connect()
@@ -72,9 +68,9 @@ async def test_data_async(event_loop):
     """Test data and subscription with async handlers."""
     async with aiohttp.ClientSession(loop=event_loop) as session:
         client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
+        client.websocket._sio.connect = AsyncMock()
+        client.websocket._sio.disconnect = AsyncMock()
         client.websocket._sio.eio._trigger_event = AsyncMock()
-        client.websocket._sio.eio.connect = AsyncMock()
-        client.websocket._sio.eio.disconnect = AsyncMock()
         client.websocket._sio.namespaces = {"/": 1}
 
         async_on_connect = AsyncMock()
@@ -88,10 +84,8 @@ async def test_data_async(event_loop):
         client.websocket.async_on_subscribed(async_on_subscribed)
 
         await client.websocket.connect()
-        client.websocket._sio.eio.connect.assert_called_once_with(
+        client.websocket._sio.connect.assert_called_once_with(
             f"https://api.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
-            engineio_path="socket.io",
-            headers={},
             transports=["websocket"],
         )
 
@@ -107,16 +101,16 @@ async def test_data_async(event_loop):
         await client.websocket.disconnect()
         await client.websocket._sio._trigger_event("disconnect", "/")
         async_on_disconnect.assert_called_once()
-        client.websocket._sio.eio.disconnect.assert_called_once_with(abort=True)
+        client.websocket._sio.disconnect.assert_called_once()
 
 
 async def test_data_sync(event_loop):
     """Test data and subscription with sync handlers."""
     async with aiohttp.ClientSession(loop=event_loop) as session:
         client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
+        client.websocket._sio.connect = AsyncMock()
+        client.websocket._sio.disconnect = AsyncMock()
         client.websocket._sio.eio._trigger_event = AsyncMock()
-        client.websocket._sio.eio.connect = AsyncMock()
-        client.websocket._sio.eio.disconnect = AsyncMock()
         client.websocket._sio.namespaces = {"/": 1}
 
         on_connect = MagicMock()
@@ -130,10 +124,8 @@ async def test_data_sync(event_loop):
         client.websocket.on_subscribed(on_subscribed)
 
         await client.websocket.connect()
-        client.websocket._sio.eio.connect.assert_called_once_with(
+        client.websocket._sio.connect.assert_called_once_with(
             f"https://api.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
-            engineio_path="socket.io",
-            headers={},
             transports=["websocket"],
         )
 
@@ -149,15 +141,15 @@ async def test_data_sync(event_loop):
         await client.websocket.disconnect()
         await client.websocket._sio._trigger_event("disconnect", "/")
         on_disconnect.assert_called_once()
-        client.websocket._sio.eio.disconnect.assert_called_once_with(abort=True)
+        client.websocket._sio.disconnect.assert_called_once()
 
 
 async def test_reconnect(event_loop):
     """Test that reconnecting to the websocket does the right thing."""
     async with aiohttp.ClientSession(loop=event_loop) as session:
         client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
+        client.websocket._sio.connect = AsyncMock()
         client.websocket._sio.eio._trigger_event = AsyncMock()
-        client.websocket._sio.eio.connect = AsyncMock()
         client.websocket._sio.namespaces = {"/": 1}
 
         async_on_connect = AsyncMock()
