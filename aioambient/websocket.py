@@ -1,14 +1,11 @@
 """Define an object to interact with the Websocket API."""
 import asyncio
 import logging
-from typing import Awaitable, Callable, Optional
+from typing import Any, Awaitable, Callable, Dict, Optional
 
 from aiohttp.client_exceptions import ClientConnectionError, ClientOSError
 from socketio import AsyncClient
-from socketio.exceptions import (  # pylint: disable=redefined-builtin
-    ConnectionError,
-    SocketIOError,
-)
+from socketio.exceptions import ConnectionError, SocketIOError
 
 from .errors import WebsocketError
 
@@ -32,20 +29,20 @@ class WebsocketWatchdog:
         self._action: Callable[..., Awaitable] = action
         self._loop = asyncio.get_event_loop()
         self._timer_task: Optional[asyncio.TimerHandle] = None
-        self._timeout: int = timeout_seconds
+        self._timeout = timeout_seconds
 
-    def cancel(self):
+    def cancel(self) -> None:
         """Cancel the watchdog."""
         if self._timer_task:
             self._timer_task.cancel()
             self._timer_task = None
 
-    async def on_expire(self):
+    async def on_expire(self) -> None:
         """Log and act when the watchdog expires."""
         _LOGGER.info("Watchdog expired – calling %s", self._action.__name__)
         await self._action()
 
-    async def trigger(self):
+    async def trigger(self) -> None:
         """Trigger the watchdog."""
         _LOGGER.info("Watchdog triggered – sleeping for %s seconds", self._timeout)
 
@@ -76,7 +73,7 @@ class Websocket:
         await self._watchdog.trigger()
 
         if self._async_user_connect_handler:
-            await self._async_user_connect_handler()  # type: ignore
+            await self._async_user_connect_handler()
         elif self._user_connect_handler:
             self._user_connect_handler()
 
@@ -93,7 +90,7 @@ class Websocket:
     def async_on_data(self, target: Callable[..., Awaitable]) -> None:  # noqa: D202
         """Define a coroutine to be called when data is received."""
 
-        async def _async_on_data(data: dict):
+        async def _async_on_data(data: Dict[str, Any]) -> None:
             """Act on the data."""
             await self._watchdog.trigger()
             await target(data)
@@ -103,7 +100,7 @@ class Websocket:
     def on_data(self, target: Callable) -> None:  # noqa: D202
         """Define a method to be called when data is received."""
 
-        async def _async_on_data(data: dict):
+        async def _async_on_data(data: Dict[str, Any]) -> None:
             """Act on the data."""
             await self._watchdog.trigger()
             target(data)
@@ -123,7 +120,7 @@ class Websocket:
     ) -> None:  # noqa: D202
         """Define a coroutine to be called when subscribed."""
 
-        async def _async_on_subscribed(data):
+        async def _async_on_subscribed(data: Dict[str, Any]) -> None:
             """Act on subscribe."""
             await self._watchdog.trigger()
             await target(data)
@@ -133,7 +130,7 @@ class Websocket:
     def on_subscribed(self, target: Callable) -> None:  # noqa: D202
         """Define a method to be called when subscribed."""
 
-        async def _async_on_subscribed(data):
+        async def _async_on_subscribed(data: Dict[str, Any]) -> None:
             """Act on subscribe."""
             await self._watchdog.trigger()
             target(data)
