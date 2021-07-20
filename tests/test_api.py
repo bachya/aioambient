@@ -35,7 +35,9 @@ async def test_get_device_details(aresponses):
         f"/v1/devices/{TEST_MAC}",
         "get",
         aresponses.Response(
-            text=load_fixture("device_details_response.json"), status=200
+            text=load_fixture("device_details_response.json"),
+            status=200,
+            headers={"Content-Type": "application/json; charset=utf-8"},
         ),
     )
 
@@ -55,7 +57,11 @@ async def test_get_devices(aresponses):
         "api.ambientweather.net",
         "/v1/devices",
         "get",
-        aresponses.Response(text=load_fixture("devices_response.json"), status=200),
+        aresponses.Response(
+            text=load_fixture("devices_response.json"),
+            status=200,
+            headers={"Content-Type": "application/json; charset=utf-8"},
+        ),
     )
 
     async with aiohttp.ClientSession() as session:
@@ -72,7 +78,11 @@ async def test_session_from_scratch(aresponses):
         "api.ambientweather.net",
         "/v1/devices",
         "get",
-        aresponses.Response(text=load_fixture("devices_response.json"), status=200),
+        aresponses.Response(
+            text=load_fixture("devices_response.json"),
+            status=200,
+            headers={"Content-Type": "application/json; charset=utf-8"},
+        ),
     )
 
     client = Client(TEST_API_KEY, TEST_APP_KEY)
