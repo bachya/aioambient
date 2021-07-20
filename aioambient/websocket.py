@@ -151,7 +151,7 @@ class Websocket:
             ConnectionError,
             SocketIOError,
         ) as err:
-            raise WebsocketError(err) from None
+            raise WebsocketError(err) from err
 
     async def disconnect(self) -> None:
         """Disconnect from the socket."""
