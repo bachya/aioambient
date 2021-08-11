@@ -1,15 +1,13 @@
 """Define an object to interact with the Websocket API."""
 import asyncio
-import logging
 from typing import Any, Awaitable, Callable, Dict, Optional
 
 from aiohttp.client_exceptions import ClientConnectionError, ClientOSError
 from socketio import AsyncClient
-from socketio.exceptions import ConnectionError, SocketIOError
+from socketio.exceptions import ConnectionError as SIOConnectionError, SocketIOError
 
+from .const import LOGGER
 from .errors import WebsocketError
-
-_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_WATCHDOG_TIMEOUT = 900
 
@@ -39,12 +37,12 @@ class WebsocketWatchdog:
 
     async def on_expire(self) -> None:
         """Log and act when the watchdog expires."""
-        _LOGGER.info("Watchdog expired – calling %s", self._action.__name__)
+        LOGGER.info("Watchdog expired – calling %s", self._action.__name__)
         await self._action()
 
     async def trigger(self) -> None:
         """Trigger the watchdog."""
-        _LOGGER.info("Watchdog triggered – sleeping for %s seconds", self._timeout)
+        LOGGER.info("Watchdog triggered – sleeping for %s seconds", self._timeout)
 
         if self._timer_task:
             self._timer_task.cancel()
@@ -63,7 +61,7 @@ class Websocket:
         self._api_version: int = api_version
         self._app_key: str = application_key
         self._async_user_connect_handler: Optional[Callable[..., Awaitable]] = None
-        self._sio: AsyncClient = AsyncClient()
+        self._sio: AsyncClient = AsyncClient(logger=LOGGER, engineio_logger=LOGGER)
         self._user_connect_handler: Optional[Callable] = None
         self._watchdog: WebsocketWatchdog = WebsocketWatchdog(self.reconnect)
 
@@ -148,7 +146,7 @@ class Websocket:
         except (
             ClientConnectionError,
             ClientOSError,
-            ConnectionError,
+            SIOConnectionError,
             SocketIOError,
         ) as err:
             raise WebsocketError(err) from err

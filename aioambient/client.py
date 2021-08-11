@@ -1,13 +1,10 @@
 """Define a client to interact with the Ambient Weather APIs."""
-import logging
 from typing import Optional
 
 from aiohttp import ClientSession
 
 from .api import API
 from .websocket import Websocket
-
-_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_API_VERSION = 1
 
