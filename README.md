@@ -36,27 +36,6 @@ Ambient Weather. You can generate both from the Profile page in your
 
 ## Creating a Client
 
-An `aioambient` client starts with an
-[aiohttp](https://aiohttp.readthedocs.io/en/stable/) `ClientSession`:
-
-```python
-import asyncio
-
-from aiohttp import ClientSession
-
-from aioambient import Client
-
-
-async def main() -> None:
-    """Create the aiohttp session and run the example."""
-    async with ClientSession() as session:
-        # YOUR CODE HERE
-
-
-asyncio.get_event_loop().run_until_complete(main())
-```
-
-Create a client, initialize it, then get to it:
 
 ```python
 import asyncio
@@ -69,22 +48,12 @@ from aioambient import Client
 
 async def main() -> None:
     """Create the aiohttp session and run the example."""
-    async with ClientSession() as session:
-        client = Client("<YOUR API KEY>", "<YOUR APPLICATION KEY>", session)
+    client = Client("<YOUR API KEY>", "<YOUR APPLICATION KEY>")
 
-        # Get all devices in an account:
-        await client.api.get_devices()
-
-        # Get all stored readings from a device:
-        await client.api.get_device_details("<DEVICE MAC ADDRESS>")
-
-        # Get all stored readings from a device (starting at a date):
-        await client.api.get_device_details(
-            "<DEVICE MAC ADDRESS>", end_date=date(2019, 1, 16)
-        )
+    # Get to work!
 
 
-asyncio.get_event_loop().run_until_complete(main())
+asyncio.run(main())
 ```
 
 ## REST API
@@ -168,7 +137,7 @@ from aioambient import Client
 async def main() -> None:
     """Create the aiohttp session and run the example."""
     async with ClientSession() as session:
-        client = Client("<YOUR API KEY>", "<YOUR APPLICATION KEY>", session)
+        client = Client("<YOUR API KEY>", "<YOUR APPLICATION KEY>", session=session)
 
         # Define a method that should be fired when the websocket client
         # connects:
