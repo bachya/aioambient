@@ -1,5 +1,6 @@
 """Define tests for the REST API."""
 import datetime
+import logging
 
 import aiohttp
 import pytest
@@ -25,6 +26,38 @@ async def test_api_error(aresponses):
 
         with pytest.raises(RequestError):
             await client.api.get_devices()
+
+
+@pytest.mark.asyncio
+async def test_custom_logger(aresponses, caplog):
+    """Test that a custom logger is used when provided to the client."""
+    caplog.set_level(logging.DEBUG)
+    custom_logger = logging.getLogger("custom")
+
+    aresponses.add(
+        "api.ambientweather.net",
+        f"/v1/devices/{TEST_MAC}",
+        "get",
+        aresponses.Response(
+            text=load_fixture("device_details_response.json"),
+            status=200,
+            headers={"Content-Type": "application/json; charset=utf-8"},
+        ),
+    )
+
+    async with aiohttp.ClientSession() as session:
+        client = Client(
+            TEST_API_KEY, TEST_APP_KEY, session=session, logger=custom_logger
+        )
+
+        device_details = await client.api.get_device_details(
+            TEST_MAC, end_date=datetime.date(2019, 1, 6)
+        )
+        assert len(device_details) == 2
+        assert any(
+            record.name == "custom" and "Received data" in record.message
+            for record in caplog.records
+        )
 
 
 @pytest.mark.asyncio
