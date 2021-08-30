@@ -1,10 +1,13 @@
 """Define a client to interact with the Ambient Weather APIs."""
+import logging
 from typing import Optional
 
 from aiohttp import ClientSession
 
 from .api import API
 from .websocket import Websocket
+
+_LOGGER = logging.getLogger(__package__)
 
 DEFAULT_API_VERSION = 1
 
@@ -19,7 +22,11 @@ class Client:  # pylint: disable=too-few-public-methods
         *,
         api_version: int = DEFAULT_API_VERSION,
         session: Optional[ClientSession] = None,
+        logger: Optional[logging.Logger] = None,
     ) -> None:
         """Initialize."""
-        self.api = API(application_key, api_key, api_version, session)
-        self.websocket = Websocket(application_key, api_key, api_version)
+        if not logger:
+            logger = _LOGGER
+
+        self.api = API(logger, application_key, api_key, api_version, session=session)
+        self.websocket = Websocket(logger, application_key, api_key, api_version)

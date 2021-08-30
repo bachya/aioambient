@@ -1,5 +1,7 @@
 """Define tests for the Websocket API."""
 # pylint: disable=protected-access
+import logging
+
 import aiohttp
 import pytest
 from socketio.exceptions import SocketIOError
@@ -171,7 +173,7 @@ async def test_watchdog_firing():
     mock_coro = AsyncMock()
     mock_coro.__name__ = "mock_coro"
 
-    watchdog = WebsocketWatchdog(mock_coro)
+    watchdog = WebsocketWatchdog(logging.getLogger(), mock_coro)
 
     await watchdog.on_expire()
     mock_coro.assert_called_once()

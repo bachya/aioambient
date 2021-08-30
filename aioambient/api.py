@@ -1,7 +1,8 @@
 """Define an object to interact with the REST API."""
 import asyncio
 from datetime import date
-from typing import Any, Dict, List, Optional
+import logging
+from typing import Any, Dict, List, Optional, cast
 
 from aiohttp import ClientSession, ClientTimeout
 from aiohttp.client_exceptions import ClientError
@@ -19,15 +20,18 @@ class API:
 
     def __init__(
         self,
+        logger: logging.Logger,
         application_key: str,
         api_key: str,
         api_version: int,
+        *,
         session: Optional[ClientSession] = None,
     ) -> None:
         """Initialize."""
         self._api_key: str = api_key
         self._api_version: int = api_version
         self._application_key: str = application_key
+        self._logger = logger
         self._session: Optional[ClientSession] = session
 
     async def _request(
@@ -55,8 +59,6 @@ class API:
 
         assert session
 
-        data: List[Dict[str, Any]] = []
-
         try:
             async with session.request(method, url, **kwargs) as resp:
                 resp.raise_for_status()
@@ -67,7 +69,9 @@ class API:
             if not use_running_session:
                 await session.close()
 
-        return data
+        self._logger.debug("Received data for %s: %s", endpoint, data)
+
+        return cast(List[Dict[str, Any]], data)
 
     async def get_devices(self) -> List[Dict[str, Any]]:
         """Get all devices associated with an API key."""
