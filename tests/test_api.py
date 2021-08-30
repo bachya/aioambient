@@ -50,10 +50,9 @@ async def test_custom_logger(aresponses, caplog):
             TEST_API_KEY, TEST_APP_KEY, session=session, logger=custom_logger
         )
 
-        device_details = await client.api.get_device_details(
+        await client.api.get_device_details(
             TEST_MAC, end_date=datetime.date(2019, 1, 6)
         )
-        assert len(device_details) == 2
         assert any(
             record.name == "custom" and "Received data" in record.message
             for record in caplog.records
