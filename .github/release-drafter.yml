@@ -1,5 +1,8 @@
 ---
 categories:
+  - title: "🚨 Breaking Changes"
+    labels:
+      - "breaking change"
   - title: "🚀 Features"
     labels:
       - "enhancement"
@@ -10,7 +13,6 @@ categories:
     labels:
       - "ci/cd"
       - "dependencies"
-      - "documentation"
       - "maintenance"
       - "tooling"
 change-template: "- $TITLE (#$NUMBER)"
