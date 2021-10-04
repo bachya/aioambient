@@ -34,28 +34,6 @@ Ambient Weather. You can generate both from the Profile page in your
 
 # Usage
 
-## Creating a Client
-
-
-```python
-import asyncio
-from datetime import date
-
-from aiohttp import ClientSession
-
-from aioambient import Client
-
-
-async def main() -> None:
-    """Create the aiohttp session and run the example."""
-    client = Client("<YOUR API KEY>", "<YOUR APPLICATION KEY>")
-
-    # Get to work!
-
-
-asyncio.run(main())
-```
-
 ## REST API
 
 ```python
@@ -64,21 +42,21 @@ from datetime import date
 
 from aiohttp import ClientSession
 
-from aioambient import Client
+from aioambient import API
 
 
 async def main() -> None:
     """Create the aiohttp session and run the example."""
-    client = Client("<YOUR API KEY>", "<YOUR APPLICATION KEY>")
+    api = API("<YOUR API KEY>", "<YOUR APPLICATION KEY>")
 
     # Get all devices in an account:
-    await client.api.get_devices()
+    await api.get_devices()
 
     # Get all stored readings from a device:
-    await client.api.get_device_details("<DEVICE MAC ADDRESS>")
+    await api.get_device_details("<DEVICE MAC ADDRESS>")
 
     # Get all stored readings from a device (starting at a datetime):
-    await client.api.get_device_details(
+    await api.get_device_details(
         "<DEVICE MAC ADDRESS>", end_date=date(2019, 1, 16)
     )
 
@@ -98,22 +76,22 @@ from datetime import date
 
 from aiohttp import ClientSession
 
-from aioambient import Client
+from aioambient import API
 
 
 async def main() -> None:
     """Create the aiohttp session and run the example."""
     async with ClientSession() as session:
-        client = Client("<YOUR API KEY>", "<YOUR APPLICATION KEY>", session=session)
+        api = API("<YOUR API KEY>", "<YOUR APPLICATION KEY>")
 
         # Get all devices in an account:
-        await client.api.get_devices()
+        await api.get_devices()
 
         # Get all stored readings from a device:
-        await client.api.get_device_details("<DEVICE MAC ADDRESS>")
+        await api.get_device_details("<DEVICE MAC ADDRESS>")
 
         # Get all stored readings from a device (starting at a datetime):
-        await client.api.get_device_details(
+        await api.get_device_details(
             "<DEVICE MAC ADDRESS>", end_date=date(2019, 1, 16)
         )
 
@@ -131,82 +109,84 @@ import asyncio
 
 from aiohttp import ClientSession
 
-from aioambient import Client
+from aioambient import Websocket
 
 
 async def main() -> None:
     """Create the aiohttp session and run the example."""
-    async with ClientSession() as session:
-        client = Client("<YOUR API KEY>", "<YOUR APPLICATION KEY>", session=session)
+    websocket = Websocket("<YOUR API KEY>", "<YOUR APPLICATION KEY>")
 
-        # Define a method that should be fired when the websocket client
-        # connects:
-        def connect_method():
-            """Print a simple "hello" message."""
-            print("Client has connected to the websocket")
+    # Note that you can watch multiple API keys at once:
+    websocket = Websocket(["<API KEY 1>", "<API KEY 2>"], "<YOUR APPLICATION KEY>")
 
-        client.websocket.on_connect(connect_method)
+    # Define a method that should be fired when the websocket client
+    # connects:
+    def connect_method():
+        """Print a simple "hello" message."""
+        print("Client has connected to the websocket")
 
-        # Alternatively, define a coroutine handler:
-        async def connect_coroutine():
-            """Waits for 3 seconds, then print a simple "hello" message."""
-            await asyncio.sleep(3)
-            print("Client has connected to the websocket")
+    websocket.on_connect(connect_method)
 
-        client.websocket.async_on_connect(connect_coroutine)
+    # Alternatively, define a coroutine handler:
+    async def connect_coroutine():
+        """Waits for 3 seconds, then print a simple "hello" message."""
+        await asyncio.sleep(3)
+        print("Client has connected to the websocket")
 
-        # Define a method that should be run upon subscribing to the Ambient
-        # Weather cloud:
-        def subscribed_method(data):
-            """Print the data received upon subscribing."""
-            print(f"Subscription data received: {data}")
+    websocket.async_on_connect(connect_coroutine)
 
-        client.websocket.on_subscribed(subscribed_method)
+    # Define a method that should be run upon subscribing to the Ambient
+    # Weather cloud:
+    def subscribed_method(data):
+        """Print the data received upon subscribing."""
+        print(f"Subscription data received: {data}")
 
-        # Alternatively, define a coroutine handler:
-        async def subscribed_coroutine(data):
-            """Waits for 3 seconds, then print the incoming data."""
-            await asyncio.sleep(3)
-            print(f"Subscription data received: {data}")
+    websocket.on_subscribed(subscribed_method)
 
-        client.websocket.async_on_subscribed(subscribed_coroutine)
+    # Alternatively, define a coroutine handler:
+    async def subscribed_coroutine(data):
+        """Waits for 3 seconds, then print the incoming data."""
+        await asyncio.sleep(3)
+        print(f"Subscription data received: {data}")
 
-        # Define a method that should be run upon receiving data:
-        def data_method(data):
-            """Print the data received."""
-            print(f"Data received: {data}")
+    websocket.async_on_subscribed(subscribed_coroutine)
 
-        client.websocket.on_data(data_method)
+    # Define a method that should be run upon receiving data:
+    def data_method(data):
+        """Print the data received."""
+        print(f"Data received: {data}")
 
-        # Alternatively, define a coroutine handler:
-        async def data_coroutine(data):
-            """Wait for 3 seconds, then print the data received."""
-            await asyncio.sleep(3)
-            print(f"Data received: {data}")
+    websocket.on_data(data_method)
 
-        client.websocket.async_on_data(data_coroutine)
+    # Alternatively, define a coroutine handler:
+    async def data_coroutine(data):
+        """Wait for 3 seconds, then print the data received."""
+        await asyncio.sleep(3)
+        print(f"Data received: {data}")
 
-        # Define a method that should be run when the websocket client
-        # disconnects:
-        def disconnect_method(data):
-            """Print a simple "goodbye" message."""
-            print("Client has disconnected from the websocket")
+    websocket.async_on_data(data_coroutine)
 
-        client.websocket.on_disconnect(disconnect_method)
+    # Define a method that should be run when the websocket client
+    # disconnects:
+    def disconnect_method(data):
+        """Print a simple "goodbye" message."""
+        print("Client has disconnected from the websocket")
 
-        # Alternatively, define a coroutine handler:
-        async def disconnect_coroutine(data):
-            """Wait for 3 seconds, then print a simple "goodbye" message."""
-            await asyncio.sleep(3)
-            print("Client has disconnected from the websocket")
+    websocket.on_disconnect(disconnect_method)
 
-        client.websocket.async_on_disconnect(disconnect_coroutine)
+    # Alternatively, define a coroutine handler:
+    async def disconnect_coroutine(data):
+        """Wait for 3 seconds, then print a simple "goodbye" message."""
+        await asyncio.sleep(3)
+        print("Client has disconnected from the websocket")
 
-        # Connect to the websocket:
-        await client.websocket.connect()
+    websocket.async_on_disconnect(disconnect_coroutine)
 
-        # At any point, disconnect from the websocket:
-        await client.websocket.disconnect()
+    # Connect to the websocket:
+    await websocket.connect()
+
+    # At any point, disconnect from the websocket:
+    await websocket.disconnect()
 
 
 asyncio.run(main())
