@@ -7,12 +7,13 @@ from typing import Any, Dict, List, Optional, cast
 from aiohttp import ClientSession, ClientTimeout
 from aiohttp.client_exceptions import ClientError
 
+from .const import DEFAULT_API_VERSION, LOGGER
 from .errors import RequestError
 
-REST_API_BASE: str = "https://api.ambientweather.net"
+REST_API_BASE = "https://api.ambientweather.net"
 
-DEFAULT_LIMIT: int = 288
-DEFAULT_TIMEOUT: int = 10
+DEFAULT_LIMIT = 288
+DEFAULT_TIMEOUT = 10
 
 
 class API:
@@ -20,11 +21,11 @@ class API:
 
     def __init__(
         self,
-        logger: logging.Logger,
         application_key: str,
         api_key: str,
-        api_version: int,
         *,
+        api_version: int = DEFAULT_API_VERSION,
+        logger: logging.Logger = LOGGER,
         session: Optional[ClientSession] = None,
     ) -> None:
         """Initialize."""

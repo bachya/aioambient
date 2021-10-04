@@ -1,17 +1,18 @@
 """Define an object to interact with the Websocket API."""
 import asyncio
 import logging
-from typing import Any, Awaitable, Callable, Dict, Optional
+from typing import Any, Awaitable, Callable, Dict, List, Optional, Union
 
 from aiohttp.client_exceptions import ClientConnectionError, ClientOSError
 from socketio import AsyncClient
 from socketio.exceptions import ConnectionError as SIOConnectionError, SocketIOError
 
+from .const import DEFAULT_API_VERSION, LOGGER
 from .errors import WebsocketError
 
 DEFAULT_WATCHDOG_TIMEOUT = 900
 
-WEBSOCKET_API_BASE: str = "https://api.ambientweather.net"
+WEBSOCKET_API_BASE = "https://api.ambientweather.net"
 
 
 class WebsocketWatchdog:
@@ -59,12 +60,16 @@ class Websocket:  # pylint: disable=too-many-instance-attributes
 
     def __init__(
         self,
-        logger: logging.Logger,
         application_key: str,
-        api_key: str,
-        api_version: int,
+        api_key: Union[List[str], str],
+        *,
+        api_version: int = DEFAULT_API_VERSION,
+        logger: logging.Logger = LOGGER,
     ) -> None:
         """Initialize."""
+        if isinstance(api_key, str):
+            api_key = [api_key]
+
         self._api_key = api_key
         self._api_version = api_version
         self._app_key = application_key
@@ -76,7 +81,7 @@ class Websocket:  # pylint: disable=too-many-instance-attributes
 
     async def _init_connection(self) -> None:
         """Perform automatic initialization upon connecting."""
-        await self._sio.emit("subscribe", {"apiKeys": [self._api_key]})
+        await self._sio.emit("subscribe", {"apiKeys": self._api_key})
         await self._watchdog.trigger()
 
         if self._async_user_connect_handler:

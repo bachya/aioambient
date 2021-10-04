@@ -5,7 +5,7 @@ import logging
 import aiohttp
 import pytest
 
-from aioambient import Client
+from aioambient import API
 from aioambient.errors import RequestError
 
 from .common import TEST_API_KEY, TEST_APP_KEY, TEST_MAC, load_fixture
@@ -22,10 +22,10 @@ async def test_api_error(aresponses):
     )
 
     async with aiohttp.ClientSession() as session:
-        client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
+        api = API(TEST_API_KEY, TEST_APP_KEY, session=session)
 
         with pytest.raises(RequestError):
-            await client.api.get_devices()
+            await api.get_devices()
 
 
 @pytest.mark.asyncio
@@ -46,13 +46,9 @@ async def test_custom_logger(aresponses, caplog):
     )
 
     async with aiohttp.ClientSession() as session:
-        client = Client(
-            TEST_API_KEY, TEST_APP_KEY, session=session, logger=custom_logger
-        )
+        api = API(TEST_API_KEY, TEST_APP_KEY, session=session, logger=custom_logger)
 
-        await client.api.get_device_details(
-            TEST_MAC, end_date=datetime.date(2019, 1, 6)
-        )
+        await api.get_device_details(TEST_MAC, end_date=datetime.date(2019, 1, 6))
         assert any(
             record.name == "custom" and "Received data" in record.message
             for record in caplog.records
@@ -74,9 +70,9 @@ async def test_get_device_details(aresponses):
     )
 
     async with aiohttp.ClientSession() as session:
-        client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
+        api = API(TEST_API_KEY, TEST_APP_KEY, session=session)
 
-        device_details = await client.api.get_device_details(
+        device_details = await api.get_device_details(
             TEST_MAC, end_date=datetime.date(2019, 1, 6)
         )
         assert len(device_details) == 2
@@ -97,9 +93,9 @@ async def test_get_devices(aresponses):
     )
 
     async with aiohttp.ClientSession() as session:
-        client = Client(TEST_API_KEY, TEST_APP_KEY, session=session)
+        api = API(TEST_API_KEY, TEST_APP_KEY, session=session)
 
-        devices = await client.api.get_devices()
+        devices = await api.get_devices()
         assert len(devices) == 2
 
 
@@ -117,7 +113,7 @@ async def test_session_from_scratch(aresponses):
         ),
     )
 
-    client = Client(TEST_API_KEY, TEST_APP_KEY)
+    api = API(TEST_API_KEY, TEST_APP_KEY)
 
-    devices = await client.api.get_devices()
+    devices = await api.get_devices()
     assert len(devices) == 2

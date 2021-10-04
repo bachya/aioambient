@@ -1,2 +1,3 @@
 """Define module exports."""
-from .client import Client  # noqa
+from .api import API  # noqa
+from .websocket import Websocket  # noqa
