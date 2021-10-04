@@ -16,6 +16,9 @@ if [ -z "$(command -v poetry)" ]; then
     exit 1
 fi
 
+# Pull the latest dev:
+git pull origin dev
+
 # Temporarily uninstall pre-commit hooks so that we can push to dev and master:
 pre-commit uninstall
 
