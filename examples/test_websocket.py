@@ -2,9 +2,7 @@
 import asyncio
 import logging
 
-from aiohttp import ClientSession
-
-from aioambient import Client
+from aioambient import Websocket
 from aioambient.errors import WebsocketError
 
 _LOGGER = logging.getLogger()
@@ -37,23 +35,22 @@ async def main() -> None:
     """Run the websocket example."""
     logging.basicConfig(level=logging.INFO)
 
-    async with ClientSession() as session:
-        client = Client(API_KEY, APP_KEY, session=session)
+    websocket = Websocket(API_KEY, APP_KEY)
 
-        client.websocket.on_connect(print_hello)
-        client.websocket.on_data(print_data)
-        client.websocket.on_disconnect(print_goodbye)
-        client.websocket.on_subscribed(print_subscribed)
+    websocket.on_connect(print_hello)
+    websocket.on_data(print_data)
+    websocket.on_disconnect(print_goodbye)
+    websocket.on_subscribed(print_subscribed)
 
-        try:
-            await client.websocket.connect()
-        except WebsocketError as err:
-            _LOGGER.error("There was a websocket error: %s", err)
-            return
+    try:
+        await websocket.connect()
+    except WebsocketError as err:
+        _LOGGER.error("There was a websocket error: %s", err)
+        return
 
-        while True:
-            _LOGGER.info("Simulating some other task occurring...")
-            await asyncio.sleep(5)
+    while True:
+        _LOGGER.info("Simulating some other task occurring...")
+        await asyncio.sleep(5)
 
 
 loop = asyncio.get_event_loop()
