@@ -35,7 +35,7 @@ async def main() -> None:
     """Run the websocket example."""
     logging.basicConfig(level=logging.INFO)
 
-    websocket = Websocket(API_KEY, APP_KEY)
+    websocket = Websocket(APP_KEY, API_KEY)
 
     websocket.on_connect(print_hello)
     websocket.on_data(print_data)
