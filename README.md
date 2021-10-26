@@ -48,7 +48,7 @@ from aioambient import API
 
 async def main() -> None:
     """Create the aiohttp session and run the example."""
-    api = API("<YOUR API KEY>", "<YOUR APPLICATION KEY>")
+    api = API("<YOUR APPLICATION KEY>", "<YOUR API KEY>")
 
     # Get all devices in an account:
     await api.get_devices()
@@ -83,7 +83,7 @@ from aioambient import API
 async def main() -> None:
     """Create the aiohttp session and run the example."""
     async with ClientSession() as session:
-        api = API("<YOUR API KEY>", "<YOUR APPLICATION KEY>")
+        api = API("<YOUR APPLICATION KEY>", "<YOUR API KEY>")
 
         # Get all devices in an account:
         await api.get_devices()
@@ -115,10 +115,10 @@ from aioambient import Websocket
 
 async def main() -> None:
     """Create the aiohttp session and run the example."""
-    websocket = Websocket("<YOUR API KEY>", "<YOUR APPLICATION KEY>")
+    websocket = Websocket("<YOUR APPLICATION KEY>", "<YOUR API KEY>")
 
     # Note that you can watch multiple API keys at once:
-    websocket = Websocket(["<API KEY 1>", "<API KEY 2>"], "<YOUR APPLICATION KEY>")
+    websocket = Websocket("YOUR APPLICATION KEY", ["<API KEY 1>", "<API KEY 2>"])
 
     # Define a method that should be fired when the websocket client
     # connects:
