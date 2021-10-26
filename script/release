@@ -35,7 +35,7 @@ git pull origin dev
 # Generate the next version (in the format YEAR.MONTH.RELEASE_NUMER):
 new_version=$(generate_version)
 
-# # Update the PyPI package version:
+# Update the PyPI package version:
 sed -i "" "s/^version = \".*\"/version = \"$new_version\"/g" "$REPO_PATH/pyproject.toml"
 git add pyproject.toml
 
@@ -44,7 +44,7 @@ git commit -m "Bump version to $new_version"
 git tag "$new_version"
 git push && git push --tags
 
-# # Merge dev into master:
+# Merge dev into master:
 git checkout master
 git merge dev
 git push
