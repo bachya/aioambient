@@ -25,6 +25,7 @@ pip install aioambient
 * Python 3.7
 * Python 3.8
 * Python 3.9
+* Python 3.10
 
 # API and Application Keys
 

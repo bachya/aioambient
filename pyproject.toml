@@ -52,6 +52,7 @@ classifiers = [
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
 ]
@@ -66,7 +67,7 @@ websockets = ">=9.1,<11.0"
 [tool.poetry.dev-dependencies]
 aresponses = "^2.0.0"
 asynctest = "^0.13.0"
-pre-commit = "^2.0.1"
-pytest = "^6.0.0"
+pre-commit = "^2.15.0"
+pytest = "^6.2.5"
 pytest-aiohttp = "^0.3.0"
 pytest-cov = "^3.0.0"

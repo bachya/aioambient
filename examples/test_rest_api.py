@@ -4,7 +4,7 @@ import logging
 
 from aiohttp import ClientSession
 
-from aioambient import Client
+from aioambient import API
 from aioambient.errors import AmbientError
 
 _LOGGER = logging.getLogger()
@@ -18,13 +18,13 @@ async def main() -> None:
     logging.basicConfig(level=logging.INFO)
     async with ClientSession() as session:
         try:
-            client = Client(API_KEY, APP_KEY, session=session)
+            api = API(APP_KEY, API_KEY, session=session)
 
-            devices = await client.api.get_devices()
+            devices = await api.get_devices()
             _LOGGER.info("Devices: %s", devices)
 
             for device in devices:
-                details = await client.api.get_device_details(device["macAddress"])
+                details = await api.get_device_details(device["macAddress"])
                 _LOGGER.info("Device Details (%s): %s", device["macAddress"], details)
 
         except AmbientError as err:
