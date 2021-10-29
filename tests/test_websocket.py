@@ -26,7 +26,7 @@ async def test_connect_async_success():
 
     await websocket.connect()
     websocket._sio.connect.assert_called_once_with(
-        f"https://api.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
+        f"https://rt2.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
         transports=["websocket"],
     )
 
@@ -47,7 +47,7 @@ async def test_connect_sync_success():
 
     await websocket.connect()
     websocket._sio.connect.assert_called_once_with(
-        f"https://api.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
+        f"https://rt2.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
         transports=["websocket"],
     )
 
@@ -86,7 +86,7 @@ async def test_data_async():
 
     await websocket.connect()
     websocket._sio.connect.assert_called_once_with(
-        f"https://api.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
+        f"https://rt2.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
         transports=["websocket"],
     )
 
@@ -126,7 +126,7 @@ async def test_data_sync():
 
     await websocket.connect()
     websocket._sio.connect.assert_called_once_with(
-        f"https://api.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
+        f"https://rt2.ambientweather.net/?api=1&applicationKey={TEST_APP_KEY}",
         transports=["websocket"],
     )
 

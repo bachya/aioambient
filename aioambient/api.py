@@ -10,7 +10,7 @@ from aiohttp.client_exceptions import ClientError
 from .const import DEFAULT_API_VERSION, LOGGER
 from .errors import RequestError
 
-REST_API_BASE = "https://api.ambientweather.net"
+REST_API_BASE = "https://rt.ambientweather.net"
 
 DEFAULT_LIMIT = 288
 DEFAULT_TIMEOUT = 10
