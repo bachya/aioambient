@@ -15,7 +15,7 @@ from .common import TEST_API_KEY, TEST_APP_KEY, TEST_MAC, load_fixture
 async def test_api_error(aresponses):
     """Test the REST API raising an exception upon HTTP error."""
     aresponses.add(
-        "api.ambientweather.net",
+        "rt.ambientweather.net",
         "/v1/devices",
         "get",
         aresponses.Response(text="", status=500),
@@ -35,7 +35,7 @@ async def test_custom_logger(aresponses, caplog):
     custom_logger = logging.getLogger("custom")
 
     aresponses.add(
-        "api.ambientweather.net",
+        "rt.ambientweather.net",
         f"/v1/devices/{TEST_MAC}",
         "get",
         aresponses.Response(
@@ -59,7 +59,7 @@ async def test_custom_logger(aresponses, caplog):
 async def test_get_device_details(aresponses):
     """Test retrieving device details from the REST API."""
     aresponses.add(
-        "api.ambientweather.net",
+        "rt.ambientweather.net",
         f"/v1/devices/{TEST_MAC}",
         "get",
         aresponses.Response(
@@ -82,7 +82,7 @@ async def test_get_device_details(aresponses):
 async def test_get_devices(aresponses):
     """Test retrieving devices from the REST API."""
     aresponses.add(
-        "api.ambientweather.net",
+        "rt.ambientweather.net",
         "/v1/devices",
         "get",
         aresponses.Response(
@@ -103,7 +103,7 @@ async def test_get_devices(aresponses):
 async def test_session_from_scratch(aresponses):
     """Test that an aiohttp ClientSession is created on the fly if needed."""
     aresponses.add(
-        "api.ambientweather.net",
+        "rt.ambientweather.net",
         "/v1/devices",
         "get",
         aresponses.Response(

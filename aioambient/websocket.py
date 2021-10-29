@@ -12,7 +12,7 @@ from .errors import WebsocketError
 
 DEFAULT_WATCHDOG_TIMEOUT = 900
 
-WEBSOCKET_API_BASE = "https://api.ambientweather.net"
+WEBSOCKET_API_BASE = "https://rt2.ambientweather.net"
 
 
 class WebsocketWatchdog:
