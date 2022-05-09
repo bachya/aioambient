@@ -22,7 +22,7 @@ def install_with_constraints(session: nox.sessions.Session, *args: str, **kwargs
 
 @nox.session
 def coverage(session: nox.sessions.Session) -> None:
-    """Run all tests."""
+    """Report test coverage."""
     args = session.posargs or [
         "-s",
         "--cov=aioambient",
