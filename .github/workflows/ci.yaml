@@ -29,7 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
           architecture: x64
@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.x"
           architecture: x64
@@ -69,11 +69,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.x"
           architecture: x64
 
-      - uses: pre-commit/action@v2.0.3
+      - uses: pre-commit/action@v3.0.0
         env:
           SKIP: no-commit-to-branch
