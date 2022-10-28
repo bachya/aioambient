@@ -1,6 +1,7 @@
 """Define tests for the Websocket API."""
 # pylint: disable=protected-access
 import logging
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 from socketio.exceptions import SocketIOError
@@ -8,13 +9,11 @@ from socketio.exceptions import SocketIOError
 from aioambient import Websocket
 from aioambient.errors import WebsocketError
 from aioambient.websocket import WebsocketWatchdog
-
-from tests.async_mock import AsyncMock, MagicMock
 from tests.common import TEST_API_KEY, TEST_APP_KEY
 
 
 @pytest.mark.asyncio
-async def test_connect_async_success():
+async def test_connect_async_success() -> None:
     """Test connecting to the socket with an async handler."""
     websocket = Websocket(TEST_API_KEY, TEST_APP_KEY)
     websocket._sio.connect = AsyncMock()
@@ -35,7 +34,7 @@ async def test_connect_async_success():
 
 
 @pytest.mark.asyncio
-async def test_connect_sync_success():
+async def test_connect_sync_success() -> None:
     """Test connecting to the socket with a sync handler."""
     websocket = Websocket(TEST_API_KEY, TEST_APP_KEY)
     websocket._sio.connect = AsyncMock()
@@ -56,7 +55,7 @@ async def test_connect_sync_success():
 
 
 @pytest.mark.asyncio
-async def test_connect_failure():
+async def test_connect_failure() -> None:
     """Test connecting to the socket and an exception occurring."""
     websocket = Websocket(TEST_API_KEY, TEST_APP_KEY)
     websocket._sio.connect = AsyncMock(side_effect=SocketIOError())
@@ -66,7 +65,7 @@ async def test_connect_failure():
 
 
 @pytest.mark.asyncio
-async def test_data_async():
+async def test_data_async() -> None:
     """Test data and subscription with async handlers."""
     websocket = Websocket(TEST_API_KEY, TEST_APP_KEY)
     websocket._sio.connect = AsyncMock()
@@ -106,7 +105,7 @@ async def test_data_async():
 
 
 @pytest.mark.asyncio
-async def test_data_sync():
+async def test_data_sync() -> None:
     """Test data and subscription with sync handlers."""
     websocket = Websocket(TEST_API_KEY, TEST_APP_KEY)
     websocket._sio.connect = AsyncMock()
@@ -146,7 +145,7 @@ async def test_data_sync():
 
 
 @pytest.mark.asyncio
-async def test_reconnect():
+async def test_reconnect() -> None:
     """Test that reconnecting to the websocket does the right thing."""
     websocket = Websocket(TEST_API_KEY, TEST_APP_KEY)
     websocket._sio.connect = AsyncMock()
@@ -167,7 +166,7 @@ async def test_reconnect():
 
 
 @pytest.mark.asyncio
-async def test_watchdog_firing():
+async def test_watchdog_firing() -> None:
     """Test that the watchdog expiring fires the provided coroutine."""
     mock_coro = AsyncMock()
     mock_coro.__name__ = "mock_coro"

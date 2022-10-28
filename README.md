@@ -1,4 +1,4 @@
-# 🌤  aioambient: An async library for Ambient Weather Personal Weather Stations
+# 🌤 aioambient: An async library for Ambient Weather Personal Weather Stations
 
 [![CI](https://github.com/bachya/aioambient/workflows/CI/badge.svg)](https://github.com/bachya/aioambient/actions)
 [![PyPi](https://img.shields.io/pypi/v/aioambient.svg)](https://pypi.python.org/pypi/aioambient)
@@ -16,7 +16,7 @@ REST and Websocket APIs provided by
 
 # Installation
 
-```python
+```bash
 pip install aioambient
 ```
 
@@ -24,9 +24,9 @@ pip install aioambient
 
 `aioambient` is currently supported on:
 
-* Python 3.9
-* Python 3.10
-* Python 3.11
+- Python 3.9
+- Python 3.10
+- Python 3.11
 
 # API and Application Keys
 
@@ -58,9 +58,7 @@ async def main() -> None:
     await api.get_device_details("<DEVICE MAC ADDRESS>")
 
     # Get all stored readings from a device (starting at a datetime):
-    await api.get_device_details(
-        "<DEVICE MAC ADDRESS>", end_date=date(2019, 1, 16)
-    )
+    await api.get_device_details("<DEVICE MAC ADDRESS>", end_date=date(2019, 1, 16))
 
 
 asyncio.run(main())
@@ -93,9 +91,7 @@ async def main() -> None:
         await api.get_device_details("<DEVICE MAC ADDRESS>")
 
         # Get all stored readings from a device (starting at a datetime):
-        await api.get_device_details(
-            "<DEVICE MAC ADDRESS>", end_date=date(2019, 1, 16)
-        )
+        await api.get_device_details("<DEVICE MAC ADDRESS>", end_date=date(2019, 1, 16))
 
 
 asyncio.run(main())
@@ -197,7 +193,7 @@ asyncio.run(main())
 # Contributing
 
 1. [Check for open features/bugs](https://github.com/bachya/aioambient/issues)
-  or [initiate a discussion on one](https://github.com/bachya/aioambient/issues/new).
+   or [initiate a discussion on one](https://github.com/bachya/aioambient/issues/new).
 2. [Fork the repository](https://github.com/bachya/aioambient/fork).
 3. (_optional, but highly recommended_) Create a virtual environment: `python3 -m venv .venv`
 4. (_optional, but highly recommended_) Enter the virtual environment: `source ./venv/bin/activate`

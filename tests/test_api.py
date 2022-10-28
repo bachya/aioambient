@@ -1,9 +1,11 @@
 """Define tests for the REST API."""
 import datetime
 import logging
+from unittest.mock import Mock
 
 import aiohttp
 import pytest
+from aresponses import ResponsesMockServer
 
 from aioambient import API
 from aioambient.errors import RequestError
@@ -12,8 +14,12 @@ from .common import TEST_API_KEY, TEST_APP_KEY, TEST_MAC, load_fixture
 
 
 @pytest.mark.asyncio
-async def test_api_error(aresponses):
-    """Test the REST API raising an exception upon HTTP error."""
+async def test_api_error(aresponses: ResponsesMockServer) -> None:
+    """Test the REST API raising an exception upon HTTP error.
+
+    Args:
+        aresponses: An aresponses server.
+    """
     aresponses.add(
         "rt.ambientweather.net",
         "/v1/devices",
@@ -29,8 +35,13 @@ async def test_api_error(aresponses):
 
 
 @pytest.mark.asyncio
-async def test_custom_logger(aresponses, caplog):
-    """Test that a custom logger is used when provided to the client."""
+async def test_custom_logger(aresponses: ResponsesMockServer, caplog: Mock) -> None:
+    """Test that a custom logger is used when provided to the client.
+
+    Args:
+        aresponses: An aresponses server.
+        caplog: A mocked logging facility.
+    """
     caplog.set_level(logging.DEBUG)
     custom_logger = logging.getLogger("custom")
 
@@ -56,8 +67,12 @@ async def test_custom_logger(aresponses, caplog):
 
 
 @pytest.mark.asyncio
-async def test_get_device_details(aresponses):
-    """Test retrieving device details from the REST API."""
+async def test_get_device_details(aresponses: ResponsesMockServer) -> None:
+    """Test retrieving device details from the REST API.
+
+    Args:
+        aresponses: An aresponses server.
+    """
     aresponses.add(
         "rt.ambientweather.net",
         f"/v1/devices/{TEST_MAC}",
@@ -79,8 +94,12 @@ async def test_get_device_details(aresponses):
 
 
 @pytest.mark.asyncio
-async def test_get_devices(aresponses):
-    """Test retrieving devices from the REST API."""
+async def test_get_devices(aresponses: ResponsesMockServer) -> None:
+    """Test retrieving devices from the REST API.
+
+    Args:
+        aresponses: An aresponses server.
+    """
     aresponses.add(
         "rt.ambientweather.net",
         "/v1/devices",
@@ -100,8 +119,12 @@ async def test_get_devices(aresponses):
 
 
 @pytest.mark.asyncio
-async def test_session_from_scratch(aresponses):
-    """Test that an aiohttp ClientSession is created on the fly if needed."""
+async def test_session_from_scratch(aresponses: ResponsesMockServer) -> None:
+    """Test that an aiohttp ClientSession is created on the fly if needed.
+
+    Args:
+        aresponses: An aresponses server.
+    """
     aresponses.add(
         "rt.ambientweather.net",
         "/v1/devices",
