@@ -69,7 +69,13 @@ jobs:
           poetry install --no-interaction
 
       - name: 🚀 Run pytest
-        run: poetry run pytest tests
+        run: poetry run pytest --cov aioambient tests
+
+      - name: ⬆️ Upload coverage artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-${{ matrix.python }}
+          path: .coverage
 
   coverage:
     name: Code Coverage
@@ -84,6 +90,9 @@ jobs:
     steps:
       - name: ⤵️ Check out code from GitHub
         uses: actions/checkout@v3
+
+      - name: ⬇️ Download coverage data
+        uses: actions/download-artifact@v3
 
       - name: 🏗 Set up Python 3.9
         id: setup-python
@@ -124,11 +133,12 @@ jobs:
         run: |
           poetry install --no-interaction
 
-      - name: 🚀 Run pytest with coverage metrics
-        run: >-
-          poetry run pytest --cov
+      - name: 🚀 Process coverage results
+        run: |
+          poetry run coverage combine coverage*/.coverage*
+          poetry run coverage xml -i
 
-      - name: 📊 Upload coverage info to codecov.io
+      - name: 📊 Upload coverage report to codecov.io
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
