@@ -1,6 +1,9 @@
 """Run an example script to quickly test."""
+from __future__ import annotations
+
 import asyncio
 import logging
+from typing import Any
 
 from aioambient import Websocket
 from aioambient.errors import WebsocketError
@@ -11,23 +14,31 @@ API_KEY = "<YOUR API KEY>"
 APP_KEY = "<YOUR APPLICATION KEY>"
 
 
-def print_data(data):
-    """Print data as it is received."""
+def print_data(data: dict[str, Any]) -> None:
+    """Print data as it is received.
+
+    Args:
+        data: The websocket data received.
+    """
     _LOGGER.info("Data received: %s", data)
 
 
-def print_goodbye():
+def print_goodbye() -> None:
     """Print a simple "goodbye" message."""
     _LOGGER.info("Client has disconnected from the websocket")
 
 
-def print_hello():
+def print_hello() -> None:
     """Print a simple "hello" message."""
     _LOGGER.info("Client has connected to the websocket")
 
 
-def print_subscribed(data):
-    """Print subscription data as it is received."""
+def print_subscribed(data: dict[str, Any]) -> None:
+    """Print subscription data as it is received.
+
+    Args:
+        data: The websocket data received.
+    """
     _LOGGER.info("Client has subscribed: %s", data)
 
 
