@@ -41,7 +41,7 @@ warn_unused_ignores = true
 
 [tool.poetry]
 name = "aioambient"
-version = "2021.12.0"
+version = "2022.10.0"
 description = "A clean, async-friendly library for the Ambient Weather API"
 readme = "README.md"
 authors = ["Aaron Bach <bachya1208@gmail.com>"]
