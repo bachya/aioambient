@@ -30,7 +30,7 @@ pip install aioambient
 
 Utilizing `aioambient` requires both an Application Key and an API Key from Ambient
 Weather. You can generate both from the Profile page in your
-[Ambient Weather Dashboard][ambient-weather-dashboard]
+[Ambient Weather Dashboard][ambient-weather-dashboard].
 
 # Usage
 
@@ -212,6 +212,7 @@ Thanks to all of [our contributors][contributors] so far!
 [codecov]: https://codecov.io/gh/bachya/aioambient
 [contributors]: https://github.com/bachya/aioambient/graphs/contributors
 [fork]: https://github.com/bachya/aioambient/fork
+[issues]: https://github.com/bachya/aioambient/issues
 [license-badge]: https://img.shields.io/pypi/l/aioambient.svg
 [license]: https://github.com/bachya/aioambient/blob/main/LICENSE
 [maintainability-badge]: https://api.codeclimate.com/v1/badges/a03c9e96f19a3dc37f98/maintainability
