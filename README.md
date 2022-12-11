@@ -1,18 +1,16 @@
 # 🌤 aioambient: An async library for Ambient Weather Personal Weather Stations
 
-[![CI](https://github.com/bachya/aioambient/workflows/CI/badge.svg)](https://github.com/bachya/aioambient/actions)
-[![PyPi](https://img.shields.io/pypi/v/aioambient.svg)](https://pypi.python.org/pypi/aioambient)
-[![Version](https://img.shields.io/pypi/pyversions/aioambient.svg)](https://pypi.python.org/pypi/aioambient)
-[![License](https://img.shields.io/pypi/l/aioambient.svg)](https://github.com/bachya/aioambient/blob/main/LICENSE)
-[![Code Coverage](https://codecov.io/gh/bachya/aioambient/branch/dev/graph/badge.svg)](https://codecov.io/gh/bachya/aioambient)
-[![Maintainability](https://api.codeclimate.com/v1/badges/81a9f8274abf325b2fa4/maintainability)](https://codeclimate.com/github/bachya/aioambient/maintainability)
-[![Say Thanks](https://img.shields.io/badge/SayThanks-!-1EAEDB.svg)](https://saythanks.io/to/bachya)
+[![CI][ci-badge]][ci]
+[![PyPI][pypi-badge]][pypi]
+[![Version][version-badge]][version]
+[![License][license-badge]][license]
+[![Code Coverage][codecov-badge]][codecov]
+[![Maintainability][maintainability-badge]][maintainability]
 
 <a href="https://www.buymeacoffee.com/bachya1208P" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
-`aioambient` is a Python3, asyncio-driven library that interfaces with both the
-REST and Websocket APIs provided by
-[Ambient Weather](https://ambientweather.net).
+`aioambient` is a Python3, asyncio-driven library that interfaces with both the REST and
+Websocket APIs provided by [Ambient Weather][ambient-weather].
 
 # Installation
 
@@ -30,9 +28,9 @@ pip install aioambient
 
 # API and Application Keys
 
-Utilizing `aioambient` requires both an Application Key and an API Key from
-Ambient Weather. You can generate both from the Profile page in your
-[Ambient Weather Dashboard](https://dashboard.ambientweather.net).
+Utilizing `aioambient` requires both an Application Key and an API Key from Ambient
+Weather. You can generate both from the Profile page in your
+[Ambient Weather Dashboard][ambient-weather-dashboard].
 
 # Usage
 
@@ -66,9 +64,8 @@ asyncio.run(main())
 
 By default, the library creates a new connection to Ambient Weather with each coroutine.
 If you are calling a large number of coroutines (or merely want to squeeze out every
-second of runtime savings possible), an
-[`aiohttp`](https://github.com/aio-libs/aiohttp) `ClientSession` can be used for connection
-pooling:
+second of runtime savings possible), an [`aiohttp`][aiohttp] `ClientSession` can be used for
+connection pooling:
 
 ```python
 import asyncio
@@ -98,7 +95,7 @@ asyncio.run(main())
 ```
 
 Please be aware of Ambient Weather's
-[rate limiting policies](https://ambientweather.docs.apiary.io/#introduction/rate-limiting).
+[rate limiting policies][ambient-weather-rate-limiting].
 
 ## Websocket API
 
@@ -192,15 +189,37 @@ asyncio.run(main())
 
 # Contributing
 
-1. [Check for open features/bugs](https://github.com/bachya/aioambient/issues)
-   or [initiate a discussion on one](https://github.com/bachya/aioambient/issues/new).
-2. [Fork the repository](https://github.com/bachya/aioambient/fork).
+Thanks to all of [our contributors][contributors] so far!
+
+1. [Check for open features/bugs][issues] or [initiate a discussion on one][new-issue].
+2. [Fork the repository][fork].
 3. (_optional, but highly recommended_) Create a virtual environment: `python3 -m venv .venv`
-4. (_optional, but highly recommended_) Enter the virtual environment: `source ./venv/bin/activate`
+4. (_optional, but highly recommended_) Enter the virtual environment: `source ./.venv/bin/activate`
 5. Install the dev environment: `script/setup`
-6. Code your new feature or bug fix.
+6. Code your new feature or bug fix on a new branch.
 7. Write tests that cover your new functionality.
 8. Run tests and ensure 100% code coverage: `poetry run pytest --cov aioambient tests`
 9. Update `README.md` with any new documentation.
-10. Add yourself to `AUTHORS.md`.
-11. Submit a pull request!
+10. Submit a pull request!
+
+[aiohttp]: https://github.com/aio-libs/aiohttp
+[ambient-weather-dashboard]: https://dashboard.ambientweather.net
+[ambient-weather-rate-limiting]: https://ambientweather.docs.apiary.io/#introduction/rate-limiting
+[ambient-weather]: https://ambientweather.net
+[ci-badge]: https://github.com/bachya/aioambient/workflows/CI/badge.svg
+[ci]: https://github.com/bachya/aioambient/actions
+[codecov-badge]: https://codecov.io/gh/bachya/aioambient/branch/dev/graph/badge.svg
+[codecov]: https://codecov.io/gh/bachya/aioambient
+[contributors]: https://github.com/bachya/aioambient/graphs/contributors
+[fork]: https://github.com/bachya/aioambient/fork
+[issues]: https://github.com/bachya/aioambient/issues
+[license-badge]: https://img.shields.io/pypi/l/aioambient.svg
+[license]: https://github.com/bachya/aioambient/blob/main/LICENSE
+[maintainability-badge]: https://api.codeclimate.com/v1/badges/a03c9e96f19a3dc37f98/maintainability
+[maintainability]: https://codeclimate.com/github/bachya/aioambient/maintainability
+[new-issue]: https://github.com/bachya/aioambient/issues/new
+[new-issue]: https://github.com/bachya/aioambient/issues/new
+[pypi-badge]: https://img.shields.io/pypi/v/aioambient.svg
+[pypi]: https://pypi.python.org/pypi/aioambient
+[version-badge]: https://img.shields.io/pypi/pyversions/aioambient.svg
+[version]: https://pypi.python.org/pypi/aioambient
