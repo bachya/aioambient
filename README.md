@@ -221,7 +221,7 @@ Thanks to all of [our contributors][contributors] so far!
 [issues]: https://github.com/bachya/aioambient/issues
 [license-badge]: https://img.shields.io/pypi/l/aioambient.svg
 [license]: https://github.com/bachya/aioambient/blob/main/LICENSE
-[maintainability-badge]: https://api.codeclimate.com/v1/badges/a03c9e96f19a3dc37f98/maintainability
+[maintainability-badge]: https://api.codeclimate.com/v1/badges/81a9f8274abf325b2fa4/maintainability
 [maintainability]: https://codeclimate.com/github/bachya/aioambient/maintainability
 [new-issue]: https://github.com/bachya/aioambient/issues/new
 [new-issue]: https://github.com/bachya/aioambient/issues/new
