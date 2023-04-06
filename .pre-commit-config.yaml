@@ -93,12 +93,11 @@ repos:
         language: system
         types: [text]
         entry: poetry run fix-byte-order-marker
-      - id: flake8
-        name: 👔 Enforcing style guide with flake8
+      - id: ruff
+        name: 👔 Enforcing style guide with ruff
         language: system
         types: [python]
-        entry: poetry run flake8
-        require_serial: true
+        entry: poetry run ruff --fix
       - id: isort
         name: 🔀 Sorting all imports with isort
         language: system
@@ -109,7 +108,6 @@ repos:
         language: system
         types: [python]
         entry: poetry run mypy
-        require_serial: true
       - id: no-commit-to-branch
         name: 🛑 Checking for commit to protected branch
         language: system
@@ -130,12 +128,6 @@ repos:
         language: system
         types: [python]
         entry: poetry run pylint
-      - id: pytest
-        name: 🧪 Running tests and test coverage with pytest
-        language: system
-        types: [python]
-        entry: poetry run pytest aioambient tests
-        pass_filenames: false
       - id: pyupgrade
         name: 🆙 Checking for upgradable syntax with pyupgrade
         language: system
