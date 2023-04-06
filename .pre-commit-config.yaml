@@ -93,11 +93,6 @@ repos:
         language: system
         types: [text]
         entry: poetry run fix-byte-order-marker
-      - id: ruff
-        name: 👔 Enforcing style guide with ruff
-        language: system
-        types: [python]
-        entry: poetry run ruff --fix
       - id: isort
         name: 🔀 Sorting all imports with isort
         language: system
@@ -134,6 +129,11 @@ repos:
         types: [python]
         entry: poetry run pyupgrade
         args: [--py39-plus, --keep-runtime-typing]
+      - id: ruff
+        name: 👔 Enforcing style guide with ruff
+        language: system
+        types: [python]
+        entry: poetry run ruff --fix
       - id: trailing-whitespace
         name: ✄  Trimming trailing whitespace
         language: system
