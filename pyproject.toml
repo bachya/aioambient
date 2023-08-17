@@ -60,12 +60,15 @@ classifiers = [
 
 [tool.poetry.dependencies]
 aiohttp = ">=3.8.0"
+certifi = ">=2023.07.22"
 python = "^3.9.0"
 python-engineio = ">=3.13.1,<5.0.0"
 python-socketio = ">=4.6,<6.0"
 websockets = ">=11.0.1"
 
 [tool.poetry.group.dev.dependencies]
+GitPython = ">=3.1.32"
+Pygments = ">=2.15.0"
 aresponses = "^2.1.6"
 asynctest = "^0.13.0"
 bandit = "^1.7.4"
