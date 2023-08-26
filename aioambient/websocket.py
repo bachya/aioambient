@@ -49,12 +49,12 @@ class WebsocketWatchdog:
 
     async def on_expire(self) -> None:
         """Log and act when the watchdog expires."""
-        self._logger.info("Watchdog expired – calling %s", self._action.__name__)
+        self._logger.info("Watchdog expired - calling %s", self._action.__name__)
         await self._action()
 
     async def trigger(self) -> None:
         """Trigger the watchdog."""
-        self._logger.info("Watchdog triggered – sleeping for %s seconds", self._timeout)
+        self._logger.info("Watchdog triggered - sleeping for %s seconds", self._timeout)
 
         if self._timer_task:
             self._timer_task.cancel()
