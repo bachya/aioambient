@@ -67,7 +67,7 @@ python-socketio = ">=4.6,<6.0"
 websockets = ">=11.0.1"
 
 [tool.poetry.group.dev.dependencies]
-GitPython = ">=3.1.33"
+GitPython = ">=3.1.35"
 Pygments = ">=2.15.0"
 aresponses = "^2.1.6"
 asynctest = "^0.13.0"
