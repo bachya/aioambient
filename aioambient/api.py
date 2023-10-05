@@ -21,7 +21,7 @@ DEFAULT_TIMEOUT = 10
 class API:
     """Define the API object."""
 
-    def __init__(
+    def __init__(  # pylint: disable=too-many-arguments
         self,
         application_key: str,
         api_key: str,
