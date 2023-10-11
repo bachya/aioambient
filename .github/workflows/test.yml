@@ -51,7 +51,6 @@ jobs:
 
       - name: 🏗 Install workflow dependencies
         run: |
-          pip install --upgrade pip setuptools wheel
           pip install -r .github/workflows/requirements.txt
           poetry config virtualenvs.create true
           poetry config virtualenvs.in-project true
@@ -92,11 +91,11 @@ jobs:
       - name: ⬇️ Download coverage data
         uses: actions/download-artifact@v3
 
-      - name: 🏗 Set up Python 3.10
+      - name: 🏗 Set up Python 3.12
         id: setup-python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.12"
 
       - name: ⤵️ Get pip cache directory
         id: pip-cache
@@ -114,7 +113,6 @@ jobs:
 
       - name: 🏗 Install workflow dependencies
         run: |
-          pip install --upgrade pip setuptools wheel
           pip install -r .github/workflows/requirements.txt
           poetry config virtualenvs.create true
           poetry config virtualenvs.in-project true
