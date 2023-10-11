@@ -22,5 +22,5 @@ jobs:
 
       - name: 🚀 Publish to PyPi
         run: |
-          pip install poetry
+          pip install --upgrade pip poetry setuptools wheel
           poetry publish --build -u __token__ -p  ${{ secrets.PYPI_API_KEY }}
