@@ -14,7 +14,7 @@ from .const import LOGGER
 REST_API_BASE = "https://lightning.ambientweather.net"
 
 
-class OpenAPI(ApiRequestHandler):  # pylint: disable=too-few-public-methods
+class OpenAPI(ApiRequestHandler):
     """Define the OpenAPI object."""
 
     def __init__(  # pylint: disable=too-many-arguments
