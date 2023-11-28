@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import Any
+from typing import Any, cast
 
 from aiohttp import ClientSession, ClientTimeout
 from aiohttp.client_exceptions import ClientError
@@ -38,7 +38,7 @@ class ApiRequestHandler:  # pylint: disable=too-few-public-methods
 
     async def _request(
         self, method: str, endpoint: str, **kwargs: dict[str, Any]
-    ) -> Any:
+    ) -> list[dict[str, Any]] | dict[str, Any]:
         """Make a request against the API.
 
         In order to deal with Ambient's fairly aggressive rate limiting, we
@@ -77,4 +77,5 @@ class ApiRequestHandler:  # pylint: disable=too-few-public-methods
 
         self._logger.debug("Received data for %s: %s", endpoint, data)
 
-        return data
+        # Returns either a list of dicts or a dict itself.
+        return cast(list[dict[str, Any]] | dict[str, Any], data)

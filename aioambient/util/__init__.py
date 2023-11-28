@@ -2,6 +2,9 @@
 import math
 from hashlib import md5
 
+# Radius of the Earth in miles
+EARTH_RADIUS = 3959.0
+
 
 def get_public_device_id(mac_address: str) -> str:
     """Get the public device ID (if it exists) of a device by MAC address.
@@ -34,16 +37,13 @@ def shift_location(
         New (latitude, longitude) pair.
     """
 
-    # Radius of the Earth in miles
-    earth_radius = 3959.0
-
     # Convert latitude and longitude from degrees to radians
     latitude_rad = math.radians(latitude)
     longitude_rad = math.radians(longitude)
 
     # Calculate angular distance in radians
-    angular_latitude_delta = latitude_delta / earth_radius
-    angular_longitude_delta = longitude_delta / earth_radius
+    angular_latitude_delta = latitude_delta / EARTH_RADIUS
+    angular_longitude_delta = longitude_delta / EARTH_RADIUS
 
     # Calculate new latitude
     new_latitude_rad = latitude_rad + angular_latitude_delta

@@ -36,11 +36,11 @@ class API(ApiRequestHandler):
             logger: The logger to use.
             session: An optional aiohttp ClientSession.
         """
-        ApiRequestHandler.__init__(
-            self, f"{REST_API_BASE}/v{api_version}", logger=logger, session=session
+        super().__init__(
+            f"{REST_API_BASE}/v{api_version}", logger=logger, session=session
         )
-        self._api_key: str | None = api_key
-        self._application_key: str | None = application_key
+        self._api_key = api_key
+        self._application_key = application_key
 
     async def get_devices(self) -> list[dict[str, Any]]:
         """Get all devices associated with an API key.
@@ -52,6 +52,8 @@ class API(ApiRequestHandler):
             "apiKey": self._api_key,
             "applicationKey": self._application_key,
         }
+
+        # This endpoint returns a list of device dicts.
         return cast(
             list[dict[str, Any]], await self._request("get", "devices", params=params)
         )
@@ -81,6 +83,7 @@ class API(ApiRequestHandler):
         if end_date:
             params["endDate"] = end_date.isoformat()
 
+        # This endpoint returns a list device data dicts.
         return cast(
             list[dict[str, Any]],
             await self._request("get", f"devices/{mac_address}", params=params),

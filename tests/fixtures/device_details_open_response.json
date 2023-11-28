@@ -1,6 +1,6 @@
 {
-  "_id": "63d49f7357d50c0001c1a03d",
-  "macAddress": "C4:5B:BE:6D:31:18",
+  "_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "macAddress": "AA:AA:AA:AA:AA:AA",
   "lastData": {
     "stationtype": "AMBWeatherPro_V5.0.6",
     "dateutc": 1699474320000,
@@ -199,21 +199,21 @@
     }
   },
   "info": {
-    "name": "The Bean weather",
+    "name": "Station A",
     "coords": {
       "geo": {
-        "coordinates": [-97.31286779999999, 32.4834765],
+        "coordinates": [-97.0, 32.0],
         "type": "Point"
       },
       "elevation": 237.68603515625,
-      "location": "Burleson",
+      "location": "Location A",
       "coords": {
-        "lon": -97.31286779999999,
-        "lat": 32.4834765
+        "lon": -97.0,
+        "lat": 32.0
       }
     },
     "indoor": false,
-    "slug": "0c201dc58002f35146f3ca4b306227c0"
+    "slug": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   },
   "tz": {
     "name": "America/Chicago"
@@ -222,45 +222,45 @@
     "home": "aw",
     "recent": [
       {
-        "_id": "63d49f7357d50c0001c1a03d",
+        "_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "info": {
-          "name": "The Bean weather",
+          "name": "Station A",
           "coords": {
             "geo": {
-              "coordinates": [-97.31286779999999, 32.4834765],
+              "coordinates": [-97.0, 32.0],
               "type": "Point"
             },
             "elevation": 237.68603515625,
-            "location": "Burleson",
-            "address": "2601 Tarver Rd, Burleson, TX 76028, USA",
+            "location": "Location A",
+            "address": "123 A Road, AA A Town",
             "coords": {
-              "lon": -97.31286779999999,
-              "lat": 32.4834765
+              "lon": -97.0,
+              "lat": 32.0
             }
           }
         },
-        "macAddress": "C4:5B:BE:6D:31:18"
+        "macAddress": "AA:AA:AA:AA:AA:AA"
       },
       {
-        "_id": "62d75b4635bc660001ad5501",
+        "_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "info": {
-          "name": "Bowie weather",
+          "name": "A Station",
           "coords": {
             "geo": {
               "type": "Point",
-              "coordinates": [-97.98964472451001, 30.167129515823397]
+              "coordinates": [-97.0, 30.0]
             },
             "elevation": 333.9996643066406,
             "location": "Austin",
             "coords": {
-              "lon": -97.98964472451001,
-              "lat": 30.167129515823397
+              "lon": -97.0,
+              "lat": 30.0
             }
           },
           "indoor": false,
-          "slug": "d261e05604e7f0a6f06fb9ac732dfeff"
+          "slug": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         },
-        "macAddress": "98:CD:AC:22:AC:65"
+        "macAddress": "AA:AA:AA:AA:AA:AA"
       }
     ],
     "alerts": {

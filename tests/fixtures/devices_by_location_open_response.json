@@ -1,8 +1,8 @@
 {
   "data": [
     {
-      "_id": "63d49f7357d50c0001c1a03d",
-      "macAddress": "C4:5B:BE:6D:31:18",
+      "_id": "aaaaaaaaaaaaaaaaaaaaaaaa",
+      "macAddress": "AA:AA:AA:AA:AA:AA",
       "lastData": {
         "stationtype": "AMBWeatherPro_V5.0.6",
         "dateutc": 1699474320000,
@@ -201,29 +201,29 @@
         }
       },
       "info": {
-        "name": "The Bean weather",
+        "name": "Station A",
         "coords": {
           "geo": {
-            "coordinates": [-97.31286779999999, 32.4834765],
+            "coordinates": [-97.0, 32.0],
             "type": "Point"
           },
-          "elevation": 237.68603515625,
-          "location": "Burleson",
+          "elevation": 237.0,
+          "location": "Location A",
           "coords": {
-            "lon": -97.31286779999999,
-            "lat": 32.4834765
+            "lon": -97.0,
+            "lat": 32.0
           }
         },
         "indoor": false,
-        "slug": "0c201dc58002f35146f3ca4b306227c0"
+        "slug": "aaaaaaaaaaaaaaaaaaaaaaaa"
       },
       "tz": {
         "name": "America/Chicago"
       }
     },
     {
-      "_id": "6126e11b3a91b300014e4f52",
-      "macAddress": "E8:DB:84:E1:C7:CC",
+      "_id": "bbbbbbbbbbbbbbbbbbbbbbbb",
+      "macAddress": "BB:BB:BB:BB:BB:BB",
       "lastData": {
         "stationtype": "AMBWeatherV4.2.6",
         "dateutc": 1700716980000,
@@ -542,54 +542,54 @@
         }
       },
       "info": {
-        "name": "Ws1",
+        "name": "Station B",
         "coords": {
           "coords": {
-            "lat": 32.4913576,
-            "lon": -97.2929866
+            "lat": 32.0,
+            "lon": -97.0
           },
-          "location": "Burleson",
-          "elevation": 226.7727661132812,
+          "location": "Location B",
+          "elevation": 226.0,
           "geo": {
             "type": "Point",
-            "coordinates": [-97.2929866, 32.4913576]
+            "coordinates": [-97.0, 32.0]
           }
         },
         "indoor": false,
-        "slug": "dba3b5b55e8ab9cfbb558d5e5f7bfe30"
+        "slug": "bbbbbbbbbbbbbbbbbbbbbbbb"
       },
       "tz": {
         "name": "America/Chicago"
       }
     },
     {
-      "_id": "63b0b138000bec0001ff40b5",
-      "macAddress": "24:C8:6E:0F:51:4A",
+      "_id": "cccccccccccccccccccccccc",
+      "macAddress": "CC:CC:CC:CC:CC:CC",
       "lastData": {},
       "info": {
-        "name": "Scott’s Weather Station",
+        "name": "Station C",
         "coords": {
           "geo": {
-            "coordinates": [-97.29085219999999, 32.4848797],
+            "coordinates": [-97.0, 32.0],
             "type": "Point"
           },
-          "elevation": 242.3666534423828,
-          "location": "Burleson",
+          "elevation": 242.0,
+          "location": "Location C",
           "coords": {
-            "lon": -97.29085219999999,
-            "lat": 32.4848797
+            "lon": -97.0,
+            "lat": 32.0
           }
         },
         "indoor": false,
-        "slug": "6a39b058e2fb8a6ccee83c8a173bbaa9"
+        "slug": "cccccccccccccccccccccccc"
       },
       "tz": {
         "name": "America/Chicago"
       }
     },
     {
-      "_id": "65371c3858dbba0e7744f48f",
-      "macAddress": "24:D7:EB:DA:E3:1E",
+      "_id": "dddddddddddddddddddddddd",
+      "macAddress": "DD:DD:DD:DD:DD:DD",
       "lastData": {
         "stationtype": "AMBWeatherPro_V5.1.3",
         "dateutc": 1700716920000,
@@ -821,39 +821,39 @@
         }
       },
       "info": {
-        "name": "My Weather Station",
+        "name": "Station D",
         "coords": {
           "coords": {
-            "lat": 32.4972066,
-            "lon": -97.2812683
+            "lat": 32.0,
+            "lon": -97.0
           },
           "address": "",
-          "location": "Burleson",
-          "elevation": 221.5491333007812,
+          "location": "Location D",
+          "elevation": 221.0,
           "address_components": [
             {
-              "long_name": "2602",
-              "short_name": "2602",
+              "long_name": "1234",
+              "short_name": "1234",
               "types": ["street_number"]
             },
             {
-              "long_name": "South Burleson Boulevard",
-              "short_name": "S Burleson Blvd",
+              "long_name": "D Street",
+              "short_name": "D St.",
               "types": ["route"]
             },
             {
-              "long_name": "Burleson",
-              "short_name": "Burleson",
+              "long_name": "D Town",
+              "short_name": "D Town",
               "types": ["locality", "political"]
             },
             {
-              "long_name": "Johnson County",
-              "short_name": "Johnson County",
+              "long_name": "D County",
+              "short_name": "D County",
               "types": ["administrative_area_level_2", "political"]
             },
             {
-              "long_name": "Texas",
-              "short_name": "TX",
+              "long_name": "Delaware",
+              "short_name": "DE",
               "types": ["administrative_area_level_1", "political"]
             },
             {
@@ -862,26 +862,26 @@
               "types": ["country", "political"]
             },
             {
-              "long_name": "76028",
-              "short_name": "76028",
+              "long_name": "12345",
+              "short_name": "12345",
               "types": ["postal_code"]
             }
           ],
           "geo": {
             "type": "Point",
-            "coordinates": [-97.2812683, 32.4972066]
+            "coordinates": [-97.0, 32.0]
           }
         },
         "indoor": false,
-        "slug": "0f6197ac5e029970f9b1737ada37c912"
+        "slug": "dddddddddddddddddddddddd"
       },
       "tz": {
         "name": "America/Chicago"
       }
     },
     {
-      "_id": "5fe9388655c7860001dc0d9f",
-      "macAddress": "F0:08:D1:06:F4:3E",
+      "_id": "eeeeeeeeeeeeeeeeeeeeeeee",
+      "macAddress": "EE:EE:EE:EE:EE:EE",
       "lastData": {
         "stationtype": "AMBWeatherV4.3.4",
         "dateutc": 1700716920000,
@@ -1235,46 +1235,46 @@
         }
       },
       "info": {
-        "name": "Fairweather@HiddenVista",
+        "name": "Station E",
         "coords": {
           "coords": {
-            "lat": 32.517537,
-            "lon": -97.321817
+            "lat": 32.0,
+            "lon": -97.0
           },
-          "location": "Burleson",
-          "elevation": 236.3131408691406,
+          "location": "Location E",
+          "elevation": 236.0,
           "geo": {
             "type": "Point",
-            "coordinates": [-97.321817, 32.517537]
+            "coordinates": [-97.0, 32.0]
           }
         },
         "indoor": false,
-        "slug": "a8784991e7def1f859de49356fb16be4"
+        "slug": "eeeeeeeeeeeeeeeeeeeeeeee"
       },
       "tz": {
         "name": "America/Chicago"
       }
     },
     {
-      "_id": "64f3ab474f9441a17b3884b7",
-      "macAddress": "C4:5B:BE:5D:3D:4D",
+      "_id": "ffffffffffffffffffffffff",
+      "macAddress": "FF:FF:FF:FF:FF:FF",
       "lastData": {},
       "info": {
-        "name": "Cagle",
+        "name": "Station F",
         "coords": {
           "coords": {
-            "lat": 32.519314,
-            "lon": -97.3126956
+            "lat": 32.0,
+            "lon": -97.0
           },
-          "location": "Burleson",
-          "elevation": 242.2429351806641,
+          "location": "Location F",
+          "elevation": 242.0,
           "geo": {
             "type": "Point",
-            "coordinates": [-97.3126956, 32.519314]
+            "coordinates": [-97.0, 32.0]
           }
         },
         "indoor": false,
-        "slug": "a4016cba9e045abc16235653059576c5"
+        "slug": "ffffffffffffffffffffffff"
       },
       "tz": {
         "name": "America/Chicago"

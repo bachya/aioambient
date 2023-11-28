@@ -29,7 +29,7 @@ class OpenAPI(ApiRequestHandler):
             logger: The logger to use.
             session: An optional aiohttp ClientSession.
         """
-        ApiRequestHandler.__init__(self, REST_API_BASE, logger=logger, session=session)
+        super().__init__(REST_API_BASE, logger=logger, session=session)
 
     async def get_devices_by_location(
         self, latitude: float, longitude: float, radius: float = 1.0
@@ -54,6 +54,8 @@ class OpenAPI(ApiRequestHandler):
         params["$publicBox[1][1]"] = lat2
         params["$limit"] = 100
 
+        # This endpoint returns a dict with a single "data" field that contains
+        # a list of device dicts.
         response = await self._request("get", "devices", params=params)
         return cast(list[dict[str, Any]], cast(dict[str, Any], response).get("data"))
 
@@ -66,6 +68,7 @@ class OpenAPI(ApiRequestHandler):
         Returns:
             An API response payload.
         """
+        # This endpoint returns a single data dict.
         return cast(
             dict[str, Any], await self._request("get", f"devices/{mac_address}")
         )
