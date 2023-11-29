@@ -56,8 +56,10 @@ class OpenAPI(ApiRequestHandler):
 
         # This endpoint returns a dict with a single "data" field that contains
         # a list of device dicts.
-        response = await self._request("get", "devices", params=params)
-        return cast(list[dict[str, Any]], cast(dict[str, Any], response).get("data"))
+        response = cast(
+            dict[str, Any], await self._request("get", "devices", params=params)
+        )
+        return cast(list[dict[str, Any]], response.get("data"))
 
     async def get_device_details(self, mac_address: str) -> dict[str, Any]:
         """Get details of a device by MAC address.

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import Any, cast
+from typing import Any
 
 from aiohttp import ClientSession, ClientTimeout
 from aiohttp.client_exceptions import ClientError
@@ -12,6 +12,10 @@ from .const import LOGGER
 from .errors import RequestError
 
 DEFAULT_TIMEOUT = 10
+
+
+# Request returns either a list of dicts or a dict itself.
+RequestResponseT = list[dict[str, Any]] | dict[str, Any]
 
 
 class ApiRequestHandler:  # pylint: disable=too-few-public-methods
@@ -38,7 +42,7 @@ class ApiRequestHandler:  # pylint: disable=too-few-public-methods
 
     async def _request(
         self, method: str, endpoint: str, **kwargs: dict[str, Any]
-    ) -> list[dict[str, Any]] | dict[str, Any]:
+    ) -> RequestResponseT:
         """Make a request against the API.
 
         In order to deal with Ambient's fairly aggressive rate limiting, we
@@ -68,7 +72,7 @@ class ApiRequestHandler:  # pylint: disable=too-few-public-methods
         try:
             async with session.request(method, url, **kwargs) as resp:
                 resp.raise_for_status()
-                data = await resp.json()
+                data: RequestResponseT = await resp.json()
         except ClientError as err:
             raise RequestError(f"Error requesting data from {url}: {err}") from err
         finally:
@@ -78,4 +82,4 @@ class ApiRequestHandler:  # pylint: disable=too-few-public-methods
         self._logger.debug("Received data for %s: %s", endpoint, data)
 
         # Returns either a list of dicts or a dict itself.
-        return cast(list[dict[str, Any]] | dict[str, Any], data)
+        return data
