@@ -193,6 +193,39 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
+## Open REST API
+
+The official REST API and Websocket API require an API and application key to access
+data for the devices you own. This API cannot be used if you do not own a personal
+weather station.
+
+However, there is a second, undocumented API that is used by the https://ambientweather.net
+web application that does not require an API and application key. You can use the
+`OpenAPI` class to retrieve weather station data from this API:
+
+```python
+import asyncio
+from datetime import date
+from aiohttp import ClientSession
+from aioambient import OpenAPI
+
+
+async def main() -> None:
+    """Create the aiohttp session and run the example."""
+    api = OpenAPI()
+
+    # Get a list of all the devices that are located within a radius of
+    # three miles from the given latitude/longitude. Each device lists its
+    # MAC address.
+    await api.get_devices_by_location(32.5, -97.3, 3.0)
+
+    # Get the current data from a device:
+    await api.get_device_details("<DEVICE MAC ADDRESS>")
+
+
+asyncio.run(main())
+```
+
 # Contributing
 
 Thanks to all of [our contributors][contributors] so far!
