@@ -1,7 +1,8 @@
 """Define tests for utilities."""
 import pytest
 
-from aioambient.util import get_public_device_id, shift_location
+from aioambient.util import get_public_device_id
+from aioambient.util.location_utils import LocationUtils
 
 
 @pytest.mark.asyncio
@@ -14,14 +15,14 @@ async def test_get_public_id() -> None:
 @pytest.mark.asyncio
 async def test_shift_location() -> None:
     """Test for shift_location utility function."""
-    lat, long = shift_location(0, 0, 1, 1)
+    lat, long = LocationUtils.shift_location(0, 0, 1, 1)
     assert lat == 0.014472285807800538
     assert long == 0.014472285807800538
 
-    lat, long = shift_location(40, 30, 1, 1)
+    lat, long = LocationUtils.shift_location(40, 30, 1, 1)
     assert lat == 40.014472285807805
     assert long == 30.018892227386804
 
-    lat, long = shift_location(80, 20, -5, -5)
+    lat, long = LocationUtils.shift_location(80, 20, -5, -5)
     assert lat == 79.927638570961
     assert long == 19.5832871383321

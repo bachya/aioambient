@@ -7,7 +7,8 @@ from typing import Any, cast
 from aiohttp import ClientSession
 
 from aioambient.api_request_handler import ApiRequestHandler
-from aioambient.util import shift_location
+from aioambient.util.climate_utils import ClimateUtils
+from aioambient.util.location_utils import LocationUtils
 
 from .const import LOGGER
 
@@ -45,8 +46,12 @@ class OpenAPI(ApiRequestHandler):
         Returns:
             An API response payload.
         """
-        lat1, long1 = shift_location(latitude, longitude, -radius, -radius)
-        lat2, long2 = shift_location(latitude, longitude, +radius, +radius)
+        lat1, long1 = LocationUtils.shift_location(
+            latitude, longitude, -radius, -radius
+        )
+        lat2, long2 = LocationUtils.shift_location(
+            latitude, longitude, +radius, +radius
+        )
         params = {}
         params["$publicBox[0][0]"] = long1
         params["$publicBox[0][1]"] = lat1
@@ -71,6 +76,28 @@ class OpenAPI(ApiRequestHandler):
             An API response payload.
         """
         # This endpoint returns a single data dict.
-        return cast(
+        data = cast(
             dict[str, Any], await self._request("get", f"devices/{mac_address}")
         )
+
+        # The regular (private) API computes the "feels like" and the "dew point"
+        # temperature on the server-side and returns the values as part of the API
+        # response. The open API, on the other hand, calculates the two values on
+        # the client side and the two values are not part of the API response.
+        # The following code manually calculates the "feels like" and the "dew point"
+        # temperature to replicate the server-side logic of the private API.
+        if "lastData" not in data:
+            return data
+
+        last_data = data["lastData"]
+        if "tempf" in last_data and "humidity" in last_data:
+            last_data["dewPoint"] = ClimateUtils.dew_point_fahrenheit(
+                last_data["tempf"], last_data["humidity"]
+            )
+
+            if "windspeedmph" in last_data:
+                last_data["feelsLike"] = ClimateUtils.feels_like_fahrenheit(
+                    last_data["tempf"], last_data["humidity"], last_data["windspeedmph"]
+                )
+
+        return data
