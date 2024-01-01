@@ -62,3 +62,6 @@ async def test_get_devices_by_location(aresponses: ResponsesMockServer) -> None:
 
         devices = await api.get_devices_by_location(32.5, -97.3, 1.5)
         assert len(devices) == 6
+
+        assert "dewPoint" in devices[0]["lastData"]
+        assert "feelsLike" in devices[0]["lastData"]

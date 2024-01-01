@@ -32,6 +32,30 @@ class OpenAPI(ApiRequestHandler):
         """
         super().__init__(REST_API_BASE, logger=logger, session=session)
 
+    def inject_virtual_values(self, data: dict[str, Any]) -> None:
+        """Inject dew point and feels like temperature.
+
+        The regular (private) API computes the "feels like" and the "dew point"
+        temperature on the server-side and returns the values as part of the API
+        response. The open API, on the other hand, calculates the two values on
+        the client side and the two values are not part of the API response.
+        The following code manually calculates the "feels like" and the "dew point"
+        temperature to replicate the server-side logic of the private API."""
+
+        if "lastData" in data:
+            last_data = data["lastData"]
+            if "tempf" in last_data and "humidity" in last_data:
+                last_data["dewPoint"] = ClimateUtils.dew_point_fahrenheit(
+                    last_data["tempf"], last_data["humidity"]
+                )
+
+                if "windspeedmph" in last_data:
+                    last_data["feelsLike"] = ClimateUtils.feels_like_fahrenheit(
+                        last_data["tempf"],
+                        last_data["humidity"],
+                        last_data["windspeedmph"],
+                    )
+
     async def get_devices_by_location(
         self, latitude: float, longitude: float, radius: float = 1.0
     ) -> list[dict[str, Any]]:
@@ -64,7 +88,10 @@ class OpenAPI(ApiRequestHandler):
         response = cast(
             dict[str, Any], await self._request("get", "devices", params=params)
         )
-        return cast(list[dict[str, Any]], response.get("data"))
+        if (response_data := response.get("data")) is not None:
+            for station_data in response_data:
+                self.inject_virtual_values(station_data)
+        return cast(list[dict[str, Any]], response_data)
 
     async def get_device_details(self, mac_address: str) -> dict[str, Any]:
         """Get details of a device by MAC address.
@@ -76,28 +103,8 @@ class OpenAPI(ApiRequestHandler):
             An API response payload.
         """
         # This endpoint returns a single data dict.
-        data = cast(
+        response = cast(
             dict[str, Any], await self._request("get", f"devices/{mac_address}")
         )
-
-        # The regular (private) API computes the "feels like" and the "dew point"
-        # temperature on the server-side and returns the values as part of the API
-        # response. The open API, on the other hand, calculates the two values on
-        # the client side and the two values are not part of the API response.
-        # The following code manually calculates the "feels like" and the "dew point"
-        # temperature to replicate the server-side logic of the private API.
-        if "lastData" in data:
-            last_data = data["lastData"]
-            if "tempf" in last_data and "humidity" in last_data:
-                last_data["dewPoint"] = ClimateUtils.dew_point_fahrenheit(
-                    last_data["tempf"], last_data["humidity"]
-                )
-
-                if "windspeedmph" in last_data:
-                    last_data["feelsLike"] = ClimateUtils.feels_like_fahrenheit(
-                        last_data["tempf"],
-                        last_data["humidity"],
-                        last_data["windspeedmph"],
-                    )
-
-        return data
+        self.inject_virtual_values(response)
+        return response
