@@ -86,18 +86,18 @@ class OpenAPI(ApiRequestHandler):
         # the client side and the two values are not part of the API response.
         # The following code manually calculates the "feels like" and the "dew point"
         # temperature to replicate the server-side logic of the private API.
-        if "lastData" not in data:
-            return data
-
-        last_data = data["lastData"]
-        if "tempf" in last_data and "humidity" in last_data:
-            last_data["dewPoint"] = ClimateUtils.dew_point_fahrenheit(
-                last_data["tempf"], last_data["humidity"]
-            )
-
-            if "windspeedmph" in last_data:
-                last_data["feelsLike"] = ClimateUtils.feels_like_fahrenheit(
-                    last_data["tempf"], last_data["humidity"], last_data["windspeedmph"]
+        if "lastData" in data:
+            last_data = data["lastData"]
+            if "tempf" in last_data and "humidity" in last_data:
+                last_data["dewPoint"] = ClimateUtils.dew_point_fahrenheit(
+                    last_data["tempf"], last_data["humidity"]
                 )
+
+                if "windspeedmph" in last_data:
+                    last_data["feelsLike"] = ClimateUtils.feels_like_fahrenheit(
+                        last_data["tempf"],
+                        last_data["humidity"],
+                        last_data["windspeedmph"],
+                    )
 
         return data
