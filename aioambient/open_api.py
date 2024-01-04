@@ -32,7 +32,8 @@ class OpenAPI(ApiRequestHandler):
         """
         super().__init__(REST_API_BASE, logger=logger, session=session)
 
-    def inject_virtual_values(self, data: dict[str, Any]) -> None:
+    @staticmethod
+    def inject_virtual_values(data: dict[str, Any]) -> None:
         """Inject dew point and feels like temperature.
 
         The regular (private) API computes the "feels like" and the "dew point"
@@ -42,19 +43,20 @@ class OpenAPI(ApiRequestHandler):
         The following code manually calculates the "feels like" and the "dew point"
         temperature to replicate the server-side logic of the private API."""
 
-        if "lastData" in data:
-            last_data = data["lastData"]
-            if "tempf" in last_data and "humidity" in last_data:
-                last_data["dewPoint"] = ClimateUtils.dew_point_fahrenheit(
-                    last_data["tempf"], last_data["humidity"]
-                )
+        if (last_data := data.get("lastData")) is None:
+            return
 
-                if "windspeedmph" in last_data:
-                    last_data["feelsLike"] = ClimateUtils.feels_like_fahrenheit(
-                        last_data["tempf"],
-                        last_data["humidity"],
-                        last_data["windspeedmph"],
-                    )
+        if all(key in last_data for key in ("tempf", "humidity")):
+            last_data["dewPoint"] = ClimateUtils.dew_point_fahrenheit(
+                last_data["tempf"], last_data["humidity"]
+            )
+
+        if all(key in last_data for key in ("tempf", "humidity", "windspeedmph")):
+            last_data["feelsLike"] = ClimateUtils.feels_like_fahrenheit(
+                last_data["tempf"],
+                last_data["humidity"],
+                last_data["windspeedmph"],
+            )
 
     async def get_devices_by_location(
         self, latitude: float, longitude: float, radius: float = 1.0
@@ -90,7 +92,7 @@ class OpenAPI(ApiRequestHandler):
         )
         if (response_data := response.get("data")) is not None:
             for station_data in response_data:
-                self.inject_virtual_values(station_data)
+                OpenAPI.inject_virtual_values(station_data)
         return cast(list[dict[str, Any]], response_data)
 
     async def get_device_details(self, mac_address: str) -> dict[str, Any]:
@@ -106,5 +108,5 @@ class OpenAPI(ApiRequestHandler):
         response = cast(
             dict[str, Any], await self._request("get", f"devices/{mac_address}")
         )
-        self.inject_virtual_values(response)
+        OpenAPI.inject_virtual_values(response)
         return response

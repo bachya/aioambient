@@ -41,6 +41,7 @@ class ClimateUtils:
 
         if temp_fahrenheit is None or humidity is None:
             return None
+
         humidity = min(humidity, 100)
         return ClimateUtils.convert_celsius_to_fahrenheit(
             ClimateUtils.dew_point_celsius(
@@ -68,29 +69,30 @@ class ClimateUtils:
         result = 0.5 * (
             temp_fahrenheit + 61 + (temp_fahrenheit - 68) * 1.2 + humidity * 0.094
         )
-        if temp_fahrenheit >= 80:
-            heat_index_base = (
-                -42.379
-                + 2.04901523 * temp_fahrenheit
-                + 10.14333127 * humidity
-                + -0.22475541 * temp_fahrenheit * humidity
-                + -0.00683783 * temp_fahrenheit * temp_fahrenheit
-                + -0.05481717 * humidity * humidity
-                + 0.00122874 * temp_fahrenheit * temp_fahrenheit * humidity
-                + 0.00085282 * temp_fahrenheit * humidity * humidity
-                + -0.00000199 * temp_fahrenheit * temp_fahrenheit * humidity * humidity
+
+        if temp_fahrenheit < 80:
+            return result
+
+        heat_index_base = (
+            -42.379
+            + 2.04901523 * temp_fahrenheit
+            + 10.14333127 * humidity
+            + -0.22475541 * temp_fahrenheit * humidity
+            + -0.00683783 * temp_fahrenheit * temp_fahrenheit
+            + -0.05481717 * humidity * humidity
+            + 0.00122874 * temp_fahrenheit * temp_fahrenheit * humidity
+            + 0.00085282 * temp_fahrenheit * humidity * humidity
+            + -0.00000199 * temp_fahrenheit * temp_fahrenheit * humidity * humidity
+        )
+        if humidity < 13 and temp_fahrenheit <= 112:
+            return heat_index_base - (13 - humidity) / 4 * sqrt(
+                (17 - (abs(temp_fahrenheit - 95))) / 17
             )
-            if humidity < 13 and temp_fahrenheit <= 112:
-                result = heat_index_base - (13 - humidity) / 4 * sqrt(
-                    (17 - (abs(temp_fahrenheit - 95))) / 17
-                )
-            elif humidity > 85 and temp_fahrenheit <= 87:
-                result = heat_index_base + (humidity - 85) / 10 * (
-                    (87 - temp_fahrenheit) / 5
-                )
-            else:
-                result = heat_index_base
-        return result
+
+        if humidity > 85 and temp_fahrenheit <= 87:
+            return heat_index_base + (humidity - 85) / 10 * ((87 - temp_fahrenheit) / 5)
+
+        return heat_index_base
 
     @staticmethod
     def feels_like_fahrenheit(
@@ -102,10 +104,13 @@ class ClimateUtils:
 
         if temp_fahrenheit is None or humidity is None or wind_speed_mph is None:
             return None
+
         if temp_fahrenheit < 50 and wind_speed_mph > 3:
             return ClimateUtils._wind_chill_fahrenheit(temp_fahrenheit, wind_speed_mph)
+
         if temp_fahrenheit > 68:
             return ClimateUtils._heat_index_fahrenheit(temp_fahrenheit, humidity)
+
         return temp_fahrenheit
 
     @staticmethod
