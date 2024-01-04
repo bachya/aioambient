@@ -16,6 +16,7 @@ def test_feels_like() -> None:
 
     assert ClimateUtils.feels_like_fahrenheit(None, None, None) is None
     assert ClimateUtils.feels_like_fahrenheit(50.0, 70.0, 10.0) == 50.0
+    assert ClimateUtils.feels_like_fahrenheit(70.0, 70.0, 10.0) == 69.99000000000001
     assert ClimateUtils.feels_like_fahrenheit(40.0, 70.0, 10.0) == 33.64254827558847
     assert ClimateUtils.feels_like_fahrenheit(90.0, 70.0, 10.0) == 105.92202060000027
     assert ClimateUtils.feels_like_fahrenheit(90.0, 10.0, 10.0) == 85.27896836218746

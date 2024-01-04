@@ -1258,7 +1258,6 @@
     {
       "_id": "ffffffffffffffffffffffff",
       "macAddress": "FF:FF:FF:FF:FF:FF",
-      "lastData": {},
       "info": {
         "name": "Station F",
         "coords": {
