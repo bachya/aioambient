@@ -1086,13 +1086,13 @@ testing = ["fields", "hunter", "process-tests", "pytest-xdist", "six", "virtuale
 
 [[package]]
 name = "python-engineio"
-version = "4.8.1"
+version = "4.8.2"
 description = "Engine.IO server and client for Python"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "python-engineio-4.8.1.tar.gz", hash = "sha256:fadc39c66348f96476d8dc2d7aaee7ea0a39d96e333217f5321300677b980121"},
-    {file = "python_engineio-4.8.1-py3-none-any.whl", hash = "sha256:70a7700ec68e6a1e0f40eb34533f47dfbd0418a87746a60a54d2ff3b4179be25"},
+    {file = "python-engineio-4.8.2.tar.gz", hash = "sha256:f8609e3afdda318fdc336b4ba2de8dd397bb8f9b8a1b43e56c27330e32c2e34c"},
+    {file = "python_engineio-4.8.2-py3-none-any.whl", hash = "sha256:a357f0aba275c311b66f22181472ed5b174bbc541742eea1d16feae2fa1afabd"},
 ]
 
 [package.dependencies]
