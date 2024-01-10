@@ -13,22 +13,51 @@ class ClimateUtils:
 
     @staticmethod
     def convert_celsius_to_fahrenheit(celsius: float) -> float:
-        """Convert celsius to fahrenheit."""
+        """Convert celsius to fahrenheit.
+
+        Args:
+            celsius: Temperature measured in Celsius.
+
+        Returns:
+            Converted temperature measured in Fahrenheit.
+        """
         return celsius * 9.0 / 5.0 + 32.0
 
     @staticmethod
     def convert_fahrenheit_to_celsius(fahrenheit: float) -> float:
-        """Convert fahrenheit to celsius."""
+        """Convert fahrenheit to celsius.
+
+        Args:
+            fahrenheit: Temperature measured in Fahrenheit.
+
+        Returns:
+            Converted temperature measured in Celsius.
+        """
         return (fahrenheit - 32.0) * 5.0 / 9.0
 
     @staticmethod
     def convert_kph_to_mph(kph: float) -> float:
-        """Convert kilometer per hour to miles per hour."""
+        """Convert kilometer per hour to miles per hour.
+
+        Args:
+            kph: Speed measured in kilometers per hour.
+
+        Returns:
+            Converted speed measured in miles per hour.
+        """
         return kph * 0.621371192
 
     @staticmethod
     def dew_point_celsius(temp_celsius: float, humidity: float) -> float:
-        """Calculate the dew point in Celsius."""
+        """Calculate the dew point in Celsius.
+
+        Args:
+            temp_celsius: Temperature measured in Celsius.
+            humidity: Relative humidity measured in percent.
+
+        Returns:
+            Calculated dew point measured in Celsius.
+        """
 
         g = MAGNUS_A * temp_celsius / (MAGNUS_B + temp_celsius) + log(humidity / 100.0)
         return MAGNUS_B * g / (MAGNUS_A - g)
@@ -37,7 +66,15 @@ class ClimateUtils:
     def dew_point_fahrenheit(
         temp_fahrenheit: float | None, humidity: float | None
     ) -> float | None:
-        """Calculate the dew point in Fahrenheit."""
+        """Calculate the dew point in Fahrenheit.
+
+        Args:
+            temp_fahrenheit: Temperature measured in Fahrenheit.
+            humidity: Relative humidity measured in percent.
+
+        Returns:
+            Calculated dew point measured in Fahrenheit.
+        """
 
         if temp_fahrenheit is None or humidity is None:
             return None
@@ -52,7 +89,15 @@ class ClimateUtils:
 
     @staticmethod
     def _wind_chill_fahrenheit(temp_fahrenheit: float, wind_speed_mph: float) -> float:
-        """Calculate the wind chill temperature in Fahrenheit."""
+        """Calculate the wind chill temperature in Fahrenheit.
+
+        Args:
+            temp_fahrenheit: Temperature measured in Fahrenheit.
+            wind_speed: Wind speed measured in miles per hour.
+
+        Returns:
+            Calculated wind chill measured in Fahrenheit.
+        """
 
         return cast(
             float,
@@ -64,7 +109,15 @@ class ClimateUtils:
 
     @staticmethod
     def _heat_index_fahrenheit(temp_fahrenheit: float, humidity: float) -> float:
-        """Calculate the heat index temperature in Fahrenheit."""
+        """Calculate the heat index temperature in Fahrenheit.
+
+        Args:
+            temp_fahrenheit: Temperature measured in Fahrenheit.
+            humidity: Relative humidity measured in percent.
+
+        Returns:
+            Calculated heat index measured in Fahrenheit.
+        """
 
         result = 0.5 * (
             temp_fahrenheit + 61 + (temp_fahrenheit - 68) * 1.2 + humidity * 0.094
@@ -100,7 +153,16 @@ class ClimateUtils:
         humidity: float | None,
         wind_speed_mph: float | None,
     ) -> float | None:
-        """Calculate the feels like temperature in Fahrenheit."""
+        """Calculate the feels like temperature in Fahrenheit.
+
+        Args:
+            temp_fahrenheit: Temperature measured in Fahrenheit.
+            humidity: Relative humidity measured in percent.
+            wind_speed_mph: Wind speed measured in miles per hour.
+
+        Returns:
+            Calculated feels like temperature measured in Fahrenheit.
+        """
 
         if temp_fahrenheit is None or humidity is None or wind_speed_mph is None:
             return None
@@ -117,7 +179,16 @@ class ClimateUtils:
     def feels_like_celsius(
         temp_celsius: float | None, humidity: float | None, wind_speed_kph: float | None
     ) -> float | None:
-        """Calculate the feels like temperature in Celsius."""
+        """Calculate the feels like temperature in Celsius.
+
+        Args:
+            temp_celsius: Temperature measured in Celsius.
+            humidity: Relative humidity measured in percent.
+            wind_speed_kph: Wind speed measured in kilometers per hour.
+
+        Returns:
+            Calculated feels like temperature measured in Celsius.
+        """
 
         if temp_celsius is None or humidity is None or wind_speed_kph is None:
             return None
