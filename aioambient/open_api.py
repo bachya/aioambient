@@ -41,7 +41,11 @@ class OpenAPI(ApiRequestHandler):
         response. The open API, on the other hand, calculates the two values on
         the client side and the two values are not part of the API response.
         The following code manually calculates the "feels like" and the "dew point"
-        temperature to replicate the server-side logic of the private API."""
+        temperature to replicate the server-side logic of the private API.
+        
+        Arguments:
+            data: Map of station data.
+        """
 
         if (last_data := data.get("lastData")) is None:
             return
