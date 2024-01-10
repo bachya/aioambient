@@ -42,7 +42,7 @@ class OpenAPI(ApiRequestHandler):
         the client side and the two values are not part of the API response.
         The following code manually calculates the "feels like" and the "dew point"
         temperature to replicate the server-side logic of the private API.
-        
+
         Arguments:
             data: Map of station data.
         """
