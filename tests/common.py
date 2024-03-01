@@ -1,4 +1,5 @@
 """Define common test utilities."""
+
 import os
 
 TEST_API_KEY = "12345abcde"

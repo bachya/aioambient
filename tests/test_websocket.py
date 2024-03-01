@@ -1,4 +1,5 @@
 """Define tests for the Websocket API."""
+
 # pylint: disable=protected-access
 import logging
 from unittest.mock import AsyncMock, MagicMock

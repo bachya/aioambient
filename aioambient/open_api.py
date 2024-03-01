@@ -1,4 +1,5 @@
 """Define an object to interact with the open REST API."""
+
 from __future__ import annotations
 
 import logging

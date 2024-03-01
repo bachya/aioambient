@@ -1,4 +1,5 @@
 """Define package utilities."""
+
 from hashlib import md5
 
 
