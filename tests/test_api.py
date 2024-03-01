@@ -1,4 +1,5 @@
 """Define tests for the REST API."""
+
 import datetime
 import logging
 from unittest.mock import Mock

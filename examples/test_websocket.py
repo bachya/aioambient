@@ -1,4 +1,5 @@
 """Run an example script to quickly test."""
+
 from __future__ import annotations
 
 import asyncio

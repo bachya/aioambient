@@ -1,4 +1,5 @@
 """Define tests for the REST API."""
+
 import re
 
 import aiohttp

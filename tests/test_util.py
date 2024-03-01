@@ -1,4 +1,5 @@
 """Define tests for utilities."""
+
 import pytest
 
 from aioambient.util import get_public_device_id
