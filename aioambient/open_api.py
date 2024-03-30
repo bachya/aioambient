@@ -19,7 +19,7 @@ REST_API_BASE = "https://lightning.ambientweather.net"
 class OpenAPI(ApiRequestHandler):
     """Define the OpenAPI object."""
 
-    def __init__(  # pylint: disable=too-many-arguments
+    def __init__(
         self,
         *,
         logger: logging.Logger = LOGGER,
@@ -28,8 +28,10 @@ class OpenAPI(ApiRequestHandler):
         """Initialize.
 
         Args:
+        ----
             logger: The logger to use.
             session: An optional aiohttp ClientSession.
+
         """
         super().__init__(REST_API_BASE, logger=logger, session=session)
 
@@ -45,7 +47,9 @@ class OpenAPI(ApiRequestHandler):
         temperature to replicate the server-side logic of the private API.
 
         Arguments:
+        ---------
             data: Map of station data.
+
         """
 
         if (last_data := data.get("lastData")) is None:
@@ -66,16 +70,21 @@ class OpenAPI(ApiRequestHandler):
     async def get_devices_by_location(
         self, latitude: float, longitude: float, radius: float = 1.0
     ) -> list[dict[str, Any]]:
-        """Get all devices registered within an area of `radius`
-        miles from the center given by (`latitude`, `longitude`).
+        """Get all devices registered within an radius.
+
+        We calculate within `radius` miles from the center given by
+        (`latitude`, `longitude`).
 
         Args:
+        ----
             latitude: Latitude of center.
             longitude: Longigude of center.
             radius: Radius (in miles).
 
         Returns:
+        -------
             An API response payload.
+
         """
         lat1, long1 = LocationUtils.shift_location(
             latitude, longitude, -radius, -radius
@@ -104,10 +113,13 @@ class OpenAPI(ApiRequestHandler):
         """Get details of a device by MAC address.
 
         Args:
+        ----
             mac_address: The MAC address of an Ambient Weather station.
 
         Returns:
+        -------
             An API response payload.
+
         """
         # This endpoint returns a single data dict.
         response = cast(

@@ -19,7 +19,9 @@ def print_data(data: dict[str, Any]) -> None:
     """Print data as it is received.
 
     Args:
+    ----
         data: The websocket data received.
+
     """
     _LOGGER.info("Data received: %s", data)
 
@@ -38,7 +40,9 @@ def print_subscribed(data: dict[str, Any]) -> None:
     """Print subscription data as it is received.
 
     Args:
+    ----
         data: The websocket data received.
+
     """
     _LOGGER.info("Client has subscribed: %s", data)
 
@@ -56,8 +60,8 @@ async def main() -> None:
 
     try:
         await websocket.connect()
-    except WebsocketError as err:
-        _LOGGER.error("There was a websocket error: %s", err)
+    except WebsocketError:
+        _LOGGER.exception("There was a websocket error")
         return
 
     while True:

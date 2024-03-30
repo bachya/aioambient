@@ -17,10 +17,13 @@ class ClimateUtils:
         """Convert celsius to fahrenheit.
 
         Args:
+        ----
             celsius: Temperature measured in Celsius.
 
         Returns:
+        -------
             Converted temperature measured in Fahrenheit.
+
         """
         return celsius * 9.0 / 5.0 + 32.0
 
@@ -29,10 +32,13 @@ class ClimateUtils:
         """Convert fahrenheit to celsius.
 
         Args:
+        ----
             fahrenheit: Temperature measured in Fahrenheit.
 
         Returns:
+        -------
             Converted temperature measured in Celsius.
+
         """
         return (fahrenheit - 32.0) * 5.0 / 9.0
 
@@ -41,10 +47,13 @@ class ClimateUtils:
         """Convert kilometer per hour to miles per hour.
 
         Args:
+        ----
             kph: Speed measured in kilometers per hour.
 
         Returns:
+        -------
             Converted speed measured in miles per hour.
+
         """
         return kph * 0.621371192
 
@@ -53,11 +62,14 @@ class ClimateUtils:
         """Calculate the dew point in Celsius.
 
         Args:
+        ----
             temp_celsius: Temperature measured in Celsius.
             humidity: Relative humidity measured in percent.
 
         Returns:
+        -------
             Calculated dew point measured in Celsius.
+
         """
 
         g = MAGNUS_A * temp_celsius / (MAGNUS_B + temp_celsius) + log(humidity / 100.0)
@@ -70,11 +82,14 @@ class ClimateUtils:
         """Calculate the dew point in Fahrenheit.
 
         Args:
+        ----
             temp_fahrenheit: Temperature measured in Fahrenheit.
             humidity: Relative humidity measured in percent.
 
         Returns:
+        -------
             Calculated dew point measured in Fahrenheit.
+
         """
 
         if temp_fahrenheit is None or humidity is None:
@@ -93,11 +108,14 @@ class ClimateUtils:
         """Calculate the wind chill temperature in Fahrenheit.
 
         Args:
+        ----
             temp_fahrenheit: Temperature measured in Fahrenheit.
-            wind_speed: Wind speed measured in miles per hour.
+            wind_speed_mph: Wind speed measured in miles per hour.
 
         Returns:
+        -------
             Calculated wind chill measured in Fahrenheit.
+
         """
 
         return cast(
@@ -113,11 +131,14 @@ class ClimateUtils:
         """Calculate the heat index temperature in Fahrenheit.
 
         Args:
+        ----
             temp_fahrenheit: Temperature measured in Fahrenheit.
             humidity: Relative humidity measured in percent.
 
         Returns:
+        -------
             Calculated heat index measured in Fahrenheit.
+
         """
 
         result = 0.5 * (
@@ -157,12 +178,15 @@ class ClimateUtils:
         """Calculate the feels like temperature in Fahrenheit.
 
         Args:
+        ----
             temp_fahrenheit: Temperature measured in Fahrenheit.
             humidity: Relative humidity measured in percent.
             wind_speed_mph: Wind speed measured in miles per hour.
 
         Returns:
+        -------
             Calculated feels like temperature measured in Fahrenheit.
+
         """
 
         if temp_fahrenheit is None or humidity is None or wind_speed_mph is None:
@@ -183,12 +207,15 @@ class ClimateUtils:
         """Calculate the feels like temperature in Celsius.
 
         Args:
+        ----
             temp_celsius: Temperature measured in Celsius.
             humidity: Relative humidity measured in percent.
             wind_speed_kph: Wind speed measured in kilometers per hour.
 
         Returns:
+        -------
             Calculated feels like temperature measured in Celsius.
+
         """
 
         if temp_celsius is None or humidity is None or wind_speed_kph is None:
@@ -197,7 +224,7 @@ class ClimateUtils:
         temp_fahrenheit = ClimateUtils.convert_celsius_to_fahrenheit(temp_celsius)
         wind_speed_mph = ClimateUtils.convert_kph_to_mph(wind_speed_kph)
         return ClimateUtils.convert_fahrenheit_to_celsius(
-            # Result cannot be None, so cast it to float to avoid the mypy error.
+            # Result cannot be None, so cast it to float to avoid the mypy error:
             cast(
                 float,
                 ClimateUtils.feels_like_fahrenheit(

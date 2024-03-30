@@ -15,15 +15,17 @@ from .errors import RequestError
 DEFAULT_TIMEOUT = 10
 
 
-# Request returns either a list of dicts or a dict itself.
 RequestResponseT = list[dict[str, Any]] | dict[str, Any]
 
 
 class ApiRequestHandler:  # pylint: disable=too-few-public-methods
-    """Handle API requests. Base class for both the API and OpenAPI classes.
-    Handles all requests to Ambient services."""
+    """Handle API requests.
 
-    def __init__(  # pylint: disable=too-many-arguments
+    Base class for both the API and OpenAPI classes. Handles all requests to Ambient
+    services.
+    """
+
+    def __init__(
         self,
         base_url: str,
         *,
@@ -33,9 +35,11 @@ class ApiRequestHandler:  # pylint: disable=too-few-public-methods
         """Initialize.
 
         Args:
+        ----
             base_url: Base URL for each request
             logger: The logger to use.
             session: An optional aiohttp ClientSession.
+
         """
         self._logger = logger
         self._session: ClientSession | None = session
@@ -51,15 +55,19 @@ class ApiRequestHandler:  # pylint: disable=too-few-public-methods
         https://ambientweather.docs.apiary.io/#introduction/rate-limiting
 
         Args:
+        ----
             method: An HTTP method.
             endpoint: A relative API endpoint.
             **kwargs: Additional kwargs to send with the request.
 
         Returns:
+        -------
             An API response payload.
 
         Raises:
+        ------
             RequestError: Raised upon an underlying HTTP error.
+
         """
         await asyncio.sleep(1)
 
@@ -75,7 +83,8 @@ class ApiRequestHandler:  # pylint: disable=too-few-public-methods
                 resp.raise_for_status()
                 data: RequestResponseT = await resp.json()
         except ClientError as err:
-            raise RequestError(f"Error requesting data from {url}: {err}") from err
+            msg = f"Error requesting data from {url}: {err}"
+            raise RequestError(msg) from err
         finally:
             if not use_running_session:
                 await session.close()
