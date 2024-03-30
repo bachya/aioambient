@@ -411,8 +411,3 @@ split-on-trailing-comma = false
     "S101",     # Assertions are fine in tests
     "SLF001",   # We'll access a lot of private third-party members in tests
 ]
-
-[tool.vulture]
-min_confidence = 80
-paths = ["aioambient", "tests"]
-verbose = false
