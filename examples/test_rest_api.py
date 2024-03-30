@@ -28,8 +28,8 @@ async def main() -> None:
                 details = await api.get_device_details(device["macAddress"])
                 _LOGGER.info("Device Details (%s): %s", device["macAddress"], details)
 
-        except AmbientError as err:
-            _LOGGER.error("There was an error: %s", err)
+        except AmbientError:
+            _LOGGER.exception("There was an error")
 
 
 asyncio.run(main())

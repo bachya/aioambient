@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import asyncio
-import logging
 from collections.abc import Awaitable, Callable
+import logging
 from typing import Any
 
 from aiohttp.client_exceptions import ClientConnectionError
@@ -28,13 +28,15 @@ class WebsocketWatchdog:
         action: Callable[..., Awaitable],
         *,
         timeout_seconds: int = DEFAULT_WATCHDOG_TIMEOUT,
-    ):
+    ) -> None:
         """Initialize.
 
         Args:
+        ----
             logger: The logger to use.
             action: The coroutine function to call when the watchdog expires.
             timeout_seconds: The number of seconds before the watchdog times out.
+
         """
         self._action = action
         self._logger = logger
@@ -65,7 +67,7 @@ class WebsocketWatchdog:
         )
 
 
-class Websocket:  # pylint: disable=too-many-instance-attributes
+class Websocket:
     """Define the websocket."""
 
     def __init__(
@@ -79,10 +81,12 @@ class Websocket:  # pylint: disable=too-many-instance-attributes
         """Initialize.
 
         Args:
+        ----
             application_key: An Ambient Weather application key.
             api_key: An Ambient Weather API key.
             api_version: The version of the API to query.
             logger: The logger to use.
+
         """
         if isinstance(api_key, str):
             api_key = [api_key]
@@ -110,7 +114,9 @@ class Websocket:  # pylint: disable=too-many-instance-attributes
         """Define a coroutine to be called when connecting.
 
         Args:
+        ----
             target: The coroutine function to call upon websocket connect.
+
         """
         self._async_user_connect_handler = target
         self._user_connect_handler = None
@@ -119,7 +125,9 @@ class Websocket:  # pylint: disable=too-many-instance-attributes
         """Define a method to be called when connecting.
 
         Args:
+        ----
             target: The function to call upon websocket connect.
+
         """
         self._async_user_connect_handler = None
         self._user_connect_handler = target
@@ -130,14 +138,18 @@ class Websocket:  # pylint: disable=too-many-instance-attributes
         """Define a coroutine to be called when data is received.
 
         Args:
+        ----
             target: The coroutine function to call when receiving websocket data.
+
         """
 
         async def _async_on_data(data: dict[str, Any]) -> None:
             """Act on the data.
 
             Args:
+            ----
                 data: The websocket data received.
+
             """
             await self._watchdog.trigger()
             await target(data)
@@ -148,14 +160,18 @@ class Websocket:  # pylint: disable=too-many-instance-attributes
         """Define a method to be called when data is received.
 
         Args:
+        ----
             target: The function to call when receiving websocket data.
+
         """
 
         async def _async_on_data(data: dict[str, Any]) -> None:
             """Act on the data.
 
             Args:
+            ----
                 data: The websocket data received.
+
             """
             await self._watchdog.trigger()
             target(data)
@@ -166,7 +182,9 @@ class Websocket:  # pylint: disable=too-many-instance-attributes
         """Define a coroutine to be called when disconnecting.
 
         Args:
+        ----
             target: The coroutine function to call upon websocket connect.
+
         """
         self._sio.on("disconnect", target)
 
@@ -174,7 +192,9 @@ class Websocket:  # pylint: disable=too-many-instance-attributes
         """Define a method to be called when disconnecting.
 
         Args:
+        ----
             target: The function to call upon websocket connect.
+
         """
         self._sio.on("disconnect", target)
 
@@ -184,14 +204,18 @@ class Websocket:  # pylint: disable=too-many-instance-attributes
         """Define a coroutine to be called when subscribed.
 
         Args:
+        ----
             target: The coroutine function to call when receiving websocket data.
+
         """
 
         async def _async_on_subscribed(data: dict[str, Any]) -> None:
             """Act on subscribe.
 
             Args:
+            ----
                 data: The websocket data received.
+
             """
             await self._watchdog.trigger()
             await target(data)
@@ -202,14 +226,18 @@ class Websocket:  # pylint: disable=too-many-instance-attributes
         """Define a method to be called when subscribed.
 
         Args:
+        ----
             target: The function to call when receiving websocket data.
+
         """
 
         async def _async_on_subscribed(data: dict[str, Any]) -> None:
             """Act on subscribe.
 
             Args:
+            ----
                 data: The websocket data received.
+
             """
             await self._watchdog.trigger()
             target(data)
@@ -219,8 +247,10 @@ class Websocket:  # pylint: disable=too-many-instance-attributes
     async def connect(self) -> None:
         """Connect to the socket.
 
-        Raises:
+        Raises
+        ------
             WebsocketError: Raised upon any issue with the websocket.
+
         """
         try:
             self._sio.on("connect", self._init_connection)

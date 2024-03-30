@@ -13,7 +13,7 @@ from aioambient.websocket import WebsocketWatchdog
 from tests.common import TEST_API_KEY, TEST_APP_KEY
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_connect_async_success() -> None:
     """Test connecting to the socket with an async handler."""
     websocket = Websocket(TEST_API_KEY, TEST_APP_KEY)
@@ -34,7 +34,7 @@ async def test_connect_async_success() -> None:
     async_on_connect.assert_called_once()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_connect_sync_success() -> None:
     """Test connecting to the socket with a sync handler."""
     websocket = Websocket(TEST_API_KEY, TEST_APP_KEY)
@@ -55,7 +55,7 @@ async def test_connect_sync_success() -> None:
     async_on_connect.assert_called_once()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_connect_failure() -> None:
     """Test connecting to the socket and an exception occurring."""
     websocket = Websocket(TEST_API_KEY, TEST_APP_KEY)
@@ -65,7 +65,7 @@ async def test_connect_failure() -> None:
         await websocket.connect()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_data_async() -> None:
     """Test data and subscription with async handlers."""
     websocket = Websocket(TEST_API_KEY, TEST_APP_KEY)
@@ -105,7 +105,7 @@ async def test_data_async() -> None:
     websocket._sio.disconnect.assert_called_once()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_data_sync() -> None:
     """Test data and subscription with sync handlers."""
     websocket = Websocket(TEST_API_KEY, TEST_APP_KEY)
@@ -145,7 +145,7 @@ async def test_data_sync() -> None:
     websocket._sio.disconnect.assert_called_once()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_reconnect() -> None:
     """Test that reconnecting to the websocket does the right thing."""
     websocket = Websocket(TEST_API_KEY, TEST_APP_KEY)
@@ -166,7 +166,7 @@ async def test_reconnect() -> None:
     async_on_connect.assert_called_once()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_watchdog_firing() -> None:
     """Test that the watchdog expiring fires the provided coroutine."""
     mock_coro = AsyncMock()

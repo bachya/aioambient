@@ -85,11 +85,6 @@ repos:
         language: system
         types: [python]
         entry: poetry run ruff format
-      - id: isort
-        name: 🔀 Sorting all imports with isort
-        language: system
-        types: [python]
-        entry: poetry run isort
       - id: mypy
         name: 🆎 Performing static type checking using mypy
         language: system
@@ -115,17 +110,11 @@ repos:
         language: system
         types: [python]
         entry: poetry run pylint
-      - id: pyupgrade
-        name: 🆙 Checking for upgradable syntax with pyupgrade
-        language: system
-        types: [python]
-        entry: poetry run pyupgrade
-        args: [--py39-plus, --keep-runtime-typing]
       - id: ruff
         name: 👔 Enforcing style guide with ruff
         language: system
         types: [python]
-        entry: poetry run ruff --fix
+        entry: poetry run ruff check --fix
       - id: trailing-whitespace
         name: ✄  Trimming trailing whitespace
         language: system
@@ -139,11 +128,6 @@ repos:
         entry: poetry run vulture
         pass_filenames: false
         require_serial: true
-      - id: yamllint
-        name: 🎗  Checking YAML files with yamllint
-        language: system
-        types: [yaml]
-        entry: poetry run yamllint
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: "v3.0.0-alpha.4"
