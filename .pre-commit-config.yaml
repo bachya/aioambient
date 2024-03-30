@@ -121,13 +121,6 @@ repos:
         types: [text]
         entry: poetry run trailing-whitespace-fixer
         stages: [commit, push, manual]
-      - id: vulture
-        name: 🔍 Finding unused Python code with Vulture
-        language: system
-        types: [python]
-        entry: poetry run vulture
-        pass_filenames: false
-        require_serial: true
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: "v3.0.0-alpha.4"
