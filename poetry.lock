@@ -1009,13 +1009,13 @@ docs = ["sphinx"]
 
 [[package]]
 name = "python-socketio"
-version = "5.11.2"
+version = "5.11.3"
 description = "Socket.IO server and client for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "python-socketio-5.11.2.tar.gz", hash = "sha256:ae6a1de5c5209ca859dc574dccc8931c4be17ee003e74ce3b8d1306162bb4a37"},
-    {file = "python_socketio-5.11.2-py3-none-any.whl", hash = "sha256:b9f22a8ff762d7a6e123d16a43ddb1a27d50f07c3c88ea999334f2f89b0ad52b"},
+    {file = "python_socketio-5.11.3-py3-none-any.whl", hash = "sha256:2a923a831ff70664b7c502df093c423eb6aa93c1ce68b8319e840227a26d8b69"},
+    {file = "python_socketio-5.11.3.tar.gz", hash = "sha256:194af8cdbb7b0768c2e807ba76c7abc288eb5bb85559b7cddee51a6bc7a65737"},
 ]
 
 [package.dependencies]
