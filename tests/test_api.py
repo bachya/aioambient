@@ -14,7 +14,7 @@ from aioambient.errors import RequestError
 from .common import TEST_API_KEY, TEST_APP_KEY, TEST_MAC, load_fixture
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_api_error(aresponses: ResponsesMockServer) -> None:
     """Test the REST API raising an exception upon HTTP error.
 
@@ -37,7 +37,7 @@ async def test_api_error(aresponses: ResponsesMockServer) -> None:
             await api.get_devices()
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_custom_logger(aresponses: ResponsesMockServer, caplog: Mock) -> None:
     """Test that a custom logger is used when provided to the client.
 
@@ -71,7 +71,7 @@ async def test_custom_logger(aresponses: ResponsesMockServer, caplog: Mock) -> N
         )
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_get_device_details(aresponses: ResponsesMockServer) -> None:
     """Test retrieving device details from the REST API.
 
@@ -100,7 +100,7 @@ async def test_get_device_details(aresponses: ResponsesMockServer) -> None:
         assert len(device_details) == 2
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_get_devices(aresponses: ResponsesMockServer) -> None:
     """Test retrieving devices from the REST API.
 
@@ -127,7 +127,7 @@ async def test_get_devices(aresponses: ResponsesMockServer) -> None:
         assert len(devices) == 2
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_session_from_scratch(aresponses: ResponsesMockServer) -> None:
     """Test that an aiohttp ClientSession is created on the fly if needed.
 
