@@ -11,7 +11,7 @@ from aioambient import OpenAPI
 from .common import TEST_MAC, load_fixture
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_get_device_details(aresponses: ResponsesMockServer) -> None:
     """Test retrieving device details from the open REST API.
 
@@ -42,7 +42,7 @@ async def test_get_device_details(aresponses: ResponsesMockServer) -> None:
         assert device_details["lastData"]["feelsLike"] == 85.76260552070016
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_get_devices_by_location(aresponses: ResponsesMockServer) -> None:
     """Test retrieving devices from the open REST API.
 
