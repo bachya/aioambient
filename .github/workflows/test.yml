@@ -7,10 +7,7 @@ name: Tests and Coverage
       - dev
       - main
 
-  push:
-    branches:
-      - dev
-      - main
+  workflow_dispatch:
 
 jobs:
   test:
@@ -21,9 +18,9 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "3.10"
           - "3.11"
           - "3.12"
+          - "3.13"
 
     steps:
       - name: ⤵️ Check out code from GitHub
@@ -35,41 +32,15 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: ⤵️ Get pip cache directory
-        id: pip-cache
-        run: |
-          echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
-
-      - name: ⤵️ Establish pip cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.pip-cache.outputs.dir }}
-          key: "${{ runner.os }}-pip-\
-            ${{ hashFiles('.github/workflows/requirements.txt') }}"
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: 🏗 Install workflow dependencies
-        run: |
-          pip install -r .github/workflows/requirements.txt
-          poetry config virtualenvs.create true
-          poetry config virtualenvs.in-project true
-
-      - name: ⤵️ Establish poetry cache
-        uses: actions/cache@v4
-        with:
-          path: .venv
-          key: "venv-${{ steps.setup-python.outputs.python-version }}-\
-            ${{ hashFiles('poetry.lock') }}"
-          restore-keys: |
-            venv-${{ steps.setup-python.outputs.python-version }}-
+      - name: 🚜 Install uv
+        uses: ./.github/actions/install-uv
 
       - name: 🏗 Install package dependencies
         run: |
-          poetry install --no-interaction
+          uv sync --extra test
 
       - name: 🚀 Run pytest
-        run: poetry run pytest --cov aioambient tests
+        run: uv run pytest --cov aioambient tests
 
       - name: ⬆️ Upload coverage artifact
         uses: actions/upload-artifact@v4
@@ -92,49 +63,23 @@ jobs:
       - name: ⬇️ Download coverage data
         uses: actions/download-artifact@v4
 
-      - name: 🏗 Set up Python 3.12
+      - name: 🏗 Set up Python 3.13
         id: setup-python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
 
-      - name: ⤵️ Get pip cache directory
-        id: pip-cache
-        run: |
-          echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
-
-      - name: ⤵️ Establish pip cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.pip-cache.outputs.dir }}
-          key: "${{ runner.os }}-pip-\
-            ${{ hashFiles('.github/workflows/requirements.txt') }}"
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: 🏗 Install workflow dependencies
-        run: |
-          pip install -r .github/workflows/requirements.txt
-          poetry config virtualenvs.create true
-          poetry config virtualenvs.in-project true
-
-      - name: ⤵️ Establish poetry cache
-        uses: actions/cache@v4
-        with:
-          path: .venv
-          key: "venv-${{ steps.setup-python.outputs.python-version }}-\
-            ${{ hashFiles('poetry.lock') }}"
-          restore-keys: |
-            venv-${{ steps.setup-python.outputs.python-version }}-
+      - name: 🚜 Install uv
+        uses: ./.github/actions/install-uv
 
       - name: 🏗 Install package dependencies
         run: |
-          poetry install --no-interaction
+          uv sync --extra test
 
       - name: 🚀 Process coverage results
         run: |
-          poetry run coverage combine coverage*/.coverage*
-          poetry run coverage xml -i
+          uv run coverage combine coverage*/.coverage*
+          uv run coverage xml -i
 
       - name: 📊 Upload coverage report to codecov.io
         uses: codecov/codecov-action@v4

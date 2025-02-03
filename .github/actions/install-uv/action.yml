@@ -1,0 +1,18 @@
+name: "Install uv"
+description: "Installs uv (pinned to the version used by this repo)"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get uv version from pyproject.toml
+      shell: bash
+      id: uv-version
+      run: |
+        echo "version=$(grep "uv==" pyproject.toml | awk -F'==' '{print $2'} | tr -d '",')" >> $GITHUB_OUTPUT
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        cache-dependency-glob: "uv.lock"
+        enable-cache: true
+        version: ${{ steps.uv-version.outputs.version }}

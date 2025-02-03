@@ -20,5 +20,7 @@ jobs:
 
       - name: 🚀 Run Label Syncer
         uses: micnncim/action-label-syncer@v1.3.0
+        with:
+          manifest: .github/config/labels.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
