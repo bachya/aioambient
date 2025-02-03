@@ -6,24 +6,38 @@ categories:
 
   - title: "🚀 Features"
     labels:
-      - "enhancement"
+      - "type: feature"
 
   - title: "🐛 Bug Fixes"
     labels:
-      - "bug"
+      - "type: bugfix"
 
-  - title: "📕 Documentation"
+  - title: "🏎️ Tuning"
     labels:
-      - "documentation"
+      - "type: performance"
+      - "type: style"
+
+  - title: "🛠️ Tooling"
+    labels:
+      - "type: build"
+      - "type: ci"
 
   - title: "🧰 Maintenance"
     labels:
-      - "dependencies"
-      - "maintenance"
-      - "tooling"
+      - "type: chore"
+      - "type: docs"
+      - "type: refactor"
+      - "type: reversion"
+      - "type: test"
+
+exclude-labels:
+  - "release"
 
 change-template: "- $TITLE (#$NUMBER)"
+
 name-template: "$NEXT_PATCH_VERSION"
+
 tag-template: "$NEXT_PATCH_VERSION"
+
 template: |
   $CHANGES
