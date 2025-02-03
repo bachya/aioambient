@@ -4,9 +4,10 @@ name: Sync Labels
 "on":
   push:
     branches:
-      - main
+      - dev
     paths:
-      - .github/labels.yml
+      - .github/config/labels.yml
+      - .github/config/labeler.yml
 
   workflow_dispatch:
 
