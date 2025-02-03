@@ -1,0 +1,64 @@
+---
+- name: "breaking-change"
+  color: ee0701
+  description: "A breaking change for existing users"
+
+- name: "help-wanted"
+  color: 0e8a16
+  description: "Needs a helping hang or expertise in order to resolve"
+
+- name: "no-stale"
+  color: fef2c0
+  description: "This issue or PR is exempted from the stale bot"
+
+- name: "release"
+  color: d93f0b
+  description: "A release of the library"
+
+- name: "stale"
+  color: fef2c0
+  description: "There has not been activity on this issue or PR for some time"
+
+- color: "ff2191"
+  description: "A bugfix"
+  name: "type: bugfix"
+
+- color: "ff2191"
+  description: "A change to the local or production build system"
+  name: "type: build"
+
+- color: "ff2191"
+  description: "A change to a CI/CD configuration"
+  name: "type: ci"
+
+- color: "ff2191"
+  description: "A change that doesn't modify source or test files"
+  name: "type: chore"
+
+- color: "ff2191"
+  description: "A documentation change"
+  name: "type: docs"
+
+- color: "ff2191"
+  description: "A new feature or enhancement"
+  name: "type: feature"
+
+- color: "ff2191"
+  description: "A code change that improves performance"
+  name: "type: performance"
+
+- color: "ff2191"
+  description: "A code change that neither fixes a bug nor adds a feature"
+  name: "type: refactor"
+
+- color: "ff2191"
+  description: "Reverts a previous commit"
+  name: "type: reversion"
+
+- color: "ff2191"
+  description: "A change that does not affect the meaning of the code"
+  name: "type: style"
+
+- color: "ff2191"
+  description: "Adds missing tests or corrects existing tests"
+  name: "type: test"

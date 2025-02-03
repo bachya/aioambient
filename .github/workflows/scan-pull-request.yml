@@ -1,0 +1,134 @@
+name: Scan Pull Request
+
+on:
+  pull_request:
+    types:
+      - edited
+      - opened
+      - reopened
+      - synchronize
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  repository-projects: read
+
+jobs:
+  lint-pr-title:
+    name: 🏷️ Lint PR Title
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Lint title
+        uses: amannn/action-semantic-pull-request@v5
+        id: lint-title
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Create error comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: ${{ always() && steps.lint-title.outputs.error_message != null }}
+        with:
+          header: lint-title-error-comment
+          message: |
+            We require pull request titles to follow the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) and it looks like this pull request's title needs to be adjusted.
+
+            Details:
+
+            ```
+            ${{ steps.lint-title.outputs.error_message }}
+            ```
+      - name: Delete error comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: ${{ steps.lint-title.outputs.error_message == null }}
+        with:
+          header: lint-title-error-comment
+          delete: true
+
+  set-labels:
+    name: 🏷️ Set Labels
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set labels
+        uses: actions/labeler@v5
+        with:
+          configuration-path: ./.github/config/labeler.yml
+          sync-labels: true
+
+      - name: Assign Conventional Commit label
+        shell: bash
+        env:
+          PR_CURRENT_LABELS_JSON: ${{ toJson(github.event.pull_request.labels) }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          # Create a mapping between Conventional Commit prefixes and our labels:
+          label_map='{
+            "build": "type: build",
+            "chore": "type: chore",
+            "ci": "type: ci",
+            "docs": "type: docs",
+            "feat": "type: feature",
+            "fix": "type: bugfix",
+            "perf": "type: performance",
+            "refactor": "type: refactor",
+            "revert": "type: reversion",
+            "style": "type: style",
+            "test": "type: test"
+          }'
+
+          # Strip any surrounding whitespace from the sanitized PR title:
+          pr_title="$(echo "$PR_TITLE" | tr -d '\n' | xargs)"
+
+          # Parse the existing labels:
+          pr_current_labels=$(echo "$PR_CURRENT_LABELS_JSON" | jq '.[].name')
+
+          # Determine the Conventional Commit type based upon the PR title:
+          commit_type="$(echo "$pr_title" | cut -d: -f1 | sed 's/(.*)//g; s/!//g')"
+          echo "Detected Conventional Commit type: '$commit_type'"
+
+          if [[ -z "$commit_type" ]]; then
+            echo "Commit type could not be extracted from PR title: '$pr_title'"
+            exit 1
+          fi
+
+          # Pull the appropriate label based on the detected Conventional Commit type:
+          label_to_apply="$(echo "$label_map" | jq -r --arg type "$commit_type" '.[$type] // empty')"
+
+          if [[ -z "$label_to_apply" ]]; then
+            echo "Unrecognized Conventional Commit type: '$commit_type'"
+            exit 1
+          fi
+
+          echo "Mapping Conventional Commit type '$commit_type' to label: '$label_to_apply'"
+
+          # Determine whether any outdated Conventional Commit labels need to be
+          # removed:
+          labels_to_remove_csv=$(echo "$PR_CURRENT_LABELS_JSON" | jq -r --argjson label_map "$label_map" --arg current_label "$label_to_apply" '.[].name | select(. != $current_label and (. as $existing | $label_map | any(.[]; . == $existing)))' | paste -sd, -)
+          echo "Removing incorrect Conventional Commit labels: '$labels_to_remove_csv'"
+
+          # If the label to add is already applied, skip it:
+          labels_to_add_csv=""
+          if echo "$pr_current_labels" | grep -qw "$label_to_apply"; then
+            echo "Label already exists on the PR: '$label_to_apply'"
+          else
+            echo "Label should be added to the PR: '$label_to_apply'"
+            labels_to_add_csv+="$label_to_apply"
+          fi
+
+          # Apply the label changes:
+          if [[ -n "$labels_to_remove_csv" || -n "$labels_to_add_csv" ]]; then
+            gh pr edit \
+              "${{ github.event.pull_request.number }}" \
+              ${labels_to_add_csv:+--add-label "$labels_to_add_csv"} \
+              ${labels_to_remove_csv:+--remove-label "$labels_to_remove_csv"}
+          else
+            echo "No label changes needed"
+          fi

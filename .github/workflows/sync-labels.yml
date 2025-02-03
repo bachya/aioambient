@@ -4,9 +4,10 @@ name: Sync Labels
 "on":
   push:
     branches:
-      - main
+      - dev
     paths:
-      - .github/labels.yml
+      - .github/config/labels.yml
+      - .github/config/labeler.yml
 
   workflow_dispatch:
 
@@ -20,5 +21,7 @@ jobs:
 
       - name: 🚀 Run Label Syncer
         uses: micnncim/action-label-syncer@v1.3.0
+        with:
+          manifest: .github/config/labels.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -7,10 +7,7 @@ name: Linting and Static Analysis
       - dev
       - main
 
-  push:
-    branches:
-      - dev
-      - main
+  workflow_dispatch:
 
 jobs:
   lint:
@@ -28,41 +25,20 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: ⤵️ Get pip cache directory
-        id: pip-cache
-        run: |
-          echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
-
-      - name: ⤵️ Establish pip cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.pip-cache.outputs.dir }}
-          key: "${{ runner.os }}-pip-\
-            ${{ hashFiles('.github/workflows/requirements.txt') }}"
-          restore-keys: |
-            ${{ runner.os }}-pip-
+      - name: 🚜 Install uv
+        uses: ./.github/actions/install-uv
 
       - name: 🏗 Install workflow dependencies
         run: |
-          pip install --upgrade pip setuptools wheel
-          pip install -r .github/workflows/requirements.txt
-          poetry config virtualenvs.create true
-          poetry config virtualenvs.in-project true
+          uv sync --extra lint
 
-      - name: ⤵️ Establish poetry cache
-        uses: actions/cache@v4
+      - name: Get all changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v45.0.6
         with:
-          path: .venv
-          key: "venv-${{ steps.setup-python.outputs.python-version }}-\
-            ${{ hashFiles('poetry.lock') }}"
-          restore-keys: |
-            venv-${{ steps.setup-python.outputs.python-version }}-
+          fetch_depth: 0
 
-      - name: 🏗 Install package dependencies
+      - name: Run pre-commit hooks
         run: |
-          poetry install --no-interaction
-
-      - name: 🚀 Run pre-commit hooks
-        uses: pre-commit/action@v3.0.1
-        env:
-          SKIP: no-commit-to-branch,pytest
+          uv run pre-commit run \
+            --files ${{ steps.changed-files.outputs.all_changed_files }}
