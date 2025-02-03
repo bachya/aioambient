@@ -24,9 +24,9 @@
 
 ## Checklist:
 
-- [ ] Confirm that one or more new tests are written for the new functionality.
-- [ ] Run tests and ensure everything passes (with 100% test coverage).
-- [ ] Update `README.md` with any new documentation.
+- [ ] I confirm that one or more new tests are written for the new functionality.
+- [ ] I have ensured that all tests pass (with 100% test coverage).
+- [ ] I have updated `README.md` with any new documentation.
 - [ ] I will "squash merge" this PR.
 
 ## TODOs:
