@@ -34,6 +34,10 @@ new_version=$(generate_version)
 sed -i "" "s/^version = \".*\"/version = \"$new_version\"/g" "$REPO_PATH/pyproject.toml"
 git add pyproject.toml
 
+# Update the uv lockfile:
+uv lock
+git add uv.lock
+
 # Commit, tag, and push:
 git commit -m "Bump version to $new_version"
 git tag "$new_version"
