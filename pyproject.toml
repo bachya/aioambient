@@ -100,7 +100,7 @@ max-attributes = 20
 max-line-length = 88
 
 [tool.pylint.MAIN]
-py-version = "3.12"
+py-version = "3.11"
 ignore = [
     "tests",
 ]
