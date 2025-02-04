@@ -87,13 +87,13 @@ main() {
     source "$REPO_DIR/.venv/bin/activate"
   fi
 
-  msg "${BLUE}🚜 Installing dependencies...${NOFORMAT}"
-  if ! command -v "pip" &>/dev/null; then
-    python -m ensurepip
-  fi
+  msg "${BLUE}🚜 Installing dependencies ...${NOFORMAT}"
   if ! command -v "uv" &>/dev/null; then
-    # shellcheck disable=SC1087
-    python -m pip install "$REPO_DIR[build]"
+    if ! command -v "pip" &>/dev/null; then
+      python -m ensurepip
+    fi
+    uv_version="$(grep "uv==" "$REPO_DIR/pyproject.toml" | awk -F'==' '{print $2}' | tr -d '",')"
+    python -m pip install uv=="$uv_version"
   fi
   uv sync --all-extras
 
